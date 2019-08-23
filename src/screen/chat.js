@@ -89,7 +89,7 @@ export default class chat extends Component {
             //alert(screenFocused)
             if(screenFocused) {
                 console.log('----------------screen------------', this.props.navigation.state.routeName)
-                if(this.props.navigation.state.routeName == 'ChatScreen') {
+                //if(this.props.navigation.state.routeName == 'ChatScreen') {
                     console.log('------------------receive---------------')
                     if(this.toname == '123group' && message._data.fromname == this.role) {
                         var temp = JSON.parse(message._data.data)
@@ -126,10 +126,10 @@ export default class chat extends Component {
                             ],
                             {cancelable: false},
                         )
-                    }
-                } else {
-                    alert("call from "+message._data.fromname)
-                }
+                     }
+                // } else {
+                //     alert("call from "+message._data.fromname)
+                // }
              } else {
                 Alert.alert(
                     'Notification1',
