@@ -32,6 +32,10 @@ export default class home extends Component {
         }
     }
 
+    componentDidUpdate() {
+
+    }
+
     componentWillUnmount() {
         this.messageListener()
         this.removeNotificationOpenedListener()
@@ -45,7 +49,7 @@ export default class home extends Component {
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate("ChatScreen", {name: name})
+            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         })
 
         //App closed  notification taps
@@ -55,7 +59,7 @@ export default class home extends Component {
             this.messageListener()
             const notification = notificationOpen.notification
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate("ChatScreen", {name: name})
+            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         }
 
         //message receive process
@@ -64,11 +68,12 @@ export default class home extends Component {
                 'Notification',
                 'Message from '+message._data.fromname,
                 [
-                    {text: 'View', onPress: () => {
+                    {
+                        text: 'View', onPress: () => {
                             this.messageListener()
                             var name = ''
                             message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            this.props.navigation.navigate('ChatScreen', {name: name})   
+                            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
                         }
                     },
                     {

@@ -72,7 +72,7 @@ export default class chat extends Component {
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate("ChatScreen", {name: name})
+            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         })
 
         //message list init
@@ -86,8 +86,9 @@ export default class chat extends Component {
         //message receive
         this.messageListener = firebase.messaging().onMessage((message) => {
             var screenFocused = this.props.navigation.isFocused()
+            //alert(screenFocused)
             if(screenFocused) {
-            console.log('----------------screen------------', this.props.navigation.state.routeName)
+                console.log('----------------screen------------', this.props.navigation.state.routeName)
                 if(this.props.navigation.state.routeName == 'ChatScreen') {
                     console.log('------------------receive---------------')
                     if(this.toname == '123group' && message._data.fromname == this.role) {
@@ -129,15 +130,15 @@ export default class chat extends Component {
                 } else {
                     alert("call from "+message._data.fromname)
                 }
-            } else {
+             } else {
                 Alert.alert(
-                    'Notification',
+                    'Notification1',
                     'Message from '+message._data.fromname,
                     [
                         {text: 'View', onPress: () => {
                                 var name = ''
                                 message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                this.props.navigation.navigate('ChatScreen', {name: name})   
+                                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
                             }
                         },
                         {

@@ -54,7 +54,7 @@ export default class phonetree extends Component {
                     {text: 'View', onPress: () => {
                             this.messageListener()
                             message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            this.props.navigation.navigate('ChatScreen', {name: name})
+                            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
                         }
                     },
                     {
@@ -79,7 +79,7 @@ export default class phonetree extends Component {
 
     chat(item) {
         this.messageListener()
-        this.props.navigation.navigate('ChatScreen', {name: item})
+        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: item}, key: 'chat'})
     }
 
     renderRow = ({item}) => {
@@ -122,7 +122,7 @@ export default class phonetree extends Component {
     
     onGroup() {
         this.messageListener()
-        this.props.navigation.navigate('ChatScreen', {name: '123group'})
+        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: '123group'}, key: 'chat'})
     }
 
     render() {
