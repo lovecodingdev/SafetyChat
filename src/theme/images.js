@@ -1,0 +1,40 @@
+const images = {
+    splash : require('../images/logo.png'),
+    safetyplans: require('../images/myspappsafetyplans.png'),
+    firstaid: require("../images/firstaid.png"),
+    maps: require("../images/maps.png"),
+    myroster: require("../images/myroster.png"),
+    phonetree: require("../images/phonetree.png"),
+    back: require("../images/back.png"),
+    home: require("../images/home.png"),
+    bg: require("../images/bg.png"),
+    logo: require("../images/logo.png"),
+    logoBG: require("../images/logo_bg.png"),
+    logout: require("../images/logout.png"),
+    //safety plans
+    intruderlockdown: require("../images/intruderlockdown.png"),
+    // accidentinjuryillness: require("../images/accidentinjuryillness.png"),
+    afterhoursbuildingemergency: require("../images/afterhoursbuildingemergency.png"),
+    bomb: require("../images/bomb.png"),
+    deathsuicide: require("../images/deathsuicide.png"),
+    emergencycutoffs: require("../images/emergencycutoffs.png"),
+    evacuation: require("../images/evacuation.png"),
+    fire: require("../images/fire.png"),
+    fullsafetyplan: require("../images/fullsafetyplan.png"),
+    hazardousmaterial: require("../images/hazardousmaterial.png"),
+    //homeroom: require('homeroom.png'),
+    hostageterrorist: require("../images/hostageterrorist.png"),
+    injuryaccident: require("../images/injuryaccident.png"),
+    overnighthousing: require("../images/overnighthousing.png"),
+    runawayabduction: require("../images/runawayabduction.png"),
+    snow: require("../images/snow.png"),
+    studentdisruption: require("../images/studentdisruption.png"),
+    tornado: require("../images/tornado.png"),
+    utilityemergency: require("../images/utilityemergency.png"),
+    weapononcampus: require("../images/weapononcampus.png"),
+
+    //general icon
+    general: require("../images/general.png"),
+}
+
+export default images;

@@ -1,0 +1,127 @@
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  Platform,
+  Alert,
+  } from 'react-native';
+import { Images, Title } from '../theme';
+import { Container } from 'native-base';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
+import Header from '../components/header'
+import RNFetchBlob from 'rn-fetch-blob'
+import Icon from '../components/icon'
+import firebase from 'react-native-firebase'
+
+const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/" : "/storage/emulated/0/safetyDir/"
+
+export default class splash extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state ={
+            file: [{}],
+        }
+    }
+
+    componentWillUnmount() {
+        //this.messageListener()
+    }
+
+    async componentDidMount() {
+        // this.messageListener = firebase.messaging().onMessage((message) => {
+        //     Alert.alert(
+        //         'Notification',
+        //         'Message from '+message._data.fromname,
+        //         [
+        //         {text: 'View', onPress: () => this.props.navigation.navigate('ChatScreen', {name: message._data.fromname})},
+        //         {
+        //             text: 'Cancel',
+        //             onPress: () => console.log('Cancel Pressed'),
+        //             style: 'cancel',
+        //         },
+        //         ],
+        //         {cancelable: false},
+        //     );
+        // })
+
+        var aspect = this.props.navigation.getParam('aspect')
+
+        var temp = await RNFetchBlob.fs.ls(resourceUrl)
+        var filelist = []
+        temp.forEach(item => {
+            if(item.includes(aspect)) {
+                var imgName = item.replace(aspect, '.png')
+                var ttt = item.replace(aspect, '')
+                RNFetchBlob.fs.exists(resourceUrl+imgName).then(exist => {
+                    var imgUrl = ''
+                    if(exist) {
+                        imgUrl = {'uri': resourceUrl + imgName}
+                    } else if(Images[ttt] > 0){
+                        imgUrl = Images[ttt]
+                    } else {
+                        imgUrl = Images['general']
+                    }
+                    return imgUrl
+                }).then((img) => {
+                    filelist.push({'pdf': item, 'img': img, 'title': ttt.toUpperCase()})
+                    this.setState({file: filelist})
+                    console.log(ttt)
+                })
+            }
+                
+        })
+    }
+
+    onPdf(text) {
+        this.props.navigation.navigate('pdfDisplayScreen', {'title': text})
+    }
+
+    render() {
+        
+        return (
+            <Container style={styles.container}>
+                <Header prop={this.props.navigation}></Header>
+                <ImageBackground source={Images.bg} style={{flex: 1, padding: 15}}>
+                    <FlatList
+                        data = {this.state.file}
+                        horizontal = {false}
+                        showsVerticalScrollIndicator={false}
+                        numColumns = {2}
+                        renderItem={({item}) =>
+                            <Icon img={item['img']} onPress={this.onPdf.bind(this, item['pdf'])} title={item['title']}></Icon>
+                        }
+                        keyExtractor={item => item.pdf}
+                    />
+                </ImageBackground>
+            </Container>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'stretch'
+    },
+    row:{
+        flex: 1,
+        //marginLeft: responsiveWidth(10)-10,
+        height: responsiveHeight(25),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    button: {
+        marginTop: 20,
+        //marginLeft: 10,
+        width: responsiveWidth(50)-15,
+        height: responsiveHeight(25),
+        resizeMode: "stretch"
+    },
+});

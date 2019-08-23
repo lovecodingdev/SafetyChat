@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "532288277681",
+    "firebase_url": "https://myspapp-cbbb1.firebaseio.com",
+    "project_id": "myspapp-cbbb1",
+    "storage_bucket": "myspapp-cbbb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532288277681:android:1e9d4f88f60fd248",
+        "android_client_info": {
+          "package_name": "com.safefyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532288277681-met3dpidj1rh7illkto07i3udgn52ped.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCElhYTZuAj2GXcRBJqd3nwXXoW2SuJnDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532288277681-met3dpidj1rh7illkto07i3udgn52ped.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "532288277681-ui642gh1mbt5skmem4n6pijrihmsmhjn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myspapp.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
