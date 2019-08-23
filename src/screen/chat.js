@@ -33,7 +33,8 @@ export default class chat extends Component {
     }
 
     componentWillUnmount() {
-        this.messageListener()
+        //this.messageListener()
+        this.removeNotificationOpenedListener()
     }
 
     initChat() {
@@ -64,6 +65,16 @@ export default class chat extends Component {
     }
 
     async componentDidMount() {
+        //App in background or foreground   notification taps
+        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            // Get information about the notification that was opened
+            //this.messageListener()
+            const notification = notificationOpen.notification
+            var name = ''
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            this.props.navigation.navigate("ChatScreen", {name: name})
+        })
+
         //message list init
         this.companycode = await AppData.getItem('Companycode')
         var selfname = await AppData.getItem('username')
@@ -71,71 +82,72 @@ export default class chat extends Component {
         this.setState({selfname})
         this.toname = this.props.navigation.getParam('name')
         this.initChat()
-        // var messageList = []
-        // if(this.toname == '123group') {
-        //     firebase.database().ref(this.companycode+'/groupMessages/'+this.role).once('value', function(snapshot) {
-        //         snapshot.forEach(function(keysnapshot) {
-        //             var message = keysnapshot.val()
-        //             console.log(message)
-        //             messageList.push(message)
-        //         })
-        //         self.setState({messages: messageList.reverse()})
-        //         console.log(self.state.messages)
-        //     })
-        // } else {
-        //     firebase.database().ref(this.companycode+'/messages/'+selfname+'/'+this.toname).once('value', function(snapshot) {
-        //         snapshot.forEach(function(keysnapshot) {
-        //             var message = keysnapshot.val()
-        //             console.log(message)
-        //             messageList.push(message)
-        //         })
-        //         self.setState({messages: messageList.reverse()})
-        //         console.log(self.state.messages)
-        //     })
-        // }
-
+        
         //message receive
         this.messageListener = firebase.messaging().onMessage((message) => {
+            var screenFocused = this.props.navigation.isFocused()
+            if(screenFocused) {
             console.log('----------------screen------------', this.props.navigation.state.routeName)
-            if(this.props.navigation.state.routeName == 'ChatScreen') {
-                console.log('------------------receive---------------')
-                if(this.toname == '123group' && message._data.fromname == this.role) {
-                    var temp = JSON.parse(message._data.data)
-                    var respond = []
-                    respond.push(temp)
-                    this.setState(previousState => ({
-                        messages: GiftedChat.append(previousState.messages, respond),
-                    }))
-                } else if(message._data.fromname == this.toname) {
-                    var temp = JSON.parse(message._data.data)
-                    var respond = []
-                    respond.push(temp)
-                    this.setState(previousState => ({
-                        messages: GiftedChat.append(previousState.messages, respond),
-                    }))
-                    console.log("----------------------receiving message----------------------", respond)
-                    
-                } else {
-                    Alert.alert(
-                        'Notification',
-                        'Message from '+message._data.fromname,
-                        [
-                            {text: 'View', onPress: () => {
-                                    this.toname = message._data.fromname
-                                    this.initChat()
-                                }
+                if(this.props.navigation.state.routeName == 'ChatScreen') {
+                    console.log('------------------receive---------------')
+                    if(this.toname == '123group' && message._data.fromname == this.role) {
+                        var temp = JSON.parse(message._data.data)
+                        var respond = []
+                        respond.push(temp)
+                        this.setState(previousState => ({
+                            messages: GiftedChat.append(previousState.messages, respond),
+                        }))
+                    } else if(message._data.fromname == this.toname) {
+                        var temp = JSON.parse(message._data.data)
+                        var respond = []
+                        respond.push(temp)
+                        this.setState(previousState => ({
+                            messages: GiftedChat.append(previousState.messages, respond),
+                        }))
+                        console.log("----------------------receiving message----------------------", respond)
+                        
+                    } else {
+                        Alert.alert(
+                            'Notification',
+                            'Message from '+message._data.fromname,
+                            [
+                                {text: 'View', onPress: () => {
+                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                        this.toname = name
+                                        this.initChat()
+                                    }
+                                },
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
                             },
-                          {
-                            text: 'Cancel',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                          },
-                        ],
-                        {cancelable: false},
-                    )
+                            ],
+                            {cancelable: false},
+                        )
+                    }
+                } else {
+                    alert("call from "+message._data.fromname)
                 }
             } else {
-                alert("call from "+message._data.fromname)
+                Alert.alert(
+                    'Notification',
+                    'Message from '+message._data.fromname,
+                    [
+                        {text: 'View', onPress: () => {
+                                var name = ''
+                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                this.props.navigation.navigate('ChatScreen', {name: name})   
+                            }
+                        },
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log(this.props.navigation.state.routeName),
+                            style: 'cancel',
+                        },
+                    ],
+                    {cancelable: false},
+                )
             }
         })
     }

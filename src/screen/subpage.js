@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  TouchableOpacity,
-  Image,
   ImageBackground,
-  View,
-  Text,
-  ScrollView,
   FlatList,
   Platform,
-  Alert,
   } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -17,7 +11,6 @@ import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimen
 import Header from '../components/header'
 import RNFetchBlob from 'rn-fetch-blob'
 import Icon from '../components/icon'
-import firebase from 'react-native-firebase'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/" : "/storage/emulated/0/safetyDir/"
 
@@ -31,25 +24,10 @@ export default class splash extends Component {
     }
 
     componentWillUnmount() {
-        //this.messageListener()
+
     }
 
     async componentDidMount() {
-        // this.messageListener = firebase.messaging().onMessage((message) => {
-        //     Alert.alert(
-        //         'Notification',
-        //         'Message from '+message._data.fromname,
-        //         [
-        //         {text: 'View', onPress: () => this.props.navigation.navigate('ChatScreen', {name: message._data.fromname})},
-        //         {
-        //             text: 'Cancel',
-        //             onPress: () => console.log('Cancel Pressed'),
-        //             style: 'cancel',
-        //         },
-        //         ],
-        //         {cancelable: false},
-        //     );
-        // })
 
         var aspect = this.props.navigation.getParam('aspect')
 
@@ -112,14 +90,12 @@ const styles = StyleSheet.create({
     },
     row:{
         flex: 1,
-        //marginLeft: responsiveWidth(10)-10,
         height: responsiveHeight(25),
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
     button: {
         marginTop: 20,
-        //marginLeft: 10,
         width: responsiveWidth(50)-15,
         height: responsiveHeight(25),
         resizeMode: "stretch"

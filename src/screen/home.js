@@ -34,24 +34,48 @@ export default class home extends Component {
 
     componentWillUnmount() {
         this.messageListener()
+        this.removeNotificationOpenedListener()
     }
 
     async componentDidMount() {
+        //App in background or foreground   notification taps
+        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            // Get information about the notification that was opened
+            this.messageListener()
+            const notification = notificationOpen.notification
+            var name = ''
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            this.props.navigation.navigate("ChatScreen", {name: name})
+        })
 
+        //App closed  notification taps
+        const notificationOpen = await firebase.notifications().getInitialNotification();
+        if (notificationOpen) {
+            // App was opened by a notification
+            this.messageListener()
+            const notification = notificationOpen.notification
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            this.props.navigation.navigate("ChatScreen", {name: name})
+        }
+
+        //message receive process
         this.messageListener = firebase.messaging().onMessage((message) => {
             Alert.alert(
                 'Notification',
                 'Message from '+message._data.fromname,
                 [
                     {text: 'View', onPress: () => {
-                        this.messageListener()
-                        this.props.navigation.navigate('ChatScreen', {name: message._data.fromname})
-                    }},
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log(this.props.navigation.state.routeName),
-                    style: 'cancel',
-                  },
+                            this.messageListener()
+                            var name = ''
+                            message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                            this.props.navigation.navigate('ChatScreen', {name: name})   
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log(this.props.navigation.state.routeName),
+                        style: 'cancel',
+                    },
                 ],
                 {cancelable: false},
             )
