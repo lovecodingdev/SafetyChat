@@ -132,7 +132,7 @@ export default class chat extends Component {
                 // }
              } else {
                 Alert.alert(
-                    'Notification1',
+                    'Notification',
                     'Message from '+message._data.fromname,
                     [
                         {text: 'View', onPress: () => {
