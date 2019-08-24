@@ -30,11 +30,11 @@ export default class splash extends Component {
 
         var token = await AppData.getItem('token')
         setTimeout(()=>{
-            if(token != null) {
-                this.props.navigation.replace('HomeScreen')
-            } else {
+            // if(token != null) {
+            //     this.props.navigation.replace('HomeScreen')
+            //} else {
                 this.props.navigation.replace(screen.toString())
-            }
+            //}
         }, 2000)
     }
 

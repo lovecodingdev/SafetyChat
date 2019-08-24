@@ -5,8 +5,7 @@ import {Images} from '../theme'
 
 export default class Header extends Component {
     logout() {
-        AsyncStorage.clear()
-        this.props.prop.navigate('CheckcodeScreen')
+        AsyncStorage.clear().then(() => this.props.prop.navigate('CheckcodeScreen'))
     }
        
     render() {

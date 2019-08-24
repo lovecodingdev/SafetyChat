@@ -26,11 +26,11 @@ export default class login extends Component {
     }
 
     async componentDidMount() {
-        // var token = await AppData.getItem('token')
-        // console.log(token)
-        // if(token != null) {
-        //     this.props.navigation.replace('HomeScreen')
-        // }
+        var token = await AppData.getItem('token')
+        console.log(token)
+        if(token != null) {
+            this.props.navigation.replace('HomeScreen')
+        }
     }
 
     async onLogin() {
