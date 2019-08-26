@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {View, TouchableHighlight, Image, AsyncStorage} from 'react-native'
+import {View, TouchableHighlight, Image, AsyncStorage,} from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 import {Images} from '../theme'
 
 export default class Header extends Component {
     logout() {
-        AsyncStorage.clear().then(() => this.props.prop.navigate('CheckcodeScreen'))
+        AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
     }
        
     render() {

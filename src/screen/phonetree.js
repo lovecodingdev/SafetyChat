@@ -47,7 +47,7 @@ export default class phonetree extends Component {
         //message receive process
         var messageListener = firebase.messaging().onMessage((message) => {
             Alert.alert(
-                'Notification-phone-init',
+                'Notification',
                 'Message from '+message._data.fromname,
                 [
                     {
@@ -71,29 +71,26 @@ export default class phonetree extends Component {
         this.didFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             (payload) => {
-                AppData.getItem('username').then(res => {
-                    self.selfname = res
-                    messageListener = firebase.messaging().onMessage((message) => {
-                        Alert.alert(
-                            'Notification-phone',
-                            'Message from '+message._data.fromname,
-                            [
-                                {
-                                    text: 'View', onPress: () => {
-                                        var name = ''
-                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                        self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                                    }
-                                },
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log(self.props.navigation.state.routeName),
-                                    style: 'cancel',
-                                },
-                            ],
-                            {cancelable: false},
-                        )
-                    })
+                messageListener = firebase.messaging().onMessage((message) => {
+                    Alert.alert(
+                        'Notification',
+                        'Message from '+message._data.fromname,
+                        [
+                            {
+                                text: 'View', onPress: () => {
+                                    var name = ''
+                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                    self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                }
+                            },
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(self.props.navigation.state.routeName),
+                                style: 'cancel',
+                            },
+                        ],
+                        {cancelable: false},
+                    )
                 })
             }
         )
@@ -123,30 +120,14 @@ export default class phonetree extends Component {
 
     renderRow = ({item}) => {
         var self = this
-        var res = ''
         if(this.selfname != item) {
             return (
                 <View style={styles.listItem}>
                     <TouchableOpacity onPress={self.chat.bind(self, item)}>
                         <Text style={styles.item}>{item}</Text>
                     </TouchableOpacity>
-                    {/* <Text>{snapshot.val() == 1 ? '?' : ''}</Text> */}
                 </View>
             )
-            // firebase.database().ref('unread/'+self.selfname+'/'+item).once('value', function(snapshot) {
-            //     console.log(snapshot.val())
-            //     res = snapshot.val()
-            // })
-
-            // return (
-            //     <View>
-            //         <TouchableOpacity onPress={self.chat.bind(self, item)} style={styles.listItem}>
-            //             <Text style={styles.item}>{item}</Text>
-            //         </TouchableOpacity>
-            //         <Text>{ res == 1 ? '?' : ''}</Text>
-            //     </View>
-            // )
-            
         }
     }
           

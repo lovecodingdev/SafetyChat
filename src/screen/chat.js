@@ -70,7 +70,6 @@ export default class chat extends Component {
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             // Get information about the notification that was opened
-            //this.messageListener()
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
@@ -111,7 +110,7 @@ export default class chat extends Component {
                         
                     } else {
                         Alert.alert(
-                            'Notification-chat',
+                            'Notification',
                             'Message from '+message._data.fromname,
                             [
                                 {text: 'View', onPress: () => {
@@ -161,7 +160,7 @@ export default class chat extends Component {
                                 
                             } else {
                                 Alert.alert(
-                                    'Notification-chat',
+                                    'Notification',
                                     'Message from '+message._data.fromname,
                                     [
                                         {text: 'View', onPress: () => {
@@ -178,9 +177,8 @@ export default class chat extends Component {
                                     ],
                                     {cancelable: false},
                                 )
-                             }
-                        
-                     }
+                            }
+                    }
                 })
             }
         )

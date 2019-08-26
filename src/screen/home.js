@@ -62,7 +62,7 @@ export default class home extends Component {
         //message receive process
         var messageListener = firebase.messaging().onMessage((message) => {
             Alert.alert(
-                'Notification-home-init',
+                'Notification',
                 'Message from '+message._data.fromname,
                 [
                     {
@@ -88,7 +88,7 @@ export default class home extends Component {
             payload => {
                 messageListener = firebase.messaging().onMessage((message) => {
                     Alert.alert(
-                        'Notification-home',
+                        'Notification',
                         'Message from '+message._data.fromname,
                         [
                             {

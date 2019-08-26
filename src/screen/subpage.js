@@ -33,36 +33,14 @@ export default class subpage extends Component {
     async componentDidMount() {
         var self = this
         var messageListener
-        //message receive process
-        // var messageListener = firebase.messaging().onMessage((message) => {
-        //     Alert.alert(
-        //         'Notification-sub-init',
-        //         'Message from ' + message._data.fromname,
-        //         [
-        //             {
-        //                 text: 'View', onPress: () => {
-        //                     var name = ''
-        //                     message._data.group == '1' ? name = '123group' : name = message._data.fromname
-        //                     self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-        //                 }
-        //             },
-        //             {
-        //                 text: 'Cancel',
-        //                 onPress: () => console.log(self.props.navigation.state.routeName),
-        //                 style: 'cancel',
-        //             },
-        //         ],
-        //         {cancelable: false},
-        //     )
-        // })
-
+        
         //when screen focused, message listener starting
         this.didFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 messageListener = firebase.messaging().onMessage((message) => {
                     Alert.alert(
-                        'Notification-sub',
+                        'Notification',
                         'Message from '+message._data.fromname,
                         [
                             {
