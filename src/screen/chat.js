@@ -34,6 +34,8 @@ export default class chat extends Component {
 
     componentWillUnmount() {
         //this.messageListener()
+        this.didFocusSubscription.remove()
+        this.willBlurSubscription.remove()
         this.removeNotificationOpenedListener()
     }
 
@@ -72,7 +74,9 @@ export default class chat extends Component {
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            this.toname = name
+            this.initChat()
+            //this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         })
 
         //message list init
@@ -82,14 +86,12 @@ export default class chat extends Component {
         this.setState({selfname})
         this.toname = this.props.navigation.getParam('name')
         this.initChat()
-        
-        //message receive
-        this.messageListener = firebase.messaging().onMessage((message) => {
+
+        var messageListener = firebase.messaging().onMessage((message) => {
             var screenFocused = this.props.navigation.isFocused()
             //alert(screenFocused)
             if(screenFocused) {
                 console.log('----------------screen------------', this.props.navigation.state.routeName)
-                //if(this.props.navigation.state.routeName == 'ChatScreen') {
                     console.log('------------------receive---------------')
                     if(this.toname == '123group' && message._data.fromname == this.role) {
                         var temp = JSON.parse(message._data.data)
@@ -109,7 +111,7 @@ export default class chat extends Component {
                         
                     } else {
                         Alert.alert(
-                            'Notification',
+                            'Notification-chat',
                             'Message from '+message._data.fromname,
                             [
                                 {text: 'View', onPress: () => {
@@ -126,31 +128,71 @@ export default class chat extends Component {
                             ],
                             {cancelable: false},
                         )
-                     }
-                // } else {
-                //     alert("call from "+message._data.fromname)
-                // }
-             } else {
-                Alert.alert(
-                    'Notification',
-                    'Message from '+message._data.fromname,
-                    [
-                        {text: 'View', onPress: () => {
-                                var name = ''
-                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                            }
-                        },
-                        {
-                            text: 'Cancel',
-                            onPress: () => console.log(this.props.navigation.state.routeName),
-                            style: 'cancel',
-                        },
-                    ],
-                    {cancelable: false},
-                )
+                    }
             }
         })
+
+        //when screen focused, message listener starting
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                messageListener = firebase.messaging().onMessage((message) => {
+                    var screenFocused = this.props.navigation.isFocused()
+                    //alert(screenFocused)
+                    if(screenFocused) {
+                        console.log('----------------screen------------', this.props.navigation.state.routeName)
+                        //if(this.props.navigation.state.routeName == 'ChatScreen') {
+                            console.log('------------------receive---------------')
+                            if(this.toname == '123group' && message._data.fromname == this.role) {
+                                var temp = JSON.parse(message._data.data)
+                                var respond = []
+                                respond.push(temp)
+                                this.setState(previousState => ({
+                                    messages: GiftedChat.append(previousState.messages, respond),
+                                }))
+                            } else if(message._data.fromname == this.toname) {
+                                var temp = JSON.parse(message._data.data)
+                                var respond = []
+                                respond.push(temp)
+                                this.setState(previousState => ({
+                                    messages: GiftedChat.append(previousState.messages, respond),
+                                }))
+                                console.log("----------------------receiving message----------------------", respond)
+                                
+                            } else {
+                                Alert.alert(
+                                    'Notification-chat',
+                                    'Message from '+message._data.fromname,
+                                    [
+                                        {text: 'View', onPress: () => {
+                                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                                this.toname = name
+                                                this.initChat()
+                                            }
+                                        },
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    ],
+                                    {cancelable: false},
+                                )
+                             }
+                        
+                     }
+                })
+            }
+        )
+
+        //when screen unfocus, remove message listener
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                messageListener()
+            }
+        )
+        
     }
 
     onSend(messages = []) {

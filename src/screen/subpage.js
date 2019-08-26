@@ -4,6 +4,7 @@ import {
   ImageBackground,
   FlatList,
   Platform,
+  Alert,
   } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -11,10 +12,11 @@ import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimen
 import Header from '../components/header'
 import RNFetchBlob from 'rn-fetch-blob'
 import Icon from '../components/icon'
+import firebase from 'react-native-firebase'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/" : "/storage/emulated/0/safetyDir/"
 
-export default class splash extends Component {
+export default class subpage extends Component {
 
     constructor(props) {
         super(props)
@@ -24,10 +26,71 @@ export default class splash extends Component {
     }
 
     componentWillUnmount() {
-
+        this.didFocusSubscription.remove()
+        this.willBlurSubscription.remove()
     }
 
     async componentDidMount() {
+        var self = this
+        var messageListener
+        //message receive process
+        // var messageListener = firebase.messaging().onMessage((message) => {
+        //     Alert.alert(
+        //         'Notification-sub-init',
+        //         'Message from ' + message._data.fromname,
+        //         [
+        //             {
+        //                 text: 'View', onPress: () => {
+        //                     var name = ''
+        //                     message._data.group == '1' ? name = '123group' : name = message._data.fromname
+        //                     self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+        //                 }
+        //             },
+        //             {
+        //                 text: 'Cancel',
+        //                 onPress: () => console.log(self.props.navigation.state.routeName),
+        //                 style: 'cancel',
+        //             },
+        //         ],
+        //         {cancelable: false},
+        //     )
+        // })
+
+        //when screen focused, message listener starting
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                messageListener = firebase.messaging().onMessage((message) => {
+                    Alert.alert(
+                        'Notification-sub',
+                        'Message from '+message._data.fromname,
+                        [
+                            {
+                                text: 'View', onPress: () => {
+                                    var name = ''
+                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                    self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                }
+                            },
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(self.props.navigation.state.routeName),
+                                style: 'cancel',
+                            },
+                        ],
+                        {cancelable: false},
+                    )
+                })
+            }
+        )
+
+        //when screen unfocus, remove message listener
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                messageListener()
+            }
+        )
 
         var aspect = this.props.navigation.getParam('aspect')
 

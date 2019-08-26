@@ -46,6 +46,7 @@ export default class checkcode extends Component {
                     },
                 });
                 console.log(response.status)
+                this.setState({loading: false})
                 var responseStatus = response.status
                 if (responseStatus == 200) {
                     console.log('startup.fetch: This code works!');
@@ -57,10 +58,10 @@ export default class checkcode extends Component {
                     console.log('This is not a valid code')
                     alert("Your company code didn't work. Let's try again.")
                 }
-                this.setState({loading: true})
+                
             } catch (error) {
                 console.log("error", error)
-                this.setState({loading: true})
+                this.setState({loading: false})
                 alert("Your company code didn't work. Let's try again.")
             }
         } else {

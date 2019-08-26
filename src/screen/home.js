@@ -17,7 +17,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
-//import { EventEmitter } from 'expo-location';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/" : "/storage/emulated/0/safetyDir/"
 
@@ -32,20 +31,18 @@ export default class home extends Component {
         }
     }
 
-    componentDidUpdate() {
-
-    }
-
     componentWillUnmount() {
-        this.messageListener()
+        this.didFocusSubscription.remove()
+        this.willBlurSubscription.remove()
         this.removeNotificationOpenedListener()
     }
 
     async componentDidMount() {
+        var self = this
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             // Get information about the notification that was opened
-            this.messageListener()
+            //this.messageListener()
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
@@ -56,35 +53,71 @@ export default class home extends Component {
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             // App was opened by a notification
-            this.messageListener()
+            //this.messageListener()
             const notification = notificationOpen.notification
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
             this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         }
 
         //message receive process
-        this.messageListener = firebase.messaging().onMessage((message) => {
+        var messageListener = firebase.messaging().onMessage((message) => {
             Alert.alert(
-                'Notification',
+                'Notification-home-init',
                 'Message from '+message._data.fromname,
                 [
                     {
                         text: 'View', onPress: () => {
-                            this.messageListener()
                             var name = ''
                             message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                            self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
                         }
                     },
                     {
                         text: 'Cancel',
-                        onPress: () => console.log(this.props.navigation.state.routeName),
+                        onPress: () => console.log(self.props.navigation.state.routeName),
                         style: 'cancel',
                     },
                 ],
                 {cancelable: false},
             )
         })
+
+        //when screen focused, message listener starting
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                messageListener = firebase.messaging().onMessage((message) => {
+                    Alert.alert(
+                        'Notification-home',
+                        'Message from '+message._data.fromname,
+                        [
+                            {
+                                text: 'View', onPress: () => {
+                                    var name = ''
+                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                    self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                }
+                            },
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(self.props.navigation.state.routeName),
+                                style: 'cancel',
+                            },
+                        ],
+                        {cancelable: false},
+                    )
+                })
+            }
+        )
+
+        //when screen unfocus, remove message listener
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                messageListener()
+            }
+        )
+          
 
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
             if(!isDir){
@@ -147,7 +180,6 @@ export default class home extends Component {
     }
 
     phonetree() {
-        this.messageListener()
         this.props.navigation.navigate('PhoneTreeScreen')
     }
 

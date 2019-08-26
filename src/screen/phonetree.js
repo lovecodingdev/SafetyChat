@@ -26,7 +26,6 @@ export default class phonetree extends Component {
         this.role = ''
         this.state = {
            users: [],
-           unread: ''
         }
         
         
@@ -45,27 +44,67 @@ export default class phonetree extends Component {
             self.setState({users})
         })
 
-        //unread message register to other user
-        this.messageListener = firebase.messaging().onMessage((message) => {
+        //message receive process
+        var messageListener = firebase.messaging().onMessage((message) => {
             Alert.alert(
-                'Notification',
+                'Notification-phone-init',
                 'Message from '+message._data.fromname,
                 [
-                    {text: 'View', onPress: () => {
-                            this.messageListener()
+                    {
+                        text: 'View', onPress: () => {
+                            var name = ''
                             message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+                            self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
                         }
                     },
                     {
                         text: 'Cancel',
-                        onPress: () => console.log('Cancel Pressed'),
+                        onPress: () => console.log(self.props.navigation.state.routeName),
                         style: 'cancel',
                     },
                 ],
                 {cancelable: false},
-            );
+            )
         })
+
+        //when screen focused, message listener starting
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            (payload) => {
+                AppData.getItem('username').then(res => {
+                    self.selfname = res
+                    messageListener = firebase.messaging().onMessage((message) => {
+                        Alert.alert(
+                            'Notification-phone',
+                            'Message from '+message._data.fromname,
+                            [
+                                {
+                                    text: 'View', onPress: () => {
+                                        var name = ''
+                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                        self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                    }
+                                },
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log(self.props.navigation.state.routeName),
+                                    style: 'cancel',
+                                },
+                            ],
+                            {cancelable: false},
+                        )
+                    })
+                })
+            }
+        )
+
+        //when screen unfocus, remove message listener
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                messageListener()
+            }
+        )
 
         // const channel = new firebase.notifications.Android.Channel('insider', 'insider channel', firebase.notifications.Android.Importance.Max)
         // firebase.notifications().android.createChannel(channel);
@@ -73,12 +112,12 @@ export default class phonetree extends Component {
     }
 
     componentWillUnmount() {
-        this.messageListener()
+        this.willBlurSubscription.remove()
+        this.didFocusSubscription.remove()
         //this.createNotificationListeners()
     }
 
     chat(item) {
-        this.messageListener()
         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: item}, key: 'chat'})
     }
 
@@ -121,7 +160,6 @@ export default class phonetree extends Component {
     // }
     
     onGroup() {
-        this.messageListener()
         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: '123group'}, key: 'chat'})
     }
 
