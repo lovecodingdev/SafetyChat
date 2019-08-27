@@ -110,7 +110,7 @@ export default class chat extends Component {
                         
                     } else {
                         Alert.alert(
-                            'Notification-chat-init',
+                            'Notification',
                             'Message from '+message._data.fromname,
                             [
                                 {text: 'View', onPress: () => {
@@ -160,7 +160,7 @@ export default class chat extends Component {
                                 
                             } else {
                                 Alert.alert(
-                                    'Notification-chat',
+                                    'Notification',
                                     'Message from '+message._data.fromname,
                                     [
                                         {text: 'View', onPress: () => {
