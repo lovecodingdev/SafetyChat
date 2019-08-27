@@ -29,11 +29,20 @@ export default class splash extends Component {
         }
 
         var token = await AppData.getItem('token')
-        setTimeout(()=>{
+        setTimeout(async ()=>{
+            //App closed  notification taps
+            const notificationOpen = await firebase.notifications().getInitialNotification()
+            if (notificationOpen) {
+                // App was opened by a notification
+                //messageListener()
+                const notification = notificationOpen.notification
+                notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            }
             // if(token != null) {
             //     this.props.navigation.replace('HomeScreen')
             //} else {
-                this.props.navigation.replace(screen.toString())
+            this.props.navigation.replace(screen.toString())
             //}
         }, 2000)
     }

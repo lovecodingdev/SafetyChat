@@ -53,6 +53,8 @@ export default class login extends Component {
             firebase.database().ref().child(companycode+'/users/'+this.state.name).set({token: token, role: role}).then(() => {
                 this.props.navigation.replace('HomeScreen')
             })
+        } else {
+            alert('Enter name and password correctly.')
         }
     }
         

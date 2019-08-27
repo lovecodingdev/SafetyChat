@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     constainer: {
         marginLeft: responsiveWidth(10) - 5,
         width: responsiveWidth(80),
-        height: responsiveHeight(30)-40,
+        height: 180,
         borderWidth: 1,
         borderRadius: 10,
         marginTop: 10,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         top: 0,
         position: "absolute",
         width: responsiveWidth(40) - 10,
-        height: responsiveHeight(30) - 40,
+        height: 180,
         marginLeft: responsiveWidth(40),
         alignItems: 'center',
         justifyContent: 'center',
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     },
     img: {
         width: responsiveWidth(40)-20,
-        height: responsiveHeight(30) - 60,
-        marginTop: 10,
+        height: 140,
+        marginTop: 20,
         marginLeft: 10,
         tintColor: '#fff',
         resizeMode: 'contain'

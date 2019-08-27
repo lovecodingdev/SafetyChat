@@ -49,38 +49,39 @@ export default class home extends Component {
             this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         })
 
-        //App closed  notification taps
-        const notificationOpen = await firebase.notifications().getInitialNotification();
-        if (notificationOpen) {
-            // App was opened by a notification
-            //this.messageListener()
-            const notification = notificationOpen.notification
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        }
+        // //App closed  notification taps
+        // const notificationOpen = await firebase.notifications().getInitialNotification()
+        // if (notificationOpen) {
+        //     // App was opened by a notification
+        //     //messageListener()
+        //     const notification = notificationOpen.notification
+        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+        //     this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        // }
 
         //message receive process
-        var messageListener = firebase.messaging().onMessage((message) => {
-            Alert.alert(
-                'Notification',
-                'Message from '+message._data.fromname,
-                [
-                    {
-                        text: 'View', onPress: () => {
-                            var name = ''
-                            message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                        }
-                    },
-                    {
-                        text: 'Cancel',
-                        onPress: () => console.log(self.props.navigation.state.routeName),
-                        style: 'cancel',
-                    },
-                ],
-                {cancelable: false},
-            )
-        })
+        var messageListener
+        // var messageListener = firebase.messaging().onMessage((message) => {
+        //     Alert.alert(
+        //         'Notification-home-init',
+        //         'Message from '+message._data.fromname,
+        //         [
+        //             {
+        //                 text: 'View', onPress: () => {
+        //                     var name = ''
+        //                     message._data.group == '1' ? name = '123group' : name = message._data.fromname
+        //                     self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+        //                 }
+        //             },
+        //             {
+        //                 text: 'Cancel',
+        //                 onPress: () => console.log(self.props.navigation.state.routeName),
+        //                 style: 'cancel',
+        //             },
+        //         ],
+        //         {cancelable: false},
+        //     )
+        // })
 
         //when screen focused, message listener starting
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -88,7 +89,7 @@ export default class home extends Component {
             payload => {
                 messageListener = firebase.messaging().onMessage((message) => {
                     Alert.alert(
-                        'Notification',
+                        'Notification-home',
                         'Message from '+message._data.fromname,
                         [
                             {
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     imageView: {
         width: responsiveWidth(80),
         marginLeft: responsiveWidth(10) - 5,
-        height: responsiveHeight(30) - 40,
+        height: 180,
         marginTop: 20,
         borderWidth: 1,
         borderRadius: 10,
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     },
     safety: {
         width: responsiveWidth(80) - 60,
-        height: responsiveHeight(30) - 100,
+        height: 120,
         tintColor: '#fff',
         resizeMode: "stretch"
     },

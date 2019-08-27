@@ -60,6 +60,7 @@ async function login(name, password) {
         }
     } catch (error) {
         console.log("error", error)
+        alert(error)
     }
 }
 
