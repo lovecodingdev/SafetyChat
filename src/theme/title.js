@@ -1,9 +1,9 @@
 const title = {
     safetyplans: "My SP App Safety Plans",
-    firstaid: "First Aid",
+    firstaid: "General Info",
     maps: "Maps",
     myroster: "My Roster",
-    phonetree: "Phone Tree",
+    phonetree: "MySP Safety Chat",
     intruderlockdown: "Intruder Lockdown",
     // accidentinjuryillness: "require("../images/accidentinjuryillness.png")",
     afterhoursbuildingemergency: "After Hours Building Emergency",

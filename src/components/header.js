@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, TouchableHighlight, Image, AsyncStorage,} from 'react-native'
+import {View, TouchableHighlight, Image, AsyncStorage, Alert} from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 import {Images} from '../theme'
@@ -7,7 +7,23 @@ import {ifIphoneX} from 'react-native-iphone-x-helper'
 
 export default class Header extends Component {
     logout() {
-        AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
+        Alert.alert(
+            'Logout',
+            'Do you really logout?',
+            [
+                {
+                    text: 'Ok', onPress: () => {
+                        AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('cancel'),
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: false},
+        )
     }
        
     render() {

@@ -172,6 +172,7 @@ export default class phonetree extends Component {
                         <FlatList 
                             data={this.state.users}
                             renderItem={this.renderRow}
+                            showsVerticalScrollIndicator={true}
                             //keyExtractor={item}
                         />
                     </View>

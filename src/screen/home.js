@@ -196,7 +196,7 @@ export default class home extends Component {
                                 source={this.state.safetyplans}
                             />
                         </TouchableOpacity>
-                        <BigIcon img={this.state.firstaid} title={Title.firstaid} onPress={this.subPage.bind(this, 'firstaid.pdf')}></BigIcon>
+                        <BigIcon img={this.state.firstaid} title={Title.firstaid} onPress={this.subPage.bind(this, 'general.pdf')}></BigIcon>
                         <BigIcon img={this.state.maps} title={Title.maps} onPress={this.subPage.bind(this, 'map.pdf')}></BigIcon>
                         <BigIcon img={Images.phonetree} title={Title.phonetree} onPress={this.phonetree.bind(this)}></BigIcon>
                     </View>
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     },
     safety: {
         width: responsiveWidth(80) - 60,
-        height: 120,
+        height: 100,
         tintColor: '#fff',
         resizeMode: "stretch"
     },

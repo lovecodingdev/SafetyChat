@@ -14,7 +14,21 @@ import AppData from '../components/AppData';
 export default class splash extends Component {
 
     async componentDidMount() {
+        // const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
+        // .setDescription('My apps test channel');
 
+        // // Create the channel
+        // await firebase.notifications().android.createChannel(channel);
+
+        //App closed  notification taps
+        const notificationOpen = await firebase.notifications().getInitialNotification()
+        if (notificationOpen) {
+            // App was opened by a notification
+            //messageListener()
+            const notification = notificationOpen.notification
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        }
 
         // Check Company Code
         let con = await API.getConnection();
@@ -28,17 +42,8 @@ export default class splash extends Component {
             alert('Not Network Connected!')
         }
 
-        var token = await AppData.getItem('token')
-        setTimeout(async ()=>{
-            //App closed  notification taps
-            const notificationOpen = await firebase.notifications().getInitialNotification()
-            if (notificationOpen) {
-                // App was opened by a notification
-                //messageListener()
-                const notification = notificationOpen.notification
-                notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }
+        //var token = await AppData.getItem('token')
+        setTimeout(()=>{
             // if(token != null) {
             //     this.props.navigation.replace('HomeScreen')
             //} else {
