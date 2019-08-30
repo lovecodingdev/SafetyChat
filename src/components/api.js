@@ -7,7 +7,7 @@ import { file } from '@babel/types';
 import { Item } from 'native-base';
 import {Platform} from 'react-native'
 
-const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/" : "/storage/emulated/0/safetyDir/"
+const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
 async function getConnection() {
     
@@ -99,6 +99,7 @@ async function updateFiles() {
     var baseUrl = await getUrl()
     var response = await readManifest()
     let localUrl = resourceUrl
+    //await RNFetchBlob.fs.unlink(localUrl)
     var tempList = response.split("\n")
     var fileList = []
     tempList.forEach( item => {

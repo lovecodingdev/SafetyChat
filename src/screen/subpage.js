@@ -14,7 +14,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import Icon from '../components/icon'
 import firebase from 'react-native-firebase'
 
-const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/" : "/storage/emulated/0/safetyDir/"
+const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/safety/" : "/storage/emulated/0/safetyDir/"
 
 export default class subpage extends Component {
 
@@ -91,7 +91,7 @@ export default class subpage extends Component {
                 }).then((img) => {
                     filelist.push({'pdf': item, 'img': img, 'title': ttt.toUpperCase()})
                     this.setState({file: filelist})
-                    console.log(ttt)
+                    console.log(this.state.file)
                 })
             }
                 

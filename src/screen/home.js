@@ -18,7 +18,7 @@ import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
 
-const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/" : "/storage/emulated/0/safetyDir/"
+const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 
 export default class home extends Component {
     constructor(props) {
@@ -128,9 +128,9 @@ export default class home extends Component {
         let remoteMD5 = await API.readRemoteMD5()
 
         var url = resourceUrl + 'localCheck.md5'
-        RNFetchBlob.fs.writeFile(url, '','utf8').then(() => {
-            console.log('Update Removed');
-        })
+        // RNFetchBlob.fs.writeFile(url, '','utf8').then(() => {
+        //     console.log('Update Removed');
+        // })
         
         console.log('***********', url)
         RNFetchBlob.fs.exists(url).then((exist) => {
@@ -140,14 +140,18 @@ export default class home extends Component {
                     if(localMD5 == remoteMD5) {
                         console.log("Correct Sync!", localMD5)
                     } else {
-                        RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
-                            API.updateFiles().then(() => {console.log('Update Success!')})
+                        RNFetchBlob.fs.unlink(resourceUrl).then(() => {
+                            RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
+                                API.updateFiles().then(() => {console.log('Update Success!')})
+                            })
                         })
                     }
                 })
             } else {
-                RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
-                    API.updateFiles().then(() => {console.log('Update Success!')})
+                RNFetchBlob.fs.unlink(resourceUrl).then(() => {
+                    RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
+                        API.updateFiles().then(() => {console.log('Update Success!')})
+                    })
                 })
             }
         })

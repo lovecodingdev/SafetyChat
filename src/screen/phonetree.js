@@ -17,6 +17,7 @@ import Header from '../components/header'
 import API from "../components/api"
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData'
+import {ifIphoneX} from 'react-native-iphone-x-helper'
 
 export default class phonetree extends Component {
     constructor(props) {
@@ -120,7 +121,7 @@ export default class phonetree extends Component {
 
     renderRow = ({item}) => {
         var self = this
-        if(this.selfname != item) {
+        //if(this.selfname != item) {
             return (
                 <View style={styles.listItem}>
                     <TouchableOpacity onPress={self.chat.bind(self, item)}>
@@ -128,7 +129,7 @@ export default class phonetree extends Component {
                     </TouchableOpacity>
                 </View>
             )
-        }
+        //}
     }
           
     // async createNotificationListeners() {
@@ -154,7 +155,7 @@ export default class phonetree extends Component {
                         <View style={{width: 50,height: 50}}>
                             <Image source={Images.logo} style={{width: '100%', height: '100%'}}></Image>
                         </View>
-                        <Text style={styles.title}>Phone Tree</Text>
+                        <Text style={styles.title}>Safety Chat</Text>
                     </View>
                     <View>
                         <Text style={styles.title}>My Group</Text>
@@ -170,6 +171,7 @@ export default class phonetree extends Component {
                         <Text style={styles.title}>Users</Text>
 
                         <FlatList 
+                            style={{...ifIphoneX({height: responsiveHeight(100)-320}, {height: responsiveHeight(100)-300})}}
                             data={this.state.users}
                             renderItem={this.renderRow}
                             showsVerticalScrollIndicator={true}

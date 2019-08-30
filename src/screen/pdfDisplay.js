@@ -11,7 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import firebase from 'react-native-firebase'
 
 
-const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/" : "/storage/emulated/0/safetyDir/"
+const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir + "/safety/" : "/storage/emulated/0/safetyDir/"
 
 // const resources = {
 //   file: Platform.OS === 'ios' ? 'downloadedDocument.pdf' : '/storage/emulated/0/myData/1.pdf',
