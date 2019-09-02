@@ -121,7 +121,7 @@ export default class phonetree extends Component {
 
     renderRow = ({item}) => {
         var self = this
-        //if(this.selfname != item) {
+        if(this.selfname != item) {
             return (
                 <View style={styles.listItem}>
                     <TouchableOpacity onPress={self.chat.bind(self, item)}>
@@ -129,7 +129,7 @@ export default class phonetree extends Component {
                     </TouchableOpacity>
                 </View>
             )
-        //}
+        }
     }
           
     // async createNotificationListeners() {

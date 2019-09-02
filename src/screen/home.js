@@ -42,7 +42,6 @@ export default class home extends Component {
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             // Get information about the notification that was opened
-            //this.messageListener()
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname

@@ -14,17 +14,10 @@ import AppData from '../components/AppData';
 export default class splash extends Component {
 
     async componentDidMount() {
-        // const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
-        // .setDescription('My apps test channel');
-
-        // // Create the channel
-        // await firebase.notifications().android.createChannel(channel);
-
         //App closed  notification taps
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
             // App was opened by a notification
-            //messageListener()
             const notification = notificationOpen.notification
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
             this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
@@ -53,6 +46,7 @@ export default class splash extends Component {
     }
 
     componentWillUnmount() {
+
     }
 
     render() {

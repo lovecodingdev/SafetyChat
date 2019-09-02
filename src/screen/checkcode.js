@@ -62,7 +62,7 @@ export default class checkcode extends Component {
             } catch (error) {
                 console.log("error", error)
                 this.setState({loading: false})
-                alert("Your company code didn't work. Let's try again.")
+                alert("Confirm network connection.")
             }
         } else {
             alert("Please insert your company code");

@@ -77,7 +77,7 @@ export default class pdfDisplay extends React.Component {
       )
 
       var title = this.props.navigation.getParam('title')
-      var url = Platform.OS === 'ios' ? title : resourceUrl + title
+      var url = Platform.OS === 'ios' ? 'safety/'+title : resourceUrl + title
       this.setState({url: url})
         
     }

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">SafefyApp</string>
+    <string name="app_name">MySP</string>
     <string name="default_notification_channel_id" translatable="false">Miscellaneous</string>
 </resources>
