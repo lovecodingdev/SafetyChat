@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: '#fff',
         fontWeight: "bold",
-        fontSize: 30,
+        fontSize: responsiveWidth(7),
     },
     img: {
         width: responsiveWidth(40)-20,

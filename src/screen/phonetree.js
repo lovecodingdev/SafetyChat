@@ -38,10 +38,13 @@ export default class phonetree extends Component {
         this.selfname = await AppData.getItem('username')
         this.role = await AppData.getItem('role')
         firebase.database().ref(this.companycode+'/users').once('value', function(snapshot) {
-            var users = []
+            var users = Array()
             snapshot.forEach(function(item) {
                 users.push(item.key)
+                //var user = item.key
+                //users.push(user.charAt(0).toUpperCase() + user.slice(1))
             })
+            users.sort()
             self.setState({users})
         })
 
@@ -171,7 +174,7 @@ export default class phonetree extends Component {
                         <Text style={styles.title}>Users</Text>
 
                         <FlatList 
-                            style={{...ifIphoneX({height: responsiveHeight(100)-320}, {height: responsiveHeight(100)-300})}}
+                            style={{...ifIphoneX({height: responsiveHeight(100)-285}, {height: responsiveHeight(100)-265})}}
                             data={this.state.users}
                             renderItem={this.renderRow}
                             showsVerticalScrollIndicator={true}

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         color: '#fff',
-        fontSize: 18,
+        fontSize: responsiveHeight(2.5),
     },
     img: {
         width: responsiveWidth(40)-30,

@@ -1,7 +1,7 @@
 import Colors from './colors'
 import Images from './images'
 import Title from './title'
-import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions'
 
 const FontSizes = {
     small: responsiveHeight(1.4), //14
