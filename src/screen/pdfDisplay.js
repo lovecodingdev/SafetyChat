@@ -38,13 +38,15 @@ export default class pdfDisplay extends React.Component {
 
     componentDidMount() {
       var self =this
-      var messageListener
+      var messageListenerPDF = function() {
+        console.log('message temp')
+      }
 
       //when screen focused, message listener starting
       this.didFocusSubscription = this.props.navigation.addListener(
           'willFocus',
           payload => {
-              messageListener = firebase.messaging().onMessage((message) => {
+              messageListenerPDF = firebase.messaging().onMessage((message) => {
                   Alert.alert(
                       'Notification',
                       'Message from '+message._data.fromname,
@@ -72,7 +74,7 @@ export default class pdfDisplay extends React.Component {
       this.willBlurSubscription = this.props.navigation.addListener(
           'willBlur',
           payload => {
-              messageListener()
+              messageListenerPDF()
           }
       )
 
@@ -95,6 +97,6 @@ export default class pdfDisplay extends React.Component {
           onError={(error) => console.log('Cannot render PDF', error)}
         />
       </View>
-    );
+    )
   }
 }

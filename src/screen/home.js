@@ -140,16 +140,20 @@ export default class home extends Component {
                         console.log("Correct Sync!", localMD5)
                     } else {
                         RNFetchBlob.fs.unlink(resourceUrl).then(() => {
-                            RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
-                                API.updateFiles().then(() => {console.log('Update Success!')})
+                            RNFetchBlob.fs.mkdir(resourceUrl).then(() =>{
+                                RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
+                                    API.updateFiles().then(() => {console.log('Update Success!')})
+                                })
                             })
                         })
                     }
                 })
             } else {
                 RNFetchBlob.fs.unlink(resourceUrl).then(() => {
-                    RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
-                        API.updateFiles().then(() => {console.log('Update Success!')})
+                    RNFetchBlob.fs.mkdir(resourceUrl).then(() => {
+                        RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
+                            API.updateFiles().then(() => {console.log('Update Success!')})
+                        })
                     })
                 })
             }
