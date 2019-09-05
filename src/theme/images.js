@@ -4,6 +4,8 @@ const images = {
     firstaid: require("../images/firstaid.png"),
     maps: require("../images/maps.png"),
     myroster: require("../images/myroster.png"),
+    generalInfo: require("../images/generalInfo.png"),
+    safetychat: require("../images/safetyChat.png"),
     phonetree: require("../images/phonetree.png"),
     back: require("../images/back.png"),
     home: require("../images/home.png"),
