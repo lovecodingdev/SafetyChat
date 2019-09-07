@@ -109,24 +109,26 @@ export default class chat extends Component {
                         console.log("----------------------receiving message----------------------", respond)
                         
                     } else {
-                        Alert.alert(
-                            'Notification',
-                            'Message from '+message._data.fromname,
-                            [
-                                {text: 'View', onPress: () => {
-                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                        this.toname = name
-                                        this.initChat()
-                                    }
+                        if(JSON.parse(message._data.data).user.name != selfname) {
+                            Alert.alert(
+                                'Notification',
+                                'Message from '+message._data.fromname,
+                                [
+                                    {text: 'View', onPress: () => {
+                                            message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                            this.toname = name
+                                            this.initChat()
+                                        }
+                                    },
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
                                 },
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log('Cancel Pressed'),
-                                style: 'cancel',
-                            },
-                            ],
-                            {cancelable: false},
-                        )
+                                ],
+                                {cancelable: false},
+                            )
+                        }
                     }
             }
         })
@@ -159,24 +161,26 @@ export default class chat extends Component {
                                 console.log("----------------------receiving message----------------------", respond)
                                 
                             } else {
-                                Alert.alert(
-                                    'Notification',
-                                    'Message from '+message._data.fromname,
-                                    [
-                                        {text: 'View', onPress: () => {
-                                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                                this.toname = name
-                                                this.initChat()
-                                            }
+                                if(JSON.parse(message._data.data).user.name != selfname) {
+                                    Alert.alert(
+                                        'Notification',
+                                        'Message from '+message._data.fromname,
+                                        [
+                                            {text: 'View', onPress: () => {
+                                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                                    this.toname = name
+                                                    this.initChat()
+                                                }
+                                            },
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
                                         },
-                                    {
-                                        text: 'Cancel',
-                                        onPress: () => console.log('Cancel Pressed'),
-                                        style: 'cancel',
-                                    },
-                                    ],
-                                    {cancelable: false},
-                                )
+                                        ],
+                                        {cancelable: false},
+                                    )
+                                }
                             }
                     }
                 })

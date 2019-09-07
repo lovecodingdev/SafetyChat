@@ -50,25 +50,27 @@ export default class phonetree extends Component {
 
         //message receive process
         var messageListener = firebase.messaging().onMessage((message) => {
-            Alert.alert(
-                'Notification',
-                'Message from '+message._data.fromname,
-                [
-                    {
-                        text: 'View', onPress: () => {
-                            var name = ''
-                            message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                            self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                        }
-                    },
-                    {
-                        text: 'Cancel',
-                        onPress: () => console.log(self.props.navigation.state.routeName),
-                        style: 'cancel',
-                    },
-                ],
-                {cancelable: false},
-            )
+            if(JSON.parse(message._data.data).user.name != self.selfname) {
+                Alert.alert(
+                    'Notification',
+                    'Message from '+message._data.fromname,
+                    [
+                        {
+                            text: 'View', onPress: () => {
+                                var name = ''
+                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                            }
+                        },
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log(self.props.navigation.state.routeName),
+                            style: 'cancel',
+                        },
+                    ],
+                    {cancelable: false},
+                )
+            }
         })
 
         //when screen focused, message listener starting
@@ -76,25 +78,27 @@ export default class phonetree extends Component {
             'willFocus',
             (payload) => {
                 messageListener = firebase.messaging().onMessage((message) => {
-                    Alert.alert(
-                        'Notification',
-                        'Message from '+message._data.fromname,
-                        [
-                            {
-                                text: 'View', onPress: () => {
-                                    var name = ''
-                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                    self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                                }
-                            },
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log(self.props.navigation.state.routeName),
-                                style: 'cancel',
-                            },
-                        ],
-                        {cancelable: false},
-                    )
+                    if(JSON.parse(message._data.data).user.name != self.selfname) {
+                        Alert.alert(
+                            'Notification',
+                            'Message from '+message._data.fromname,
+                            [
+                                {
+                                    text: 'View', onPress: () => {
+                                        var name = ''
+                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                        self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                    }
+                                },
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log(self.props.navigation.state.routeName),
+                                    style: 'cancel',
+                                },
+                            ],
+                            {cancelable: false},
+                        )
+                    }
                 })
             }
         )
@@ -174,7 +178,7 @@ export default class phonetree extends Component {
                         <Text style={styles.title}>Users</Text>
 
                         <FlatList 
-                            style={{...ifIphoneX({height: responsiveHeight(100)-285}, {height: responsiveHeight(100)-265})}}
+                            style={{...ifIphoneX({height: responsiveHeight(100)-310}, {height: responsiveHeight(100)-290})}}
                             data={this.state.users}
                             renderItem={this.renderRow}
                             showsVerticalScrollIndicator={true}

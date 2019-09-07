@@ -9,7 +9,7 @@ export default class Header extends Component {
     logout() {
         Alert.alert(
             'Logout',
-            'Do you really logout?',
+            'Do you really want to logout?',
             [
                 {
                     text: 'Ok', onPress: () => {

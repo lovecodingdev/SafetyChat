@@ -52,7 +52,7 @@ export default class splash extends Component {
             //} else {
             this.props.navigation.replace(screen.toString())
             //}
-        }, 2000)
+        }, 3000)
     }
 
     componentWillUnmount() {
@@ -63,7 +63,7 @@ export default class splash extends Component {
         return (
             <Container style={styles.container}>
                 <ImageBackground source={Images.bg}  style={styles.image}>
-                    <Image source={Images.logo} style={{width: responsiveWidth(80), height: 200, flex: 0.7}}></Image>
+                    <Image source={Images.logo} style={{width: responsiveWidth(100), height: responsiveWidth(80)}}></Image>
                 </ImageBackground>
                 
             </Container>

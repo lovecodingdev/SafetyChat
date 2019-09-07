@@ -17,6 +17,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
+import AppData from '../components/AppData'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -38,6 +39,7 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
+        var selfname = await AppData.getItem('username')
         var self = this
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
@@ -59,54 +61,59 @@ export default class home extends Component {
         // }
 
         //message receive process
-        var messageListener
-        // var messageListener = firebase.messaging().onMessage((message) => {
-        //     Alert.alert(
-        //         'Notification-home-init',
-        //         'Message from '+message._data.fromname,
-        //         [
-        //             {
-        //                 text: 'View', onPress: () => {
-        //                     var name = ''
-        //                     message._data.group == '1' ? name = '123group' : name = message._data.fromname
-        //                     self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-        //                 }
-        //             },
-        //             {
-        //                 text: 'Cancel',
-        //                 onPress: () => console.log(self.props.navigation.state.routeName),
-        //                 style: 'cancel',
-        //             },
-        //         ],
-        //         {cancelable: false},
-        //     )
-        // })
-
+        //var messageListener
+        var messageListener = firebase.messaging().onMessage((message) => {
+            if(JSON.parse(message._data.data).user.name != selfname) {
+                Alert.alert(
+                    'Notification',
+                    'Message from '+message._data.fromname,
+                    [
+                        {
+                            text: 'View', onPress: () => {
+                                var name = ''
+                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                            }
+                        },
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log(self.props.navigation.state.routeName),
+                            style: 'cancel',
+                        },
+                    ],
+                    {cancelable: false},
+                )
+            }
+        })
+        
         //when screen focused, message listener starting
         this.didFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 messageListener = firebase.messaging().onMessage((message) => {
-                    Alert.alert(
-                        'Notification',
-                        'Message from '+message._data.fromname,
-                        [
-                            {
-                                text: 'View', onPress: () => {
-                                    var name = ''
-                                    message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                    self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                                }
-                            },
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log(self.props.navigation.state.routeName),
-                                style: 'cancel',
-                            },
-                        ],
-                        {cancelable: false},
-                    )
+                    if(JSON.parse(message._data.data).user.name != selfname) {
+                        Alert.alert(
+                            'Notification',
+                            'Message from '+message._data.fromname,
+                            [
+                                {
+                                    text: 'View', onPress: () => {
+                                        var name = ''
+                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
+                                        self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+                                    }
+                                },
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log(self.props.navigation.state.routeName),
+                                    style: 'cancel',
+                                },
+                            ],
+                            {cancelable: false},
+                        )
+                    }
                 })
+                
             }
         )
 
