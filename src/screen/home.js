@@ -36,10 +36,20 @@ export default class home extends Component {
         this.didFocusSubscription.remove()
         this.willBlurSubscription.remove()
         this.removeNotificationOpenedListener()
+        this.onTokenRefreshListener()
     }
 
     async componentDidMount() {
+        let companycode = await AppData.getItem('Companycode')
         var selfname = await AppData.getItem('username')
+        //token refresh
+        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+            // Process your token as required
+            firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(fcmToken).then(() => {
+                //alert(fcmToken)
+                console.log('token refresh')
+            })
+        })
         var self = this
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {

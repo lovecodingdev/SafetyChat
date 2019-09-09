@@ -26,15 +26,6 @@ export default class login extends Component {
     }
 
     async componentDidMount() {
-        let companycode = await AppData.getItem('Companycode')
-        //token refresh
-        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
-            // Process your token as required
-            firebase.database().ref().child(companycode+'/users/'+this.state.name+'/token').set(fcmToken).then(() => {
-                //alert(fcmToken)
-                console.log('token refresh')
-            })
-        })
         var token = await AppData.getItem('token')
         console.log(token)
         if(token != null) {
@@ -43,7 +34,7 @@ export default class login extends Component {
     }
 
     componentWillUnmount() {
-        this.onTokenRefreshListener()
+        
     }
 
     async onLogin() {
