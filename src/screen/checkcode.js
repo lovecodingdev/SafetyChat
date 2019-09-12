@@ -56,13 +56,13 @@ export default class checkcode extends Component {
                 }
                 else {
                     console.log('This is not a valid code')
-                    alert("Your company code didn't work. Let's try again.")
+                    alert("That company code didn't work. Let's try again.")
                 }
                 
             } catch (error) {
                 console.log("error", error)
                 this.setState({loading: false})
-                alert("Confirm network connection.")
+                alert("That company code didn't work. Let's try again.")
             }
         } else {
             alert("Please insert your company code");

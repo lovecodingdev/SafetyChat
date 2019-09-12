@@ -14,7 +14,7 @@ import AppData from '../components/AppData';
 export default class splash extends Component {
 
     async componentDidMount() {
-        
+        firebase.notifications().setBadge(0)
         //App closed  notification taps
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
