@@ -19,8 +19,10 @@ export default class login extends Component {
     constructor(props){
         super(props)
         this.state = {
-            name: 'xaolin',
-            password: 'PJ9VfHoye##3tdCg',
+            // name: 'xaolin',
+            // password: 'PJ9VfHoye##3tdCg',
+            name: '',
+            password: '',
             loading: false,
         }
     }
@@ -38,50 +40,54 @@ export default class login extends Component {
     }
 
     async onLogin() {
-        //firebase messaging permission check and get token
-        let enabled = await firebase.messaging().hasPermission()
-        if(!enabled) await firebase.messaging().requestPermission()
-        let token = await firebase.messaging().getToken()
-        console.log("firebase token", token)
+        if(this.state.name != '' && this.state.password != '') {
+            //firebase messaging permission check and get token
+            let enabled = await firebase.messaging().hasPermission()
+            if(!enabled) await firebase.messaging().requestPermission()
+            let token = await firebase.messaging().getToken()
+            console.log("firebase token", token)
 
-        let companycode = await AppData.getItem('Companycode')
-        
-        console.log('companycode', companycode)
-        this.setState({loading: true})
-        let res = await API.login(this.state.name,this.state.password)
-        console.log(res)
-        let role = await AppData.getItem('role')
-        this.setState({loading: false})
-        //firebase user register with token
-        if(res) {
-            firebase.database().ref().child(companycode+'/users/'+this.state.name).set({token: token, role: role}).then(() => {
-                this.props.navigation.replace('HomeScreen')
-            })
+            let companycode = await AppData.getItem('Companycode')
+            
+            console.log('companycode', companycode)
+            this.setState({loading: true})
+            let res = await API.login(this.state.name,this.state.password)
+            console.log(res)
+            let role = await AppData.getItem('role')
+            this.setState({loading: false})
+            //firebase user register with token
+            if(res) {
+                firebase.database().ref().child(companycode+'/users/'+this.state.name).set({token: token, role: role}).then(() => {
+                    this.props.navigation.replace('HomeScreen')
+                })
+            } else {
+                alert('Enter name and password correctly.')
+            }
         } else {
             alert('Enter name and password correctly.')
         }
     }
         
-    set() {
-        this.setState({
-            name: 'testone',
-            password: 'pTaftZpxlsUvnicyOfneL^7s'
-        })
-    }
+    // set() {
+    //     this.setState({
+    //         name: 'testone',
+    //         password: 'pTaftZpxlsUvnicyOfneL^7s'
+    //     })
+    // }
 
-    set1() {
-        this.setState({
-            name: 'zheng',
-            password: '*(o#f^7AfaA4Kl$ltb)hMY5T'
-        })
-    }
+    // set1() {
+    //     this.setState({
+    //         name: 'zheng',
+    //         password: '*(o#f^7AfaA4Kl$ltb)hMY5T'
+    //     })
+    // }
 
-    set2() {
-        this.setState({
-            name: 'Qing',
-            password: '5r^tc9*IitHvanU^MUNB%Q)T'
-        })
-    }
+    // set2() {
+    //     this.setState({
+    //         name: 'Qing',
+    //         password: '5r^tc9*IitHvanU^MUNB%Q)T'
+    //     })
+    // }
     render() {
         return (
             <Container style={styles.container}>
@@ -94,9 +100,9 @@ export default class login extends Component {
                         <Label style={{color: '#fff', marginTop: 10}}>Password</Label>
                         <TextInput style={{marginTop: 10, marginBottom:30, borderWidth: 1, borderRadius: 5, borderColor:'#fff', color: '#fff', height: 35 }} secureTextEntry={true} value={this.state.password} onChangeText={text=>this.setState({password: text})}/>
                         <Button block primary onPress={this.onLogin.bind(this)}><Text>LogIn</Text></Button>
-                        <Button block primary onPress={this.set.bind(this)}><Text>Set</Text></Button>
+                        {/* <Button block primary onPress={this.set.bind(this)}><Text>Set</Text></Button>
                         <Button block primary onPress={this.set1.bind(this)}><Text>Set1</Text></Button>
-                        <Button block primary onPress={this.set2.bind(this)}><Text>Set2</Text></Button>
+                        <Button block primary onPress={this.set2.bind(this)}><Text>Set2</Text></Button> */}
 
                     </View>
                     <Spinner
