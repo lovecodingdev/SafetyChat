@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   Alert,
+  AppState,
   } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -29,6 +30,7 @@ export default class home extends Component {
             maps: '',
             firstaid: '',
             loading: true,
+            appState: AppState.currentState,
         }
     }
 
@@ -36,10 +38,13 @@ export default class home extends Component {
         this.didFocusSubscription.remove()
         this.willBlurSubscription.remove()
         this.removeNotificationOpenedListener()
+        AppState.removeEventListener('change', this._handleAppStateChange)
         //this.onTokenRefreshListener()
     }
 
     async componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange)
+        firebase.notifications().removeAllDeliveredNotifications()
         
         let companycode = await AppData.getItem('Companycode')
         var selfname = await AppData.getItem('username')
@@ -206,6 +211,17 @@ export default class home extends Component {
         
     }
     
+    _handleAppStateChange = (nextAppState) => {
+        if (
+            this.state.appState.match(/inactive|background/) &&
+            nextAppState === 'active'
+        ) {
+            console.log('App has come to the foreground!')
+            firebase.notifications().removeAllDeliveredNotifications()
+        }
+        this.setState({appState: nextAppState})
+    }
+
     subPage(text) {
         this.props.navigation.navigate('SubPageScreen', {'aspect': text})
     }
