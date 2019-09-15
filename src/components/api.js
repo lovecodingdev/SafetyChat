@@ -48,8 +48,9 @@ async function login(name, password) {
             })
         });
         let responseJson = await response.json() 
-        console.log("-------------------roles-----------------------", responseJson.user.roles[0])
+        // console.log("-------------------roles-----------------------", responseJson.user.roles[0])
         if(responseJson.token != null) {
+            console.log("adflaksdjf");
             AppData.setItem('username', name)
             AppData.setItem('password', password)
             AppData.setItem('token', responseJson.token)
@@ -60,7 +61,7 @@ async function login(name, password) {
         }
     } catch (error) {
         console.log("error", error)
-        alert(error)
+        return false
     }
 }
 

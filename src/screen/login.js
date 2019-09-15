@@ -53,14 +53,15 @@ export default class login extends Component {
             this.setState({loading: true})
             let res = await API.login(this.state.name,this.state.password)
             console.log(res)
-            let role = await AppData.getItem('role')
             this.setState({loading: false})
             //firebase user register with token
-            if(res) {
+            if(res == true) {
+                let role = await AppData.getItem('role')
                 firebase.database().ref().child(companycode+'/users/'+this.state.name).set({token: token, role: role}).then(() => {
                     this.props.navigation.replace('HomeScreen')
                 })
             } else {
+                this.setState({name: '', password: ''});
                 alert('Enter name and password correctly.')
             }
         } else {
