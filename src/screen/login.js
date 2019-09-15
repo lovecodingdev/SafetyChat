@@ -61,8 +61,7 @@ export default class login extends Component {
                     this.props.navigation.replace('HomeScreen')
                 })
             } else {
-                this.setState({name: '', password: ''});
-                alert('Enter name and password correctly.')
+                alert('Enter name and password correctly.');
             }
         } else {
             alert('Enter name and password correctly.')
