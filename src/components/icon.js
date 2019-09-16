@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     view: {
         width: responsiveWidth(40) - 30,
-        height: responsiveHeight(5) + 10,
+        height: responsiveHeight(5) + 20,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         color: '#fff',
-        fontSize: responsiveHeight(2.5),
+        fontSize: responsiveHeight(2),
     },
     img: {
         width: responsiveWidth(40)-30,
