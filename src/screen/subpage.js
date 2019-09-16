@@ -22,6 +22,7 @@ export default class subpage extends Component {
         super(props)
         this.state ={
             file: [{}],
+            isFetching: false
         }
     }
 
@@ -70,7 +71,12 @@ export default class subpage extends Component {
             }
         )
 
-        var aspect = this.props.navigation.getParam('aspect')
+        this.getFiles()
+    }
+
+    async getFiles() {
+        let self = this
+        var aspect = self.props.navigation.getParam('aspect')
 
         var temp = await RNFetchBlob.fs.ls(resourceUrl)
         var filelist = []
@@ -90,12 +96,16 @@ export default class subpage extends Component {
                     return imgUrl
                 }).then((img) => {
                     filelist.push({'pdf': item, 'img': img, 'title': ttt.toUpperCase()})
-                    this.setState({file: filelist})
+                    self.setState({file: filelist})
                     console.log(this.state.file)
                 })
             }
                 
         })
+    }
+
+    async onRefresh() {
+        this.setState({ isFetching: true }, function() { this.getFiles() });
     }
 
     onPdf(text) {
@@ -112,6 +122,8 @@ export default class subpage extends Component {
                         data = {this.state.file}
                         horizontal = {false}
                         showsVerticalScrollIndicator={false}
+                        onRefresh={() => this.onRefresh()}
+                        refreshing={this.state.isFetching}
                         numColumns = {2}
                         renderItem={({item}) =>
                             <Icon img={item['img']} onPress={this.onPdf.bind(this, item['pdf'])} title={item['title']}></Icon>
@@ -140,5 +152,5 @@ const styles = StyleSheet.create({
         width: responsiveWidth(50)-15,
         height: responsiveHeight(25),
         resizeMode: "stretch"
-    },
+    }
 });
