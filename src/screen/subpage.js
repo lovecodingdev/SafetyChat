@@ -87,7 +87,8 @@ export default class subpage extends Component {
                 RNFetchBlob.fs.exists(resourceUrl+imgName).then(exist => {
                     var imgUrl = ''
                     if(exist) {
-                        imgUrl = {'uri': resourceUrl + imgName}
+                        var tempUrl = Platform.OS === 'ios' ? resourceUrl : 'file:///'+resourceUrl
+                        imgUrl = {'uri': tempUrl + imgName}
                     } else if(Images[ttt] > 0){
                         imgUrl = Images[ttt]
                     } else {
