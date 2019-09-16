@@ -97,12 +97,13 @@ export default class subpage extends Component {
                     return imgUrl
                 }).then((img) => {
                     filelist.push({'pdf': item, 'img': img, 'title': ttt.toUpperCase()})
-                    self.setState({file: filelist})
+                    self.setState({file: filelist, isFetching: false})
                     console.log(this.state.file)
                 })
             }
                 
         })
+        
     }
 
     async onRefresh() {
