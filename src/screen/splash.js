@@ -17,13 +17,13 @@ export default class splash extends Component {
         
         //firebase.notifications().setBadge(0)
         //App closed  notification taps
-        const notificationOpen = await firebase.notifications().getInitialNotification()
-        if (notificationOpen) {
-            // App was opened by a notification
-            const notification = notificationOpen.notification
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        }
+        // const notificationOpen = await firebase.notifications().getInitialNotification()
+        // if (notificationOpen) {
+        //     // App was opened by a notification
+        //     const notification = notificationOpen.notification
+        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+        //     this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        // }
 
         //token refresh
         // this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {

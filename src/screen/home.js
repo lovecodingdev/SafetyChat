@@ -43,6 +43,17 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
+        const notificationOpen = await firebase.notifications().getInitialNotification()
+        if (notificationOpen) {
+            // App was opened by a notification
+            const notification = notificationOpen.notification
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            setTimeout(() => {
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            }, 1000)
+            
+        }
+
         AppState.addEventListener('change', this._handleAppStateChange)
         firebase.notifications().removeAllDeliveredNotifications()
         
@@ -72,7 +83,9 @@ export default class home extends Component {
             const notification = notificationOpen.notification
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            setTimeout(() => {
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            }, 1000)
         })
 
         // //App closed  notification taps
@@ -88,7 +101,7 @@ export default class home extends Component {
         //message receive process
         //var messageListener
         var messageListener = firebase.messaging().onMessage((message) => {
-            if(JSON.parse(message._data.data).user.name != selfname && selfname != null && selfname != '' && selfname != undefined) {
+            if(JSON.parse(message._data.data).user.name != selfname) {
                 Alert.alert(
                     'Notification',
                     'Message from '+message._data.fromname,
