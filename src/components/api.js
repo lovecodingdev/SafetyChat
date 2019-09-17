@@ -51,10 +51,10 @@ async function login(name, password) {
         // console.log("-------------------roles-----------------------", responseJson.user.roles[0])
         if(responseJson.token != null) {
             console.log("adflaksdjf");
-            AppData.setItem('username', name)
-            AppData.setItem('password', password)
-            AppData.setItem('token', responseJson.token)
-            AppData.setItem('role', responseJson.user.roles[0])
+            await AppData.setItem('username', name)
+            await AppData.setItem('password', password)
+            await AppData.setItem('token', responseJson.token)
+            await AppData.setItem('role', responseJson.user.roles[0])
             return true
         } else {
             return false

@@ -4,6 +4,7 @@ import {
   ImageBackground,
   View,
   TextInput,
+  Alert,
 } from 'react-native'
 
 import { Container, Content, Button, Icon, Form, Item, Label, Input, Text, Footer} from 'native-base'
@@ -61,10 +62,10 @@ export default class login extends Component {
                     this.props.navigation.replace('HomeScreen')
                 })
             } else {
-                alert('Enter name and password correctly.');
+                Alert.alert('Enter name and password correctly.');
             }
         } else {
-            alert('Enter name and password correctly.')
+            Alert.alert('Enter name and password correctly.')
         }
     }
         

@@ -88,7 +88,7 @@ export default class home extends Component {
         //message receive process
         //var messageListener
         var messageListener = firebase.messaging().onMessage((message) => {
-            if(JSON.parse(message._data.data).user.name != selfname) {
+            if(JSON.parse(message._data.data).user.name != selfname && selfname != null && selfname != '' && selfname != undefined) {
                 Alert.alert(
                     'Notification',
                     'Message from '+message._data.fromname,
