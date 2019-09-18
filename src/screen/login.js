@@ -41,19 +41,17 @@ export default class login extends Component {
     }
 
     async onLogin() {
+        let self = this;
         if(this.state.name != '' && this.state.password != '') {
             //firebase messaging permission check and get token
             let enabled = await firebase.messaging().hasPermission()
             if(!enabled) await firebase.messaging().requestPermission()
             let token = await firebase.messaging().getToken()
-            console.log("firebase token", token)
 
             let companycode = await AppData.getItem('Companycode')
             
-            console.log('companycode', companycode)
             this.setState({loading: true})
-            let res = await API.login(this.state.name,this.state.password)
-            console.log(res)
+            let res = await API.login(this.state.name, this.state.password)
             this.setState({loading: false})
             //firebase user register with token
             if(res == true) {
@@ -62,11 +60,17 @@ export default class login extends Component {
                     this.props.navigation.replace('HomeScreen')
                 })
             } else {
-                Alert.alert('Enter name and password correctly.')
+                setTimeout(()=>{
+                    self.setError();
+                }, 200)
             }
         } else {
-            Alert.alert('Enter name and password correctly.')
+            this.setError();
         }
+    }
+
+    setError() {
+        Alert.alert('Enter name and password correctly.')
     }
         
     // set() {

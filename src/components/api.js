@@ -5,7 +5,7 @@ import Base64 from 'Base64'
 import RNFetchBlob from 'rn-fetch-blob'
 import { file } from '@babel/types';
 import { Item } from 'native-base';
-import {Platform} from 'react-native'
+import {Platform, Alert} from 'react-native'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -50,7 +50,6 @@ async function login(name, password) {
         let responseJson = await response.json() 
         // console.log("-------------------roles-----------------------", responseJson.user.roles[0])
         if(responseJson.token != null) {
-            console.log("adflaksdjf");
             await AppData.setItem('username', name)
             await AppData.setItem('password', password)
             await AppData.setItem('token', responseJson.token)
@@ -60,7 +59,6 @@ async function login(name, password) {
             return false
         }
     } catch (error) {
-        console.log("error", error)
         return false
     }
 }
