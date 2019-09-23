@@ -22,17 +22,27 @@ export default class login extends Component {
         this.state = {
             // name: 'xaolin',
             // password: 'PJ9VfHoye##3tdCg',
+            // password: 'MdeB9*fwX8%PA5*WT2g99pVq',
             name: '',
             password: '',
             loading: false,
+            token: ''
         }
     }
 
     async componentDidMount() {
+        let enabled = await firebase.messaging().hasPermission()
+        if(!enabled) await firebase.messaging().requestPermission()
         var token = await AppData.getItem('token')
         console.log(token)
-        if(token != null) {
+        if(token != null && token != '') {
             this.props.navigation.replace('HomeScreen')
+            return
+        }
+
+        let fcm_token = await firebase.messaging().getToken()
+        if (fcm_token != null) {
+            this.setState({token: fcm_token});
         }
     }
 
@@ -42,23 +52,23 @@ export default class login extends Component {
 
     async onLogin() {
         let self = this;
-        if(this.state.name != '' && this.state.password != '') {
-            //firebase messaging permission check and get token
-            let enabled = await firebase.messaging().hasPermission()
-            if(!enabled) await firebase.messaging().requestPermission()
-            let token = await firebase.messaging().getToken()
-
+        let {token, name, password} = this.state;
+        if(name != '' && password != '') {
             let companycode = await AppData.getItem('Companycode')
             
             this.setState({loading: true})
-            let res = await API.login(this.state.name, this.state.password)
+            let res = await API.login(name, password)
             this.setState({loading: false})
             //firebase user register with token
             if(res == true) {
                 let role = await AppData.getItem('role')
-                firebase.database().ref().child(companycode+'/users/'+this.state.name).set({token: token, role: role}).then(() => {
-                    this.props.navigation.replace('HomeScreen')
-                })
+                if (token != null && token != '') {
+                    firebase.database().ref().child(companycode+'/users/'+name).set({token: token, role: role})
+                }
+                this.props.navigation.replace('HomeScreen')
+                // firebase.database().ref().child(companycode+'/users/'+name).set({token: token, role: role}).then(() => {
+                //     this.props.navigation.replace('HomeScreen')
+                // })
             } else {
                 setTimeout(()=>{
                     self.setError();
