@@ -34,6 +34,7 @@ async function getUrl() {
 }
 
 async function login(name, password) {
+    console.log("*****login*********")
     var url = await getUrl() + "wp-json/aam/v1/authenticate"
     try {
         let response = await fetch(url, {
@@ -48,7 +49,8 @@ async function login(name, password) {
             })
         });
         let responseJson = await response.json() 
-        // console.log("-------------------roles-----------------------", responseJson.user.roles[0])
+        
+        console.log("-------------------roles-----------------------", responseJson.user)
         if(responseJson.token != null) {
             await AppData.setItem('username', name)
             await AppData.setItem('password', password)

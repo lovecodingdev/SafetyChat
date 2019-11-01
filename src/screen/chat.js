@@ -43,25 +43,36 @@ export default class chat extends Component {
         var self = this
         var selfname = this.state.selfname
         var messageList = []
+        var first_message = {
+            _id : "0001",
+            createdAt: new Date(),
+            text: "Hi",
+            user: {
+                _id: selfname,
+                name: selfname
+            }
+        }
         if(this.toname == '123group') {
             firebase.database().ref(this.companycode+'/groupMessages/'+this.role).once('value', function(snapshot) {
                 snapshot.forEach(function(keysnapshot) {
                     var message = keysnapshot.val()
-                    console.log(message)
                     messageList.push(message)
                 })
                 self.setState({messages: messageList.reverse()})
-                console.log(self.state.messages)
             })
         } else {
+            console.log("--------company code------------", this.companycode)
             firebase.database().ref(this.companycode+'/messages/'+selfname+'/'+this.toname).once('value', function(snapshot) {
-                snapshot.forEach(function(keysnapshot) {
-                    var message = keysnapshot.val()
-                    console.log(message)
-                    messageList.push(message)
-                })
-                self.setState({messages: messageList.reverse()})
-                console.log(self.state.messages)
+                if(snapshot.exists()){
+                    snapshot.forEach(function(keysnapshot) {
+                        var message = keysnapshot.val()
+                        messageList.push(message)
+                    })
+                    self.setState({messages: messageList.reverse()})
+                } else {
+                    firebase.database().ref(self.companycode+'/messages/'+selfname+'/'+self.toname).push(first_message)
+                    firebase.database().ref(self.companycode+'/messages/'+self.toname+'/'+selfname).push(first_message)
+                }
             })
         }
     }
@@ -195,10 +206,16 @@ export default class chat extends Component {
                 messageListener()
             }
         )
+
         
     }
 
     onSend(messages = []) {
+        
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, messages),
+        }))
+        
         if(this.toname == '123group') {
             var temp = messages
             temp[0].createdAt = new Date()

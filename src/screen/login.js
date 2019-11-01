@@ -33,6 +33,7 @@ export default class login extends Component {
     async componentDidMount() {
         let enabled = await firebase.messaging().hasPermission()
         if(!enabled) await firebase.messaging().requestPermission()
+        //backend token
         var token = await AppData.getItem('token')
         console.log(token)
         if(token != null && token != '') {
@@ -60,6 +61,7 @@ export default class login extends Component {
             let res = await API.login(name, password)
             this.setState({loading: false})
             //firebase user register with token
+            console.log(res);
             if(res == true) {
                 let role = await AppData.getItem('role')
                 if (token != null && token != '') {

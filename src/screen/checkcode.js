@@ -26,13 +26,6 @@ export default class checkcode extends Component {
         }
     }
 
-    // async setCode() {
-
-    //     if(this.state.text != '') {
-    //         await API.setCode(this.state.text)
-    //         this.props.navigation.navigate('LoginScreen')
-    //     }
-    // }
     async setCode() {
         if(this.state.text != '') {
             this.setState({loading: true})

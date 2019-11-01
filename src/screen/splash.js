@@ -10,6 +10,10 @@ import { responsiveWidth } from 'react-native-responsive-dimensions'
 import API from '../components/api'
 
 export default class splash extends Component {
+    constructor(props) {
+        super(props)
+        
+    }
 
     async componentDidMount() {
       
