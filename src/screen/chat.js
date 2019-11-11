@@ -29,7 +29,7 @@ export default class chat extends Component {
             selfname: ''
         }
 
-        this.initChat = this.initChat.bind(this)
+        //this.initChat = this.initChat.bind(this)
         this.onChat = this.onChat.bind(this)
     }
 
@@ -40,51 +40,58 @@ export default class chat extends Component {
         this.removeNotificationOpenedListener()
     }
 
-    initChat() {
-        var self = this
-        var selfname = this.state.selfname
-        var messageList = []
-        var first_message = {
-            _id : "0001",
-            createdAt: new Date(),
-            text: "Hi",
-            user: {
-                _id: selfname,
-                name: selfname
-            }
-        }
+    // initChat() {
+    //     var self = this
+    //     var selfname = this.state.selfname
+    //     var messageList = []
+    //     var first_message = {
+    //         _id : "0001",
+    //         createdAt: new Date(),
+    //         text: "Hi",
+    //         user: {
+    //             _id: selfname,
+    //             name: selfname
+    //         }
+    //     }
 
-        if(this.toname == '123group') {
-            firebase.database().ref(this.companycode+'/groupMessages/'+this.role).once('value', function(snapshot) {
-                snapshot.forEach(function(keysnapshot) {
-                    var message = keysnapshot.val()
-                    messageList.push(message)
-                })
-                self.setState({messages: messageList.reverse()})
-            })
-        } else {
-            console.log("--------company code------------", this.companycode)
-            firebase.database().ref(this.companycode+'/messages/'+selfname+'/'+this.toname).once('value', function(snapshot) {
-                //if(snapshot.exists()){
-                    snapshot.forEach(function(keysnapshot) {
-                        var message = keysnapshot.val()
-                        messageList.push(message)
-                    })
-                    self.setState({messages: messageList.reverse()})
-                //} else {
-                    //firebase.database().ref(self.companycode+'/messages/'+selfname+'/'+self.toname).push(first_message)
-                    //firebase.database().ref(self.companycode+'/messages/'+self.toname+'/'+selfname).push(first_message)
-                //}
-            })
-        }
+    //     if(this.toname == '123group') {
+    //         firebase.database().ref(this.companycode+'/groupMessages/'+this.role).once('value', function(snapshot) {
+    //             snapshot.forEach(function(keysnapshot) {
+    //                 var message = keysnapshot.val()
+    //                 messageList.push(message)
+    //             })
+    //             self.setState({messages: messageList.reverse()})
+    //         })
+    //     } else {
+    //         console.log("--------company code------------", this.companycode)
+    //         firebase.database().ref(this.companycode+'/messages/'+selfname+'/'+this.toname).once('value', function(snapshot) {
+    //             //if(snapshot.exists()){
+    //                 snapshot.forEach(function(keysnapshot) {
+    //                     var message = keysnapshot.val()
+    //                     messageList.push(message)
+    //                 })
+    //                 self.setState({messages: messageList.reverse()})
+    //             //} else {
+    //                 //firebase.database().ref(self.companycode+'/messages/'+selfname+'/'+self.toname).push(first_message)
+    //                 //firebase.database().ref(self.companycode+'/messages/'+self.toname+'/'+selfname).push(first_message)
+    //             //}
+    //         })
+    //     }
 
         
-    }
+    // }
 
     onChat() {
         firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname).on("child_added", (value) => {
-            var respond = [];
-            console.log("-------------msg add--------", value.val())
+            var respond = []
+            respond.push(value.val())
+            this.setState(previousState => ({
+                messages: GiftedChat.append(previousState.messages, respond)
+            }))
+        })
+
+        firebase.database().ref(this.companycode+'/groupMessages/'+this.role).on('child_added', (value) => {
+            var respond = []
             respond.push(value.val())
             this.setState(previousState => ({
                 messages: GiftedChat.append(previousState.messages, respond)
@@ -161,15 +168,6 @@ export default class chat extends Component {
             }
         })
 
-        // firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname).on("child_added", (value) => {
-        //     var respond = [];
-           
-        //     respond.push(value.val())
-        //     this.setState(previousState => ({
-        //         messages: GiftedChat.append(previousState.messages, respond)
-        //     }))
-        // })
-
         //when screen focused, message listener starting
         this.didFocusSubscription = this.props.navigation.addListener(
             'willFocus',
@@ -239,10 +237,6 @@ export default class chat extends Component {
     }
 
     onSend(messages = []) {
-        
-        // this.setState(previousState => ({
-        //     messages: GiftedChat.append(previousState.messages, messages),
-        // }))
         
         if(this.toname == '123group') {
             var temp = messages
