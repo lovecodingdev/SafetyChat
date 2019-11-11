@@ -30,6 +30,7 @@ export default class chat extends Component {
         }
 
         this.initChat = this.initChat.bind(this)
+        this.onChat = this.onChat.bind(this)
     }
 
     componentWillUnmount() {
@@ -52,6 +53,7 @@ export default class chat extends Component {
                 name: selfname
             }
         }
+
         if(this.toname == '123group') {
             firebase.database().ref(this.companycode+'/groupMessages/'+this.role).once('value', function(snapshot) {
                 snapshot.forEach(function(keysnapshot) {
@@ -63,18 +65,31 @@ export default class chat extends Component {
         } else {
             console.log("--------company code------------", this.companycode)
             firebase.database().ref(this.companycode+'/messages/'+selfname+'/'+this.toname).once('value', function(snapshot) {
-                if(snapshot.exists()){
+                //if(snapshot.exists()){
                     snapshot.forEach(function(keysnapshot) {
                         var message = keysnapshot.val()
                         messageList.push(message)
                     })
                     self.setState({messages: messageList.reverse()})
-                } else {
-                    firebase.database().ref(self.companycode+'/messages/'+selfname+'/'+self.toname).push(first_message)
-                    firebase.database().ref(self.companycode+'/messages/'+self.toname+'/'+selfname).push(first_message)
-                }
+                //} else {
+                    //firebase.database().ref(self.companycode+'/messages/'+selfname+'/'+self.toname).push(first_message)
+                    //firebase.database().ref(self.companycode+'/messages/'+self.toname+'/'+selfname).push(first_message)
+                //}
             })
         }
+
+        
+    }
+
+    onChat() {
+        firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname).on("child_added", (value) => {
+            var respond = [];
+            console.log("-------------msg add--------", value.val())
+            respond.push(value.val())
+            this.setState(previousState => ({
+                messages: GiftedChat.append(previousState.messages, respond)
+            }))
+        })
     }
 
     async componentDidMount() {
@@ -85,8 +100,9 @@ export default class chat extends Component {
             var name = ''
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
             this.toname = name
-            this.initChat()
-            //this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            this.setState({messages: []})
+            this.onChat()
+            this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
         })
 
         //message list init
@@ -95,7 +111,7 @@ export default class chat extends Component {
         this.role = await AppData.getItem('role')
         this.setState({selfname})
         this.toname = this.props.navigation.getParam('name')
-        this.initChat()
+        this.onChat()
 
         var messageListener = firebase.messaging().onMessage((message) => {
             var screenFocused = this.props.navigation.isFocused()
@@ -104,20 +120,20 @@ export default class chat extends Component {
                 console.log('----------------screen------------', this.props.navigation.state.routeName)
                     console.log('------------------receive---------------')
                     if(this.toname == '123group' && message._data.fromname == this.role) {
-                        var temp = JSON.parse(message._data.data)
-                        var respond = []
-                        respond.push(temp)
-                        this.setState(previousState => ({
-                            messages: GiftedChat.append(previousState.messages, respond),
-                        }))
+                        // var temp = JSON.parse(message._data.data)
+                        // var respond = []
+                        // respond.push(temp)
+                        // this.setState(previousState => ({
+                        //     messages: GiftedChat.append(previousState.messages, respond),
+                        // }))
                     } else if(message._data.fromname == this.toname) {
-                        var temp = JSON.parse(message._data.data)
-                        var respond = []
-                        respond.push(temp)
-                        this.setState(previousState => ({
-                            messages: GiftedChat.append(previousState.messages, respond),
-                        }))
-                        console.log("----------------------receiving message----------------------", respond)
+                        // var temp = JSON.parse(message._data.data)
+                        // var respond = []
+                        // respond.push(temp)
+                        // this.setState(previousState => ({
+                        //     messages: GiftedChat.append(previousState.messages, respond),
+                        // }))
+                        //console.log("----------------------receiving message----------------------", respond)
                         
                     } else {
                         if(JSON.parse(message._data.data).user.name != selfname) {
@@ -128,7 +144,8 @@ export default class chat extends Component {
                                     {text: 'View', onPress: () => {
                                             message._data.group == '1' ? name = '123group' : name = message._data.fromname
                                             this.toname = name
-                                            this.initChat()
+                                            this.setState({messages: []})
+                                            this.onChat()
                                         }
                                     },
                                 {
@@ -144,6 +161,15 @@ export default class chat extends Component {
             }
         })
 
+        // firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname).on("child_added", (value) => {
+        //     var respond = [];
+           
+        //     respond.push(value.val())
+        //     this.setState(previousState => ({
+        //         messages: GiftedChat.append(previousState.messages, respond)
+        //     }))
+        // })
+
         //when screen focused, message listener starting
         this.didFocusSubscription = this.props.navigation.addListener(
             'willFocus',
@@ -156,20 +182,20 @@ export default class chat extends Component {
                         //if(this.props.navigation.state.routeName == 'ChatScreen') {
                             console.log('------------------receive---------------')
                             if(this.toname == '123group' && message._data.fromname == this.role) {
-                                var temp = JSON.parse(message._data.data)
-                                var respond = []
-                                respond.push(temp)
-                                this.setState(previousState => ({
-                                    messages: GiftedChat.append(previousState.messages, respond),
-                                }))
+                                // var temp = JSON.parse(message._data.data)
+                                // var respond = []
+                                // respond.push(temp)
+                                // this.setState(previousState => ({
+                                //     messages: GiftedChat.append(previousState.messages, respond),
+                                // }))
                             } else if(message._data.fromname == this.toname) {
-                                var temp = JSON.parse(message._data.data)
-                                var respond = []
-                                respond.push(temp)
-                                this.setState(previousState => ({
-                                    messages: GiftedChat.append(previousState.messages, respond),
-                                }))
-                                console.log("----------------------receiving message----------------------", respond)
+                                // var temp = JSON.parse(message._data.data)
+                                // var respond = []
+                                // respond.push(temp)
+                                // this.setState(previousState => ({
+                                //     messages: GiftedChat.append(previousState.messages, respond),
+                                // }))
+                                //console.log("----------------------receiving message----------------------", respond)
                                 
                             } else {
                                 if(JSON.parse(message._data.data).user.name != selfname) {
@@ -177,11 +203,12 @@ export default class chat extends Component {
                                         'Notification',
                                         'Message from '+message._data.fromname,
                                         [
-                                            {
+                                            { 
                                                 text: 'View', onPress: () => {
                                                     message._data.group == '1' ? name = '123group' : name = message._data.fromname
                                                     this.toname = name
-                                                    this.initChat()
+                                                    this.setState({messages: []})
+                                                    this.onChat()
                                                 }
                                             },
                                             {
@@ -196,6 +223,7 @@ export default class chat extends Component {
                             }
                     }
                 })
+
             }
         )
 
@@ -212,9 +240,9 @@ export default class chat extends Component {
 
     onSend(messages = []) {
         
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        // this.setState(previousState => ({
+        //     messages: GiftedChat.append(previousState.messages, messages),
+        // }))
         
         if(this.toname == '123group') {
             var temp = messages
