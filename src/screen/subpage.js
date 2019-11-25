@@ -24,6 +24,7 @@ export default class subpage extends Component {
             file: [{}],
             isFetching: false
         }
+        global.mScreen = 'Subpage'
     }
 
     componentWillUnmount() {

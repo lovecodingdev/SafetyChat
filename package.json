@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
+    "android": "react-native run-android --no-jetifier",
+    "debug": "react-native log-android",
     "test": "jest",
     "lint": "eslint ."
   },

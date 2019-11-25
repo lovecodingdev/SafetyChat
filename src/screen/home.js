@@ -32,33 +32,35 @@ export default class home extends Component {
             loading: true,
             appState: AppState.currentState,
         }
+        global.mScreen = 'Home'
     }
 
-    componentWillUnmount() {
-        this.didFocusSubscription.remove()
-        this.willBlurSubscription.remove()
-        this.removeNotificationOpenedListener()
-        AppState.removeEventListener('change', this._handleAppStateChange)
-        //this.onTokenRefreshListener()
+    dataChanged() {
+        console.log('Data Changed', global.mScreen);
+    }
+
+    contextChanged() {
+        console.log('context chagned', 'data')
     }
 
     async componentDidMount() {
-        const notificationOpen = await firebase.notifications().getInitialNotification()
-        if (notificationOpen) {
-            // App was opened by a notification
-            const notification = notificationOpen.notification
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            setTimeout(() => {
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }, 1000)
+        // const notificationOpen = await firebase.notifications().getInitialNotification()
+        // if (notificationOpen) {
+        //     // App was opened by a notification
+        //     const notification = notificationOpen.notification
+        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+        //     setTimeout(() => {
+        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        //     }, 1000)
             
-        }
+        // }
 
-        AppState.addEventListener('change', this._handleAppStateChange)
-        firebase.notifications().removeAllDeliveredNotifications()
+        // AppState.addEventListener('change', this._handleAppStateChange)
+        // firebase.notifications().removeAllDeliveredNotifications()
         
         let companycode = await AppData.getItem('Companycode')
         var selfname = await AppData.getItem('username')
+
         try{
             let f_token = await firebase.messaging().getToken()
             firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(f_token).then(() => {
@@ -67,15 +69,9 @@ export default class home extends Component {
         }catch {
             console.log('connection error')
         }
-        //token refresh
-        // this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
-        //     // Process your token as required
-        //     firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(fcmToken).then(() => {
-        //         alert('selfname')
-        //         //alert(fcmToken)
-        //         console.log('token refresh')
-        //     })
-        // })
+
+        firebase.database().ref(companycode+'/messages/'+selfname).on('child_changed', this.dataChanged, this.contextChanged, this)
+  
         var self = this
         //App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
@@ -100,68 +96,68 @@ export default class home extends Component {
 
         //message receive process
         //var messageListener
-        var messageListener = firebase.messaging().onMessage((message) => {
-            if(JSON.parse(message._data.data).user.name != selfname) {
-                Alert.alert(
-                    'Notification',
-                    'Message from '+message._data.fromname,
-                    [
-                        {
-                            text: 'View', onPress: () => {
-                                var name = ''
-                                message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                            }
-                        },
-                        {
-                            text: 'Cancel',
-                            onPress: () => console.log(self.props.navigation.state.routeName),
-                            style: 'cancel',
-                        },
-                    ],
-                    {cancelable: false},
-                )
-            }
-        })
+        // var messageListener = firebase.messaging().onMessage((message) => {
+        //     if(JSON.parse(message._data.data).user.name != selfname) {
+        //         Alert.alert(
+        //             'Notification',
+        //             'Message from '+message._data.fromname,
+        //             [
+        //                 {
+        //                     text: 'View', onPress: () => {
+        //                         var name = ''
+        //                         message._data.group == '1' ? name = '123group' : name = message._data.fromname
+        //                         self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+        //                     }
+        //                 },
+        //                 {
+        //                     text: 'Cancel',
+        //                     onPress: () => console.log(self.props.navigation.state.routeName),
+        //                     style: 'cancel',
+        //                 },
+        //             ],
+        //             {cancelable: false},
+        //         )
+        //     }
+        // })
         
         //when screen focused, message listener starting
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                messageListener = firebase.messaging().onMessage((message) => {
-                    if(JSON.parse(message._data.data).user.name != selfname) {
-                        Alert.alert(
-                            'Notification',
-                            'Message from '+message._data.fromname,
-                            [
-                                {
-                                    text: 'View', onPress: () => {
-                                        var name = ''
-                                        message._data.group == '1' ? name = '123group' : name = message._data.fromname
-                                        self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-                                    }
-                                },
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log(self.props.navigation.state.routeName),
-                                    style: 'cancel',
-                                },
-                            ],
-                            {cancelable: false},
-                        )
-                    }
-                })
+        // this.didFocusSubscription = this.props.navigation.addListener(
+        //     'willFocus',
+        //     payload => {
+        //         messageListener = firebase.messaging().onMessage((message) => {
+        //             if(JSON.parse(message._data.data).user.name != selfname) {
+        //                 Alert.alert(
+        //                     'Notification',
+        //                     'Message from '+message._data.fromname,
+        //                     [
+        //                         {
+        //                             text: 'View', onPress: () => {
+        //                                 var name = ''
+        //                                 message._data.group == '1' ? name = '123group' : name = message._data.fromname
+        //                                 self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
+        //                             }
+        //                         },
+        //                         {
+        //                             text: 'Cancel',
+        //                             onPress: () => console.log(self.props.navigation.state.routeName),
+        //                             style: 'cancel',
+        //                         },
+        //                     ],
+        //                     {cancelable: false},
+        //                 )
+        //             }
+        //         })
                 
-            }
-        )
+        //     }
+        // )
 
         //when screen unfocus, remove message listener
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                messageListener()
-            }
-        )
+        // this.willBlurSubscription = this.props.navigation.addListener(
+        //     'willBlur',
+        //     payload => {
+        //         messageListener()
+        //     }
+        // )
           
 
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
