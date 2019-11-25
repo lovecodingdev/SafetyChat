@@ -66,6 +66,7 @@ export default class login extends Component {
                 let role = await AppData.getItem('role')
                 if (token != null && token != '') {
                     firebase.database().ref().child(companycode+'/users/'+name).set({token: token, role: role})
+                    firebase.database().ref().child(companycode+'/messages/'+name+'/1234zxcv').set({empty: ''})
                 }
                 this.props.navigation.replace('HomeScreen')
                 // firebase.database().ref().child(companycode+'/users/'+name).set({token: token, role: role}).then(() => {

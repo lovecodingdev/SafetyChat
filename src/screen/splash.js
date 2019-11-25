@@ -14,7 +14,7 @@ export default class splash extends Component {
     constructor(props) {
         super(props)
         
-        OneSignal.init("928954ff-21be-4995-a982-9cbd5ff295b2");
+        // OneSignal.init("928954ff-21be-4995-a982-9cbd5ff295b2");
         OneSignal.addEventListener("received", this.onReceived);
         OneSignal.addEventListener("opened", this.onOpened);
         OneSignal.addEventListener("ids", this.onIds);

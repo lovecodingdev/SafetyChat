@@ -35,14 +35,6 @@ export default class home extends Component {
         global.mScreen = 'Home'
     }
 
-    dataChanged() {
-        console.log('Data Changed', global.mScreen);
-    }
-
-    contextChanged() {
-        console.log('context chagned', 'data')
-    }
-
     async componentDidMount() {
         // const notificationOpen = await firebase.notifications().getInitialNotification()
         // if (notificationOpen) {
@@ -59,7 +51,8 @@ export default class home extends Component {
         // firebase.notifications().removeAllDeliveredNotifications()
         
         let companycode = await AppData.getItem('Companycode')
-        var selfname = await AppData.getItem('username')
+        let selfname = await AppData.getItem('username')
+        let role = await AppData.getItem('role')
 
         try{
             let f_token = await firebase.messaging().getToken()
@@ -70,19 +63,24 @@ export default class home extends Component {
             console.log('connection error')
         }
 
-        firebase.database().ref(companycode+'/messages/'+selfname).on('child_changed', this.dataChanged, this.contextChanged, this)
-  
-        var self = this
-        //App in background or foreground   notification taps
-        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-            // Get information about the notification that was opened
-            const notification = notificationOpen.notification
-            var name = ''
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            setTimeout(() => {
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }, 1000)
+        firebase.database().ref(companycode+'/messages/'+selfname).on("child_changed", (value) => {
+            console.log('Message changed', value);
         })
+
+        firebase.database().ref(companycode+'/groupMessages/'+role).on('child_changed', (value) => {
+            console.log("Group changed", value);
+        })
+  
+        // App in background or foreground   notification taps
+        // this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+        //     // Get information about the notification that was opened
+        //     const notification = notificationOpen.notification
+        //     var name = ''
+        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+        //     setTimeout(() => {
+        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        //     }, 1000)
+        // })
 
         // //App closed  notification taps
         // const notificationOpen = await firebase.notifications().getInitialNotification()
