@@ -39,7 +39,7 @@ export default class chat extends Component {
     onChat() {
 
         this.mChatRef = firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname)
-        this.mChatRef.on("child_added", (value) => {
+        this.mChatRef.limitToLast(30).on("child_added", (value) => {
             var respond = []
             respond.push(value.val())
             this.setState(previousState => ({
@@ -48,7 +48,7 @@ export default class chat extends Component {
         })
 
         this.mGroupRef = firebase.database().ref(this.companycode+'/groupMessages/'+this.role)
-        this.mGroupRef.on('child_added', (value) => {
+        this.mGroupRef.limitToLast(30).on('child_added', (value) => {
             var respond = []
             respond.push(value.val())
             this.setState(previousState => ({
@@ -63,8 +63,8 @@ export default class chat extends Component {
 
     componentWillUnmount() {
         global.mScreen = 'Home'
-        this.mChatRef.off('child_added')
-        this.mGroupRef.off('child_added')
+        // this.mChatRef.off('child_added')
+        // this.mGroupRef.off('child_added')
     }
 
     async componentDidMount() {

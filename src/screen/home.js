@@ -34,16 +34,18 @@ export default class home extends Component {
         }
         global.mScreen = 'Home',
         this.isMount = false
+        this.isGroup = false
 
         this.childChangedRef = null
-        this.childAddedRef = null
         this.groupChangedRef = null
     }
 
     alertToName = (toName) => {
+        console.log('Toname = ', toName)
+        let message = toName == '123group' ? 'Message from your Group' : 'Message from ' + toName
         Alert.alert(
             'Notification',
-            'Message from '+toName,
+            message,
             [
                 {
                     text: 'View', onPress: () => {
@@ -96,13 +98,23 @@ export default class home extends Component {
                 self.alertToName(name);
             }
         })
-        // this.childAdded = firebase.database().ref(companycode+'/messages/'+selfname).on("child_added", (value) => {
-        //     console.log('Child added =', value.key);
-        // })
 
-        // this.groupChanged = firebase.database().ref(companycode+'/groupMessages/'+role).on('child_changed', (value) => {
-        //     console.log("Group changed", value);
-        // })
+        this.childChangedRef.limitToLast(1).on("child_added", (value) => {
+            if (self.isMount == true && global.mScreen != 'Chat') {
+                self.alertToName(value.key)
+            }
+            self.isMount = true
+            console.log('Child added =', value.key);
+        })
+
+        this.groupChangedRef = firebase.database().ref(companycode+'/groupMessages/'+role)
+        this.groupChangedRef.limitToLast(1).on('child_added', (value) => {
+            console.log("Group_chagned", value.key)
+            if (self.isGroup == true && global.mScreen != 'Chat') {
+                self.alertToName('123group')
+            }
+            self.isGroup = true
+        })
   
         // App in background or foreground   notification taps
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
