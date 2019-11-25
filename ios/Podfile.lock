@@ -98,6 +98,7 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - OneSignal (2.11.2)
   - Protobuf (3.9.0)
   - React (0.60.3):
     - React-Core (= 0.60.3)
@@ -147,6 +148,9 @@ PODS:
   - React-jsinspector (0.60.3)
   - react-native-netinfo (4.1.0):
     - React
+  - react-native-onesignal (3.5.0):
+    - OneSignal (= 2.11.2)
+    - React (< 1.0.0, >= 0.13.0)
   - React-RCTActionSheet (0.60.3):
     - React-Core (= 0.60.3)
   - React-RCTAnimation (0.60.3):
@@ -193,6 +197,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - OneSignal (< 3.0, >= 2.9.3)
   - React (from `../node_modules/react-native/`)
   - React-Core (from `../node_modules/react-native/React`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -202,6 +207,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -238,6 +244,7 @@ SPEC REPOS:
     - GoogleUtilities
     - leveldb-library
     - nanopb
+    - OneSignal
     - Protobuf
 
 EXTERNAL SOURCES:
@@ -265,6 +272,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-onesignal:
+    :path: "../node_modules/react-native-onesignal"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -317,6 +326,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  OneSignal: 4e3e68bb6c29975286a2fa910cb49132bc6e20bb
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   React: ac23e9cc8d2d4cfe9b536b5cc0c32d19b9937bcf
   React-Core: 84de3cf80e31f0267c5ce0b5b482d59ce30a8a57
@@ -327,6 +337,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d9023c5c199114d2b6f38ec861a4d923c73d0735
   React-jsinspector: 817b64f3c8a807f09d78620f4f505868d89b26f3
   react-native-netinfo: cba248b24e89409546c7a1da184dfb88ccdf1fa0
+  react-native-onesignal: 50f5a70d2b8a94e0eda8c4e1b9ba0b82dec29a7a
   React-RCTActionSheet: 9c42321fd5652515d706dd722c5a10b1970d7ec8
   React-RCTAnimation: fabb087dde8964c9a835a7fabd0e7e5701787913
   React-RCTBlob: 93f34281d9c9c9e216b25824309eed9fe22a5d41
@@ -342,6 +353,6 @@ SPEC CHECKSUMS:
   RNPDF: 20b2c376deb90d1547fee41bd10ad44930baf76d
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
-PODFILE CHECKSUM: aa12e9493e394d1caf0dba9c9c28d0017448b51f
+PODFILE CHECKSUM: ddcec1986368ce9bd97c1a879d0e11f58dd28e33
 
 COCOAPODS: 1.7.5
