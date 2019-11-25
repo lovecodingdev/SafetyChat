@@ -30,12 +30,16 @@ export default class chat extends Component {
         }
 
         global.mScreen = 'Chat'
-        //this.initChat = this.initChat.bind(this)
         this.onChat = this.onChat.bind(this)
+
+        this.mChatRef = null;
+        this.mGroupRef = null;
     }
 
     onChat() {
-        firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname).on("child_added", (value) => {
+
+        this.mChatRef = firebase.database().ref(this.companycode+'/messages/'+this.state.selfname+'/'+this.toname)
+        this.mChatRef.on("child_added", (value) => {
             var respond = []
             respond.push(value.val())
             this.setState(previousState => ({
@@ -43,24 +47,35 @@ export default class chat extends Component {
             }))
         })
 
-        firebase.database().ref(this.companycode+'/groupMessages/'+this.role).on('child_added', (value) => {
+        this.mGroupRef = firebase.database().ref(this.companycode+'/groupMessages/'+this.role)
+        this.mGroupRef.on('child_added', (value) => {
             var respond = []
             respond.push(value.val())
             this.setState(previousState => ({
                 messages: GiftedChat.append(previousState.messages, respond)
             }))
         })
+    }
+
+    changeLoad() {
+        global.mScreen = 'Chat'
+    }
+
+    componentWillUnmount() {
+        global.mScreen = 'Home'
+        this.mChatRef.off('child_added')
+        this.mGroupRef.off('child_added')
     }
 
     async componentDidMount() {
         //message list init
+        this.props.navigation.addListener('willFocus', this.changeLoad)
         this.companycode = await AppData.getItem('Companycode')
         var selfname = await AppData.getItem('username')
         this.role = await AppData.getItem('role')
         this.setState({selfname})
         this.toname = this.props.navigation.getParam('name')
         this.onChat()
-        
     }
 
     onSend(messages = []) {

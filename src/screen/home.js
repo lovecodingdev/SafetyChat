@@ -32,24 +32,49 @@ export default class home extends Component {
             loading: true,
             appState: AppState.currentState,
         }
-        global.mScreen = 'Home'
+        global.mScreen = 'Home',
+        this.isMount = false
+
+        this.childChangedRef = null
+        this.childAddedRef = null
+        this.groupChangedRef = null
+    }
+
+    alertToName = (toName) => {
+        Alert.alert(
+            'Notification',
+            'Message from '+toName,
+            [
+                {
+                    text: 'View', onPress: () => {
+                        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: toName}, key: 'chat'})   
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel'),
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: false},
+        )
     }
 
     async componentDidMount() {
-        // const notificationOpen = await firebase.notifications().getInitialNotification()
-        // if (notificationOpen) {
-        //     // App was opened by a notification
-        //     const notification = notificationOpen.notification
-        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-        //     setTimeout(() => {
-        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        //     }, 1000)
+        const notificationOpen = await firebase.notifications().getInitialNotification()
+        if (notificationOpen) {
+            // App was opened by a notification
+            const notification = notificationOpen.notification
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            setTimeout(() => {
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            }, 1000)
             
-        // }
+        }
 
         // AppState.addEventListener('change', this._handleAppStateChange)
         // firebase.notifications().removeAllDeliveredNotifications()
-        
+    
         let companycode = await AppData.getItem('Companycode')
         let selfname = await AppData.getItem('username')
         let role = await AppData.getItem('role')
@@ -63,101 +88,33 @@ export default class home extends Component {
             console.log('connection error')
         }
 
-        firebase.database().ref(companycode+'/messages/'+selfname).on("child_changed", (value) => {
-            console.log('Message changed', value);
+        let self = this
+        this.childChangedRef = firebase.database().ref(companycode+'/messages/'+selfname)
+        this.childChangedRef.on("child_changed", (value) => {
+            if (global.mScreen != 'Chat') {
+                let name = value.key
+                self.alertToName(name);
+            }
         })
+        // this.childAdded = firebase.database().ref(companycode+'/messages/'+selfname).on("child_added", (value) => {
+        //     console.log('Child added =', value.key);
+        // })
 
-        firebase.database().ref(companycode+'/groupMessages/'+role).on('child_changed', (value) => {
-            console.log("Group changed", value);
-        })
+        // this.groupChanged = firebase.database().ref(companycode+'/groupMessages/'+role).on('child_changed', (value) => {
+        //     console.log("Group changed", value);
+        // })
   
         // App in background or foreground   notification taps
-        // this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-        //     // Get information about the notification that was opened
-        //     const notification = notificationOpen.notification
-        //     var name = ''
-        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-        //     setTimeout(() => {
-        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        //     }, 1000)
-        // })
-
-        // //App closed  notification taps
-        // const notificationOpen = await firebase.notifications().getInitialNotification()
-        // if (notificationOpen) {
-        //     // App was opened by a notification
-        //     //messageListener()
-        //     const notification = notificationOpen.notification
-        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-        //     this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        // }
-
-        //message receive process
-        //var messageListener
-        // var messageListener = firebase.messaging().onMessage((message) => {
-        //     if(JSON.parse(message._data.data).user.name != selfname) {
-        //         Alert.alert(
-        //             'Notification',
-        //             'Message from '+message._data.fromname,
-        //             [
-        //                 {
-        //                     text: 'View', onPress: () => {
-        //                         var name = ''
-        //                         message._data.group == '1' ? name = '123group' : name = message._data.fromname
-        //                         self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-        //                     }
-        //                 },
-        //                 {
-        //                     text: 'Cancel',
-        //                     onPress: () => console.log(self.props.navigation.state.routeName),
-        //                     style: 'cancel',
-        //                 },
-        //             ],
-        //             {cancelable: false},
-        //         )
-        //     }
-        // })
-        
-        //when screen focused, message listener starting
-        // this.didFocusSubscription = this.props.navigation.addListener(
-        //     'willFocus',
-        //     payload => {
-        //         messageListener = firebase.messaging().onMessage((message) => {
-        //             if(JSON.parse(message._data.data).user.name != selfname) {
-        //                 Alert.alert(
-        //                     'Notification',
-        //                     'Message from '+message._data.fromname,
-        //                     [
-        //                         {
-        //                             text: 'View', onPress: () => {
-        //                                 var name = ''
-        //                                 message._data.group == '1' ? name = '123group' : name = message._data.fromname
-        //                                 self.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})   
-        //                             }
-        //                         },
-        //                         {
-        //                             text: 'Cancel',
-        //                             onPress: () => console.log(self.props.navigation.state.routeName),
-        //                             style: 'cancel',
-        //                         },
-        //                     ],
-        //                     {cancelable: false},
-        //                 )
-        //             }
-        //         })
-                
-        //     }
-        // )
-
-        //when screen unfocus, remove message listener
-        // this.willBlurSubscription = this.props.navigation.addListener(
-        //     'willBlur',
-        //     payload => {
-        //         messageListener()
-        //     }
-        // )
+        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            // Get information about the notification that was opened
+            const notification = notificationOpen.notification
+            var name = ''
+            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            setTimeout(() => {
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+            }, 1000)
+        })
           
-
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
             if(!isDir){
                 RNFetchBlob.fs.mkdir(resourceUrl).then(mkdir => {console.log("directory create!", mkdir)})
