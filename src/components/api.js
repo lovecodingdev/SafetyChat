@@ -1,10 +1,7 @@
-import React, { Component } from 'react'
 import NetInfo from "@react-native-community/netinfo"
 import AppData from "./AppData"
 import Base64 from 'Base64'
 import RNFetchBlob from 'rn-fetch-blob'
-import { file } from '@babel/types';
-import { Item } from 'native-base';
 import {Platform, Alert} from 'react-native'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
@@ -119,6 +116,36 @@ async function updateFiles() {
 
 }
 
+async function sendNotification(to, title, body, data) {
+    var SERVER_KEY = 'AIzaSyCEQ2MlHaO3fr24PbeIX_SQs5X-nhPEHzQ'
+    let url = 'https://fcm.googleapis.com/fcm/send'
+    var headers = {
+        'Authorization': 'key=' + SERVER_KEY,
+        'Content-Type': 'application/json'
+    }
+    var body = JSON.stringify({
+        to: to,
+        notification: {
+            title: title,
+            body: body,
+            sound: 'default',
+            badge: 0
+        },
+        data: data
+    })
+    try {
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: body
+        });
+        let responseJson = await response.json()         
+        return responseJson
+    } catch (error) {
+        return null
+    }
+}
+
 export default {
     getConnection,
     setCode,
@@ -129,4 +156,5 @@ export default {
     readRemoteMD5,
     updateFiles,
     readManifest,
+    sendNotification,
 }

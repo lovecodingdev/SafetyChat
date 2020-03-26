@@ -63,30 +63,10 @@ export default class checkcode extends Component {
     }
 
     componentDidMount() {
-        // PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, PermissionsAndroid.PERMISSIONS.REA_EXTERNAL_STORAGE]).then((res) => {
-        //     console.log('Permission', res)
-        // })
-        //console.log(PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE))
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,).then((res) => console.log('write'))
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,).then((res) => console.log('read'))
 
     }
-
-    // async componentWillMount() {
-    //     let con = await API.getConnection();
-    //     if(con == true) {
-    //         console.log('Connected!');
-    //         console.log(await API.checkCode())
-    //         if(await API.checkCode() != null) {
-    //             await API.setUrl();
-    //             this.props.navigation.replace('LoginScreen');
-    //         } else {
-
-    //         }
-    //     } else {
-    //         console.log('Not Connected!')
-    //     }
-    // }
 
     render() {
         return (
