@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Text,
-  View,
-  ScrollView,
-  Platform,
-  FlatList,
-  TextInput,
-  Alert,
-  } from 'react-native';
-import { Images, Title } from '../theme';
+import { StyleSheet } from 'react-native';
 import { Container } from 'native-base';
-import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
 import Header from '../components/header'
 import API from "../components/api"
 import firebase from 'react-native-firebase'

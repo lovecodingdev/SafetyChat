@@ -46,8 +46,7 @@ export default class checkcode extends Component {
                     await API.setCode(code)
                     await API.setUrl()
                     this.props.navigation.replace('LoginScreen')
-                }
-                else {
+                } else {
                     console.log('This is not a valid code')
                     alert("That company code didn't work. Let's try again.")
                 }

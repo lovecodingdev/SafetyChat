@@ -7,7 +7,7 @@ import {
   Alert,
 } from 'react-native'
 
-import { Container, Content, Button, Icon, Form, Item, Label, Input, Text, Footer} from 'native-base'
+import { Container, Button, Label, Text} from 'native-base'
 import {Images, Colors} from '../theme'
 import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions'
 //import { MyText, Loader } from "../components";
@@ -86,7 +86,7 @@ export default class login extends Component {
         Alert.alert('Enter name and password correctly.')
     }
 
-    changeCompanyCode() {
+    changeCode() {
         this.props.navigation.replace('CheckcodeScreen')
     }
         
@@ -122,7 +122,7 @@ export default class login extends Component {
                         <Label style={{color: '#fff', marginTop: 10}}>Password</Label>
                         <TextInput style={{marginTop: 10, marginBottom:30, borderWidth: 1, borderRadius: 5, borderColor:'#fff', color: '#fff', height: 35 }} secureTextEntry={true} value={this.state.password} onChangeText={text=>this.setState({password: text})}/>
                         <Button block primary onPress={this.onLogin.bind(this)}><Text>LogIn</Text></Button>
-                        <Button block primary onPress={this.changeCode.bind(this)}><Text>Change CompanyCode</Text></Button>
+                        <Button block transparent onPress={this.changeCode.bind(this)} style={{marginTop: 5}}><Text>Company Code?</Text></Button>
                         {/* <Button block primary onPress={this.set1.bind(this)}><Text>Set1</Text></Button> */}
                         {/* <Button block primary onPress={this.set2.bind(this)}><Text>Set2</Text></Button> */}
 

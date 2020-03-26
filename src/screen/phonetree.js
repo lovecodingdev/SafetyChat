@@ -66,15 +66,6 @@ export default class phonetree extends Component {
             )
         }
     }
-          
-    // async createNotificationListeners() {
-    //     firebase.notifications().onNotification(notification => {
-    //         //notification.android.setSmallIcon(Images.logo)
-    //         notification.android.setChannelId('insider').setSound('default')
-    //         console.log('in app note:', notification)
-    //         firebase.notifications().displayNotification(notification)
-    //     });
-    // }
     
     onGroup() {
         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: '123group'}, key: 'chat'})
