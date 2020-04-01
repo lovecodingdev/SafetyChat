@@ -28,7 +28,7 @@ export default class pdfDisplay extends React.Component {
         this.state = {
             url: '',
         }
-        global.mScreen = 'PDF'
+        mScreen = 'PDF'
     }
 
     componentDidMount() {

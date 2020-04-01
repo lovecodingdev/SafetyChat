@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useReducer } from 'react';
 import {
   StyleSheet,
   Text,
@@ -30,7 +30,7 @@ export default class checkcode extends Component {
         if(this.state.text != '') {
             this.setState({loading: true})
             var code = this.state.text.toLowerCase()
-            var url = "https://"+code+".myspapp.com/"+"wp-json/aam/v1/"
+            var url = "https://"+code+".myspapp.com/"+"wp-json/aam/v2/"
             console.log(url)
             try {
                 let response = await fetch(url, {
@@ -43,8 +43,9 @@ export default class checkcode extends Component {
                 var responseStatus = response.status
                 if (responseStatus == 200) {
                     console.log('startup.fetch: This code works!');
+                    user.code = code
                     await API.setCode(code)
-                    await API.setUrl()
+                    
                     this.props.navigation.replace('LoginScreen')
                 } else {
                     console.log('This is not a valid code')

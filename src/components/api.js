@@ -3,6 +3,7 @@ import AppData from "./AppData"
 import Base64 from 'Base64'
 import RNFetchBlob from 'rn-fetch-blob'
 import {Platform, Alert} from 'react-native'
+import CONST from '../Const'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -12,27 +13,16 @@ async function getConnection() {
     return status.isConnected    
 }
 
-async function checkCode() {
-    return await AppData.getItem('Companycode')
-}
-
 async function setCode(code) {
-    await AppData.setItem("Companycode",code)
-}
-
-async function setUrl() {
-    var code = await AppData.getItem('Companycode')
-    var url = "https://"+code+".myspapp.com/";
-    await AppData.setItem("companyUrl", url);
-}
-
-async function getUrl() {
-    return await AppData.getItem('companyUrl')
+    user.code = code
+    user.url = "https://"+code+".myspapp.com/"
+    await AppData.setItem(CONST.CODE_KEY, code)
 }
 
 async function login(name, password) {
     console.log("*****login*********")
-    var url = await getUrl() + "wp-json/aam/v1/authenticate"
+    var url = user.url + "wp-json/aam/v2/authenticate"
+    console.log('Current URL = ', url)
     try {
         let response = await fetch(url, {
             method: 'POST',
@@ -47,12 +37,16 @@ async function login(name, password) {
         });
         let responseJson = await response.json() 
         
-        console.log("-------------------roles-----------------------", responseJson.user)
-        if(responseJson.token != null) {
-            await AppData.setItem('username', name)
-            await AppData.setItem('password', password)
-            await AppData.setItem('token', responseJson.token)
-            await AppData.setItem('role', responseJson.user.roles[0])
+        console.log("-------------------roles-----------------------", responseJson)
+        if(response.status == 200) {
+            user.name = name
+            // user.token = responseJson.user.data.user_pass
+            user.role = responseJson.user.roles[0]
+            user.password = password
+            await AppData.setItem(CONST.USER_KEY, name)
+            await AppData.setItem(CONST.PASSWORD_KEY, password)
+            // await AppData.setItem(CONST.TOKEN_KEY, user.token)
+            await AppData.setItem(CONST.ROLE_KEY, user.role)
             return true
         } else {
             return false
@@ -62,11 +56,27 @@ async function login(name, password) {
     }
 }
 
+async function sendNotification(token) {
+    var Headers = {
+        'Authorization' : '',
+        'Content-Type' : 'application/json'
+    }
+    var Body =
+    {
+        "to": token,
+        "data": {
+            "message": "Notification",
+            "title": "Title",
+            "data-type": "direct_message"
+        }
+    }
+}
+
 async function readRemoteMD5() {
-    var username = await AppData.getItem('username')
-    var password = await AppData.getItem('password')
+    var username = user.name
+    var password = user.password
     var token = Base64.btoa(username+":"+password)
-    var url = await getUrl() + "wp-content/uploads/mdocs/remoteCheck.md5"
+    var url = user.url + "wp-content/uploads/mdocs/remoteCheck.md5"
     var response = RNFetchBlob.fetch('GET', url, {
         Authorization: 'Basic ' + token
     })
@@ -77,10 +87,10 @@ async function readRemoteMD5() {
 }
 
 async function readManifest() {
-    var username = await AppData.getItem('username')
-    var password = await AppData.getItem('password')
+    var username = user.name
+    var password = user.password
     var token = Base64.btoa(username+":"+password)
-    var url = await getUrl() + "wp-content/uploads/mdocs/manifest"
+    var url = user.url + "wp-content/uploads/mdocs/manifest"
     var response = RNFetchBlob.fetch('GET', url, {
         Authorization: 'Basic ' + token
     })
@@ -91,10 +101,10 @@ async function readManifest() {
 }
 
 async function updateFiles() {
-    var username = await AppData.getItem('username')
-    var password = await AppData.getItem('password')
+    var username = user.name
+    var password = user.password
     var token = Base64.btoa(username+":"+password)
-    var baseUrl = await getUrl()
+    var baseUrl = user.url
     var response = await readManifest()
     let localUrl = resourceUrl
     //await RNFetchBlob.fs.unlink(localUrl)
@@ -119,9 +129,6 @@ async function updateFiles() {
 export default {
     getConnection,
     setCode,
-    checkCode,
-    setUrl,
-    getUrl,
     login,
     readRemoteMD5,
     updateFiles,

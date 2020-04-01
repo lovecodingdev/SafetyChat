@@ -6,46 +6,63 @@ import {
   } from 'react-native';
 import { Images } from '../theme';
 import { Container } from 'native-base';
-import { responsiveWidth } from 'react-native-responsive-dimensions'
-import API from '../components/api'
-import OneSignal from 'react-native-onesignal'
+import AppData from '../components/AppData';
+import CONST from '../Const';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
+import API from '../components/api';
+import Spinner from 'react-native-loading-spinner-overlay'
+import firebase from 'react-native-firebase'
 
 export default class splash extends Component {
+
     constructor(props) {
         super(props)
-        
-        // OneSignal.init("928954ff-21be-4995-a982-9cbd5ff295b2");
-        OneSignal.addEventListener("received", this.onReceived);
-        OneSignal.addEventListener("opened", this.onOpened);
-        OneSignal.addEventListener("ids", this.onIds);
-        OneSignal.configure();
+
+        this.state = {
+            loading: false
+        }
     }
-
-    onReceived = notification => {
-        console.log("Notification received: ", notification);
-    };
-
-    onOpened = openResult => {
-        console.log("Message: ", openResult.notification.payload.body);
-        console.log("Data: ", openResult.notification.payload.additionalData);
-        console.log("isActive: ", openResult.notification.isAppInFocus);
-        console.log("openResult: ", openResult);
-    };
-
-    onIds = device => {
-        console.log("Device info: ", device);
-        this.setState({ device });
-    };
 
     async componentDidMount() {
       
-        // Check Company Code
+        this.setState({loading: true})
+        // Firebase Notification.
+        let enabled = await firebase.messaging().hasPermission()
+        if(!enabled) await firebase.messaging().requestPermission()
+
+        // Check user data.
+        let name = await AppData.getItem(CONST.USER_KEY)
+        let code = await AppData.getItem(CONST.CODE_KEY)
+        let role = await AppData.getItem(CONST.ROLE_KEY)
+        let password = await AppData.getItem(CONST.PASSWORD_KEY)
+        var token = await AppData.getItem(CONST.TOKEN_KEY)
+        if (token == '' || token == null) {
+            token = await firebase.messaging().getToken()
+            await AppData.setItem(CONST.TOKEN_KEY, token)
+        }
+
+        global.user = {
+            name: name,
+            role: role,
+            code: code,
+            token: token,
+            password: password,
+            url: "https://"+code+".myspapp.com/",
+        }
+
         let con = await API.getConnection();
+
+        this.setState({loading: false})
+
         var screen = 'CheckcodeScreen'
         if(con == true) {
-            if(await API.checkCode() != null) {
-                await API.setUrl();    
+            if(user.name == '' || user.name == null) {
                 screen = 'LoginScreen'
+            } else {
+                screen = 'HomeScreen'
+            }
+            if (user.code == '' || user.code == null) {
+                screen = 'CheckcodeScreen'
             }
         } else {
             alert('Not Network Connected!')
@@ -53,7 +70,7 @@ export default class splash extends Component {
 
         setTimeout(()=>{
             this.props.navigation.replace(screen.toString())
-        }, 3000)
+        }, 300)
     }
     
 
@@ -63,7 +80,11 @@ export default class splash extends Component {
                 <ImageBackground source={Images.bg}  style={styles.image}>
                     <Image source={Images.logo} style={{width: responsiveWidth(100), height: responsiveWidth(80)}}></Image>
                 </ImageBackground>
-                
+                <Spinner
+                    visible={this.state.loading}
+                    textContent={''}
+                    textStyle={styles.spinnerTextStyle}
+                />
             </Container>
         )
     }

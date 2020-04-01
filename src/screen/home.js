@@ -18,7 +18,6 @@ import RNFetchBlob from 'rn-fetch-blob'
 import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
-import AppData from '../components/AppData'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -63,6 +62,7 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
+
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
             // App was opened by a notification
@@ -77,14 +77,12 @@ export default class home extends Component {
         // AppState.addEventListener('change', this._handleAppStateChange)
         // firebase.notifications().removeAllDeliveredNotifications()
     
-        let companycode = await AppData.getItem('Companycode')
-        let selfname = await AppData.getItem('username')
-        let role = await AppData.getItem('role')
-
+        let companycode = user.code
+        let selfname = user.name
+        let role = user.role
         try{
-            let f_token = await firebase.messaging().getToken()
-            firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(f_token).then(() => {
-                console.log(f_token)
+            firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(user.token).then(() => {
+                console.log(user.token)
             })
         }catch {
             console.log('connection error')
@@ -93,14 +91,14 @@ export default class home extends Component {
         let self = this
         this.childChangedRef = firebase.database().ref(companycode+'/messages/'+selfname)
         this.childChangedRef.on("child_changed", (value) => {
-            if (global.mScreen != 'Chat') {
+            if (mScreen != 'Chat') {
                 let name = value.key
                 self.alertToName(name);
             }
         })
 
         this.childChangedRef.limitToLast(1).on("child_added", (value) => {
-            if (self.isMount == true && global.mScreen != 'Chat') {
+            if (self.isMount == true && mScreen != 'Chat') {
                 self.alertToName(value.key)
             }
             self.isMount = true
@@ -110,7 +108,7 @@ export default class home extends Component {
         this.groupChangedRef = firebase.database().ref(companycode+'/groupMessages/'+role)
         this.groupChangedRef.limitToLast(1).on('child_added', (value) => {
             console.log("Group_chagned", value.key)
-            if (self.isGroup == true && global.mScreen != 'Chat') {
+            if (self.isGroup == true && mScreen != 'Chat') {
                 self.alertToName('123group')
             }
             self.isGroup = true

@@ -15,12 +15,13 @@ export default class Header extends Component {
             [
                 {
                     text: 'Ok', onPress: async () => {
-                        let companycode = await AppData.getItem('Companycode')
-                        let username = await AppData.getItem('username')
-                        console.log("logout companycode", companycode)
-                        console.log("logout username",username)
-                        firebase.database().ref(companycode+'/users/'+username).remove().then(()=>{
+                        
+                        firebase.database().ref(user.code+'/users/'+user.name).remove().then(()=>{
                             console.log("remove user!")
+                            user.name = ''
+                            user.role = ''
+                            user.password = ''
+                            user.code = ''
                             AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
                         })
                     }
