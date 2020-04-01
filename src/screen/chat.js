@@ -2,11 +2,8 @@ import React, { Component, useReducer } from 'react';
 import { StyleSheet } from 'react-native';
 import { Container } from 'native-base';
 import Header from '../components/header'
-import API from "../components/api"
 import firebase from 'react-native-firebase'
-import AppData from '../components/AppData'
 import { GiftedChat } from 'react-native-gifted-chat'
-import firebase from 'react-native-firebase'
 
 
 export default class chat extends Component {

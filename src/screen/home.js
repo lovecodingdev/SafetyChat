@@ -18,6 +18,8 @@ import RNFetchBlob from 'rn-fetch-blob'
 import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
+import AppData from '../components/AppData';
+import Const from '../Const';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -61,8 +63,25 @@ export default class home extends Component {
         )
     }
 
+    async checkPermission() {
+        // Firebase Notification.
+        let enabled = await firebase.messaging().hasPermission()
+        var token = ''
+        if (enabled) {
+            token = await firebase.messaging().getToken()
+            if (token == null || token == '' || token == undefined) {
+                token = await AppData.getItem(Const.TOKEN_KEY)
+                user.token = token
+            } else {
+                user.token = token
+                firebase.database().ref().child(user.code+'/users/'+user.name).set({token, role: user.role})
+            }
+        }
+    }
+
     async componentDidMount() {
 
+        await checkPermission()
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
             // App was opened by a notification
