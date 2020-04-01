@@ -70,8 +70,6 @@ export default class home extends Component {
         if (enabled) {
             token = await firebase.messaging().getToken()
             if (token == null || token == '' || token == undefined) {
-                token = await AppData.getItem(Const.TOKEN_KEY)
-                user.token = token
             } else {
                 user.token = token
                 firebase.database().ref().child(user.code+'/users/'+user.name).set({token, role: user.role})
@@ -81,7 +79,7 @@ export default class home extends Component {
 
     async componentDidMount() {
 
-        await checkPermission()
+        // await checkPermission()
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
             // App was opened by a notification
