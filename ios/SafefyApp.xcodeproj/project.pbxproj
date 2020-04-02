@@ -31,8 +31,6 @@
 		7CF982401ED149059D714B4E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1C7919F0B5F4AFDACB1A670 /* Foundation.ttf */; };
 		81229CD90BB74D0F9C510FAE /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2DD5A471EF44945BDCA4349 /* Ionicons.ttf */; };
 		8697E4FF393C44E7B879D1CD /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3103EC0713BF4F4FAB5BE6E5 /* FontAwesome5_Brands.ttf */; };
-		8B2BC8732386A1B000B751A3 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2BC8722386A1B000B751A3 /* NotificationService.swift */; };
-		8B2BC8772386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8B68BBA74181FBFBB2833F94 /* libPods-SafefyApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C1EC0D15B4EEF8115744D82 /* libPods-SafefyApp-tvOS.a */; };
 		8F09DFBF0D924F77A7A7F04E /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6764ECA9141E8B38435A7 /* Zocial.ttf */; };
 		906342B5953D4631BFEB54A2 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B1F3B510E2443ACAAA778CA /* FontAwesome5_Regular.ttf */; };
@@ -59,13 +57,6 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "SafefyApp-tvOS";
 		};
-		8B2BC8752386A1B000B751A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B2BC86F2386A1B000B751A3;
-			remoteInfo = OneSignalNotificationServiceExtension;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,7 +66,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				8B2BC8772386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,8 +109,6 @@
 		85C30301FECE5D118900B0BF /* Pods-SafefyApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOSTests/Pods-SafefyApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		89DFC62BE67253FF389B5F7F /* Pods-SafefyApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS/Pods-SafefyApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B2BC8722386A1B000B751A3 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		8B2BC8742386A1B000B751A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F9E1A9BEBE24AF686948358 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		945053D76BF6934D2AD615BE /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DD5A471EF44945BDCA4349 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -267,7 +255,6 @@
 				13B07FAE1A68108700A75B9A /* SafefyApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SafefyAppTests */,
-				8B2BC8712386A1B000B751A3 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				355DD8197CB248209E073D47 /* Resources */,
@@ -288,15 +275,6 @@
 				8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		8B2BC8712386A1B000B751A3 /* OneSignalNotificationServiceExtension */ = {
-			isa = PBXGroup;
-			children = (
-				8B2BC8722386A1B000B751A3 /* NotificationService.swift */,
-				8B2BC8742386A1B000B751A3 /* Info.plist */,
-			);
-			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 		BEEDF3C0E0A08A2DCFBC3DED /* Pods */ = {
@@ -353,7 +331,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8B2BC8762386A1B000B751A3 /* PBXTargetDependency */,
 			);
 			name = SafefyApp;
 			productName = SafefyApp;
@@ -761,7 +738,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B2BC8732386A1B000B751A3 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,11 +753,6 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* SafefyApp-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
-		};
-		8B2BC8762386A1B000B751A3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8B2BC86F2386A1B000B751A3 /* OneSignalNotificationServiceExtension */;
-			targetProxy = 8B2BC8752386A1B000B751A3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -847,7 +818,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 528395956E8AA83B328ACC7B /* Pods-SafefyApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -874,7 +844,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 330E3350FF0AB613376AF671 /* Pods-SafefyApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

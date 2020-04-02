@@ -19,9 +19,11 @@ import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData';
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import Const from '../Const';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
+const isIOS = (Platform.OS === 'ios')
 
 export default class home extends Component {
     constructor(props) {
@@ -63,23 +65,13 @@ export default class home extends Component {
         )
     }
 
-    async checkPermission() {
-        // Firebase Notification.
-        let enabled = await firebase.messaging().hasPermission()
-        var token = ''
-        if (enabled) {
-            token = await firebase.messaging().getToken()
-            if (token == null || token == '' || token == undefined) {
-            } else {
-                user.token = token
-                firebase.database().ref().child(user.code+'/users/'+user.name).set({token, role: user.role})
-            }
-        }
-    }
-
     async componentDidMount() {
 
-        // await checkPermission()
+        if (isIOS) {
+            this.prepareIOSNotification()
+        } else {
+            this.prepareNotification()   
+        }
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
             // App was opened by a notification
@@ -200,6 +192,45 @@ export default class home extends Component {
             this.setState({firstaid: res, loading: false})
         })
         
+    }
+
+    prepareIOSNotification = () => {
+        PushNotificationIOS.presentLocalNotification({
+            alertBody: 'Hello',
+            alertTitle: 'Title',
+            applicationIconBadgeNumber: 5
+        });
+    }
+
+    prepareNotification = () => {
+        var PushNotification = require("react-native-push-notification");
+        PushNotification.configure({
+        onRegister: function(token) {
+            user.token = token
+            console.log("TOKEN:", token);
+        },
+
+        onNotification: function(notification) {
+            console.log("NOTIFICATION:", notification);
+            notification.finish(PushNotificationIOS.FetchResult.NoData);
+        },
+        senderID: "532288277681",
+        permissions: {
+            alert: true,
+            badge: true,
+            sound: true
+        },
+        popInitialNotification: true,
+        requestPermissions: true
+        });
+
+        PushNotification.localNotification({
+            title: "My Notification Title", // (optional)
+            message: "My Notification Message", // (required)
+            playSound: false,
+            soundName: 'default',
+            number: '10',
+        })
     }
     
     _handleAppStateChange = (nextAppState) => {

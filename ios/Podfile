@@ -38,8 +38,6 @@ target 'SafefyApp' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
-  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
-
   target 'SafefyAppTests' do
     inherit! :search_paths
     # Pods for testing
@@ -54,9 +52,5 @@ target 'SafefyApp-tvOS' do
   target 'SafefyApp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
-  end
-
-  target 'OneSignalNotificationServiceExtension' do
-    pod 'OneSignal', '>= 2.9.3', '< 3.0'
   end
 end
