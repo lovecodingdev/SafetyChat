@@ -17,91 +17,46 @@ export default class chat extends Component {
         mScreen = 'Chat'
         this.onChat = this.onChat.bind(this)
         this.mChatRef = null;
-        this.mGroupRef = null;
-        this.chatListener = null;
-        self.groupListener = null;
-
-        this.isMount = false;
+        this.mChatListener = null;
+        this.mNotiRef = null;
     }
 
     onChat() {
-        var messages = []
-        let self = this
-
-        this.mChatRef = firebase.database().ref(user.code +'/messages/'+ user.name +'/'+this.toname)
-        this.mGroupRef = firebase.database().ref(user.code + '/groupMessages/' + user.role)
-
-        if (this.toname == '123group') {
-            this.mGroupRef.orderByChild('createdAt').once('value', function(snapshot) {
-                snapshot.forEach(function(keysnapshot) {
-                    var message = keysnapshot.val()
-                    messages.push(message)
-                })
-                messages = messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                self.setState({messages})
-
-                self.groupListener = self.mGroupRef.on('child_added', (snapshots) => {
-                    var message = snapshots.val()
-                    var found = false;
-                    for(var i = 0; i < messages.length; i++) {
-                        if (messages[i].createdAt == message.createdAt) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (found == false) {
-                        self.setState(prev => ({
-                            messages: prev.messages.concat(message).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                        }))
-                    }
-                })
+        let self = this;
+        var messages = [];
+        let dataRef = (this.toname == '123group') ? user.code + '/groupMessages/' + user.role : user.code + '/messages/' + user.name + '/' + this.toname;
+        this.mChatRef = firebase.database().ref(dataRef);
+        this.mChatRef.once('value', function(snapshot) {
+            console.log("Snapshot", snapshot)
+            snapshot.forEach(function(keysnapshot) {
+                var message = keysnapshot.val()
+                messages.push(message)
             })
-        } else {
-            this.mChatRef.once('value', function(snapshot) {
-                console.log("Snapshot", snapshot)
-                snapshot.forEach(function(keysnapshot) {
-                    var message = keysnapshot.val()
-                    messages.push(message)
-                })
-                messages = messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                self.setState({messages})
-                
-                self.chatListener = self.mChatRef.on('child_added', (snapshots) => {
-                    var message = snapshots.val()
-                    var found = false;
-                    for(var i = 0; i < messages.length; i++) {
-                        if (messages[i].createdAt == message.createdAt) {
-                            found = true;
-                            break;
-                        }
+            messages = messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            self.setState({messages})
+            
+            self.mChatListener = self.mChatRef.on('child_added', (snapshots) => {
+                var message = snapshots.val()
+                var found = false;
+                for(var i = 0; i < messages.length; i++) {
+                    if (messages[i].createdAt == message.createdAt) {
+                        found = true;
+                        break;
                     }
-                    if (found == false) {
-                        self.setState(prev => ({
-                            messages: prev.messages.concat(message).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                        }))
-                    }
-                })
+                }
+                if (found == false) {
+                    self.setState(prev => ({
+                        messages: prev.messages.concat(message).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    }))
+                }
             })
-        }
+        })
     }
 
     componentDidMount() {
         //message list init
         this.toname = this.props.navigation.getParam('name')
         this.onChat()
-        this.onNotification()
-    }
-
-    onNotification() {
-        const notification = new firebase.notifications.Notification()
-        .setNotificationId('notificationId')
-        .setTitle('My notification title')
-        .setBody('My notification body')
-        .setData({
-            key1: 'value1',
-            key2: 'value2',
-        });
-        firebase.notifications().displayNotification(notification)
     }
 
     onSend(messages = []) {

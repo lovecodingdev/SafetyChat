@@ -23,7 +23,7 @@ import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import Const from '../Const';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
-const isIOS = (Platform.OS === 'ios')
+const PushNotification = require("react-native-push-notification");
 
 export default class home extends Component {
     constructor(props) {
@@ -46,34 +46,38 @@ export default class home extends Component {
     alertToName = (toName) => {
         console.log('Toname = ', toName)
         let message = toName == '123group' ? 'Message from your Group' : 'Message from ' + toName
-        Alert.alert(
-            'Notification',
-            message,
-            [
-                {
-                    text: 'View', onPress: () => {
-                        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: toName}, key: 'chat'})   
-                    }
-                },
-                {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel'),
-                    style: 'cancel',
-                },
-            ],
-            {cancelable: false},
-        )
+        PushNotification.localNotification({
+            title: "Notification", // (optional)
+            message: message, // (required)
+            playSound: true,
+            soundName: 'default',
+            number: 1,
+        })
+        // Alert.alert(
+        //     'Notification',
+        //     message,
+        //     [
+        //         {
+        //             text: 'View', onPress: () => {
+        //                 this.props.navigation.navigate({routeName:'ChatScreen', params: {name: toName}, key: 'chat'})   
+        //             }
+        //         },
+        //         {
+        //             text: 'Cancel',
+        //             onPress: () => console.log('Cancel'),
+        //             style: 'cancel',
+        //         },
+        //     ],
+        //     {cancelable: false},
+        // )
     }
 
     async componentDidMount() {
-
-        if (isIOS) {
-            this.prepareIOSNotification()
-        } else {
-            this.prepareNotification()   
-        }
+  
+        this.prepareNotification()   
         const notificationOpen = await firebase.notifications().getInitialNotification()
         if (notificationOpen) {
+            console.log('Notification Open', '**********')
             // App was opened by a notification
             const notification = notificationOpen.notification
             notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
@@ -83,22 +87,8 @@ export default class home extends Component {
             
         }
 
-        // AppState.addEventListener('change', this._handleAppStateChange)
-        // firebase.notifications().removeAllDeliveredNotifications()
-    
-        let companycode = user.code
-        let selfname = user.name
-        let role = user.role
-        try{
-            firebase.database().ref().child(companycode+'/users/'+selfname+'/token').set(user.token).then(() => {
-                console.log(user.token)
-            })
-        }catch {
-            console.log('connection error')
-        }
-
         let self = this
-        this.childChangedRef = firebase.database().ref(companycode+'/messages/'+selfname)
+        this.childChangedRef = firebase.database().ref(user.code + '/messages/')
         this.childChangedRef.on("child_changed", (value) => {
             if (mScreen != 'Chat') {
                 let name = value.key
@@ -106,33 +96,34 @@ export default class home extends Component {
             }
         })
 
-        this.childChangedRef.limitToLast(1).on("child_added", (value) => {
-            if (self.isMount == true && mScreen != 'Chat') {
-                self.alertToName(value.key)
-            }
-            self.isMount = true
-            console.log('Child added =', value.key);
-        })
+        // this.childChangedRef.limitToLast(1).on("child_added", (value) => {
+        //     if (self.isMount == true && mScreen != 'Chat') {
+        //         self.alertToName(value.key)
+        //     }
+        //     self.isMount = true
+        //     console.log('Child added =', value.key);
+        // })
 
-        this.groupChangedRef = firebase.database().ref(companycode+'/groupMessages/'+role)
-        this.groupChangedRef.limitToLast(1).on('child_added', (value) => {
-            console.log("Group_chagned", value.key)
-            if (self.isGroup == true && mScreen != 'Chat') {
-                self.alertToName('123group')
-            }
-            self.isGroup = true
-        })
+        // this.groupChangedRef = firebase.database().ref(user.code + '/groupMessages/' + user.role)
+        // this.groupChangedRef.limitToLast(1).on('child_added', (value) => {
+        //     console.log("Group_chagned", value.key)
+        //     if (self.isGroup == true && mScreen != 'Chat') {
+        //         self.alertToName('123group')
+        //     }
+        //     self.isGroup = true
+        // })
   
         // App in background or foreground   notification taps
-        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-            // Get information about the notification that was opened
-            const notification = notificationOpen.notification
-            var name = ''
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
-            setTimeout(() => {
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }, 1000)
-        })
+        // this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+        //     // Get information about the notification that was opened
+        //     const notification = notificationOpen.notification
+        //     var name = ''
+        //     console.log('Notification Closed', '**********')
+        //     notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+        //     setTimeout(() => {
+        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        //     }, 1000)
+        // })
           
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
             if(!isDir){
@@ -140,13 +131,8 @@ export default class home extends Component {
             }
         }) 
         let remoteMD5 = await API.readRemoteMD5()
-
         var url = resourceUrl + 'localCheck.md5'
-        // RNFetchBlob.fs.writeFile(url, '','utf8').then(() => {
-        //     console.log('Update Removed');
-        // })
-        
-        console.log('***********', url)
+
         RNFetchBlob.fs.exists(url).then((exist) => {
             console.log('md5 file exist', exist)
             if(exist) {
@@ -194,43 +180,25 @@ export default class home extends Component {
         
     }
 
-    prepareIOSNotification = () => {
-        PushNotificationIOS.presentLocalNotification({
-            alertBody: 'Hello',
-            alertTitle: 'Title',
-            applicationIconBadgeNumber: 5
-        });
-    }
-
     prepareNotification = () => {
-        var PushNotification = require("react-native-push-notification");
         PushNotification.configure({
-        onRegister: function(token) {
-            user.token = token
-            console.log("TOKEN:", token);
-        },
-
-        onNotification: function(notification) {
-            console.log("NOTIFICATION:", notification);
-            notification.finish(PushNotificationIOS.FetchResult.NoData);
-        },
-        senderID: "532288277681",
-        permissions: {
-            alert: true,
-            badge: true,
-            sound: true
-        },
-        popInitialNotification: true,
-        requestPermissions: true
+            onRegister: function(token) {
+                // user.token = token
+                console.log("TOKEN:", token);
+            },
+            onNotification: function(notification) {
+                console.log("NOTIFICATION:", notification);
+                // notification.finish(PushNotificationIOS.FetchResult.NoData);
+            },
+            senderID: "532288277681",
+            permissions: {
+                alert: true,
+                badge: true,
+                sound: true
+            },
+            popInitialNotification: true,
+            requestPermissions: true
         });
-
-        PushNotification.localNotification({
-            title: "My Notification Title", // (optional)
-            message: "My Notification Message", // (required)
-            playSound: false,
-            soundName: 'default',
-            number: '10',
-        })
     }
     
     _handleAppStateChange = (nextAppState) => {
