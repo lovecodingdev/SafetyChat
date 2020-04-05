@@ -4,6 +4,7 @@ import Base64 from 'Base64'
 import RNFetchBlob from 'rn-fetch-blob'
 import {Platform, Alert} from 'react-native'
 import CONST from '../Const'
+import firebase from "react-native-firebase"
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -100,6 +101,16 @@ async function readManifest() {
     return response
 }
 
+async function firebaseTokenRefresh() {
+    let enabled = await firebase.messaging().hasPermission()
+    if (!enabled) return;
+    let token = await firebase.messaging().getToken()
+    if (user.token != '' && user.token == token) return
+    user.token = token
+    firebase.database().ref().child(companycode+'/users/'+name).set({token: user.token, role: user.role})
+    await AppData.setItem(CONST.TOKEN_KEY, token);
+}
+
 async function updateFiles() {
     var username = user.name
     var password = user.password
@@ -133,4 +144,5 @@ export default {
     readRemoteMD5,
     updateFiles,
     readManifest,
+    firebaseTokenRefresh,
 }
