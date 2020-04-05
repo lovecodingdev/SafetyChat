@@ -109,6 +109,7 @@ async function firebaseTokenRefresh() {
     user.token = token
     firebase.database().ref().child(companycode+'/users/'+name).set({token: user.token, role: user.role})
     await AppData.setItem(CONST.TOKEN_KEY, token);
+    return;
 }
 
 async function updateFiles() {

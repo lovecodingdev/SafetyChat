@@ -62,8 +62,8 @@ export default class home extends Component {
     async componentDidMount() {
   
         this.setupDatabaseListener()
-        API.firebaseTokenRefresh()
-        this.prepareNotification()
+        await API.firebaseTokenRefresh()
+        await this.prepareNotification()
 
         // this.childChangedRef.limitToLast(1).on("child_added", (value) => {
         //     if (self.isMount == true && mScreen != 'Chat') {
@@ -148,7 +148,7 @@ export default class home extends Component {
         })
     }
 
-    prepareNotification = () => {
+    async prepareNotification() {
         PushNotification.configure({
             onRegister: function(token) {
                 // user.token = token

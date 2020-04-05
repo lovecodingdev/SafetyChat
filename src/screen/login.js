@@ -41,11 +41,7 @@ export default class login extends Component {
             //firebase user register with token
             console.log(res);
             if(res == true) {
-                let role = user.role
-                if (user.token != null) {
-                    firebase.database().ref().child(companycode+'/users/'+name).set({token: user.token, role})
-                    await firebase.database().ref().child(companycode+'/messages/'+name+'/1234zxcv').set({empty: ''})
-                }
+                await firebase.database().ref().child(companycode+'/messages/'+name+'/1234zxcv').set({empty: ''})
                 this.props.navigation.replace('HomeScreen')
             } else {
                 setTimeout(()=>{
