@@ -8,7 +8,6 @@ import {
   ScrollView,
   Platform,
   Alert,
-  AppState,
   } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -32,11 +31,10 @@ export default class home extends Component {
             maps: '',
             firstaid: '',
             loading: true,
-            appState: AppState.currentState,
         }
         global.mScreen = 'Home',
         global.toName = '',
-        this.isMount = false
+        this.tempName = '',
         this.isGroup = false
 
         this.childChangedRef = null
@@ -45,6 +43,7 @@ export default class home extends Component {
 
     alertToName = (toName) => {
         console.log('Toname = ', toName)
+        this.tempName = toName;
         let message = toName == '123group' ? 'Message from your Group' : 'Message from ' + toName
         PushNotification.localNotification({
             title: "Notification", // (optional)
@@ -53,10 +52,6 @@ export default class home extends Component {
             soundName: 'default',
             number: 1,
         })
-    }
-
-    showNotification = (data) => {
-        console.log("Notification Data: ", data);
     }
 
     async componentDidMount() {
@@ -139,10 +134,9 @@ export default class home extends Component {
 
     setupDatabaseListener() {
         let self = this
-        this.childChangedRef = firebase.database().ref(user.code + '/messages/')
+        this.childChangedRef = firebase.database().ref(user.code + '/messages/' + user.name)
         this.childChangedRef.on("child_changed", (value) => {
             let name = value.key;
-            if (name == user.name) return;
             if (mScreen == 'Chat' && toName == name) return;
             self.alertToName(name)
         })
@@ -156,7 +150,6 @@ export default class home extends Component {
             },
             onNotification: function(notification) {
                 console.log("NOTIFICATION:", notification);
-                // notification.finish(PushNotificationIOS.FetchResult.NoData);
             },
             senderID: "532288277681",
             permissions: {
@@ -183,24 +176,12 @@ export default class home extends Component {
             // Get information about the notification that was opened
             const notification = notificationSnap.notification
             var name = ''
-            alert('Notification Tapped');
             console.log('Notification Opened:', notification)
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            notification._data.group == '1' ? name = '123group' : name = this.tempName;
             setTimeout(() => {
                 this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
             }, 1000)
         })
-    }
-    
-    _handleAppStateChange = (nextAppState) => {
-        if (
-            this.state.appState.match(/inactive|background/) &&
-            nextAppState === 'active'
-        ) {
-            console.log('App has come to the foreground!')
-            firebase.notifications().removeAllDeliveredNotifications()
-        }
-        this.setState({appState: nextAppState})
     }
 
     subPage(text) {

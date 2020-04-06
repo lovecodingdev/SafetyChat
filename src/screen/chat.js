@@ -1,4 +1,4 @@
-import React, { Component, useReducer } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Container } from 'native-base';
 import Header from '../components/header'
@@ -26,7 +26,6 @@ export default class chat extends Component {
         let dataRef = (toName == '123group') ? user.code + '/groupMessages/' + user.role : user.code + '/messages/' + user.name + '/' + toName;
         this.mChatRef = firebase.database().ref(dataRef);
         this.mChatRef.once('value', function(snapshot) {
-            console.log("Snapshot", snapshot)
             snapshot.forEach(function(keysnapshot) {
                 var message = keysnapshot.val()
                 messages.push(message)
