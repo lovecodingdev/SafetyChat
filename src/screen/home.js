@@ -3,12 +3,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Text,
   View,
   ScrollView,
   Platform,
-  Alert,
-  } from 'react-native';
+} from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
 import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
@@ -52,6 +50,9 @@ export default class home extends Component {
             soundName: 'default',
             number: 1,
         })
+        setTimeout(()=>{
+            PushNotification.cancelAllLocalNotifications()
+        }, 3000)
     }
 
     async componentDidMount() {
@@ -59,23 +60,6 @@ export default class home extends Component {
         this.setupDatabaseListener()
         await API.firebaseTokenRefresh()
         await this.prepareNotification()
-
-        // this.childChangedRef.limitToLast(1).on("child_added", (value) => {
-        //     if (self.isMount == true && mScreen != 'Chat') {
-        //         self.alertToName(value.key)
-        //     }
-        //     self.isMount = true
-        //     console.log('Child added =', value.key);
-        // })
-
-        // this.groupChangedRef = firebase.database().ref(user.code + '/groupMessages/' + user.role)
-        // this.groupChangedRef.limitToLast(1).on('child_added', (value) => {
-        //     console.log("Group_chagned", value.key)
-        //     if (self.isGroup == true && mScreen != 'Chat') {
-        //         self.alertToName('123group')
-        //     }
-        //     self.isGroup = true
-        // })
           
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
             if(!isDir){
@@ -138,7 +122,14 @@ export default class home extends Component {
         this.childChangedRef.on("child_changed", (value) => {
             let name = value.key;
             if (mScreen == 'Chat' && toName == name) return;
-            self.alertToName(name)
+            self.alertToName(name);
+        })
+
+        this.groupChangedRef = firebase.database().ref(user.code + '/groupMessages/')
+        this.groupChangedRef.on("child_changed", (value) => {
+            // console.log("Group_chagned", value.key)
+            if (toName == '123group' && mScreen == 'Chat') return
+            self.alertToName('123group');
         })
     }
 
@@ -175,9 +166,8 @@ export default class home extends Component {
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
             // Get information about the notification that was opened
             const notification = notificationSnap.notification
-            var name = ''
             console.log('Notification Opened:', notification)
-            notification._data.group == '1' ? name = '123group' : name = this.tempName;
+            var name = this.tempName;
             setTimeout(() => {
                 this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
             }, 1000)
@@ -196,7 +186,23 @@ export default class home extends Component {
         this.props.navigation.navigate('PhoneTreeScreen')
     }
 
+    admin() {
+        this.props.navigation.navigate('AdminScreen')
+    }
+
+    group() {
+        this.props.navigation.navigate('GroupScreen')
+    }
+
     render() {
+        var image = Images.group;
+        var title = Title.group;
+        var action = this.group.bind(this);
+        if (!user.role.toLowerCase().includes('admin')) {
+            image = Images.admin;
+            title = Title.admin;
+            action = this.admin.bind(this);
+        }
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
@@ -208,6 +214,7 @@ export default class home extends Component {
                                 source={this.state.safetyplans}
                             />
                         </TouchableOpacity>
+                        <BigIcon img={image} title={title} onPress={action}></BigIcon>
                         <BigIcon img={Images.generalInfo} title={Title.firstaid} onPress={this.subPage.bind(this, 'general.pdf')}></BigIcon>
                         <BigIcon img={this.state.maps} title={Title.maps} onPress={this.subPage.bind(this, 'map.pdf')}></BigIcon>
                         <BigIcon img={Images.safetychat} title={Title.phonetree} onPress={this.phonetree.bind(this)}></BigIcon>

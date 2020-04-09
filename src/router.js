@@ -10,6 +10,9 @@ import subpage from "./screen/subpage"
 import pdfDisplay from "./screen/pdfDisplay"
 import phonetree from "./screen/phonetree"
 import chat from "./screen/chat"
+import admin from "./screen/admin"
+import group from "./screen/group"
+import creategroup from "./screen/creategroup"
 
 export const PrimaryNav = createStackNavigator({
     SplashScreen: { screen: splash },
@@ -19,7 +22,10 @@ export const PrimaryNav = createStackNavigator({
     SubPageScreen: {screen: subpage},
     pdfDisplayScreen: {screen: pdfDisplay},
     PhoneTreeScreen: {screen: phonetree},
-    ChatScreen: {screen: chat}
+    ChatScreen: {screen: chat},
+    AdminScreen: {screen: admin},
+    GroupScreen: {screen: group},
+    CreateGroupScreen: {screen: creategroup},
 }, {
     headerMode: 'none',
 })

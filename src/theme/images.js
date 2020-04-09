@@ -37,6 +37,8 @@ const images = {
 
     //general icon
     general: require("../images/general.png"),
+    admin: require("../images/admin.png"),
+    group: require("../images/group.png"),
 }
 
 export default images;

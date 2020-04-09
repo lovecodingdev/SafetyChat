@@ -1,9 +1,9 @@
 const title = {
     safetyplans: "My SP App Safety Plans",
-    firstaid: "General Info",
+    firstaid: "General\nInfo",
     maps: "Maps",
     myroster: "My Roster",
-    phonetree: "MySP Safety Chat",
+    phonetree: "MySP\nSafety\nChat",
     intruderlockdown: "Intruder Lockdown",
     // accidentinjuryillness: "require("../images/accidentinjuryillness.png")",
     afterhoursbuildingemergency: "After Hours Building Emergency",
@@ -24,6 +24,8 @@ const title = {
     tornado: "Tornado",
     utilityemergency: "Utility Emergency",
     weapononcampus: "Weapon on Campus",
+    admin: "Admin\nPanel",
+    group: "My\nGroup",
 };
 
 export default title;

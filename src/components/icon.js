@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {View, TouchableOpacity, Image, StyleSheet, Text} from 'react-native'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
-import {Images} from '../theme'
 
 export default (props) => (
     <TouchableOpacity onPress={props.onPress} style={styles.constainer}>
@@ -43,5 +42,6 @@ const styles = StyleSheet.create({
         height: responsiveHeight(20)-40,
         alignItems: 'center',
         tintColor: '#fff',
+        resizeMode: 'contain'
     }
 })

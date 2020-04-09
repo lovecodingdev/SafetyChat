@@ -57,6 +57,43 @@ async function login(name, password) {
     }
 }
 
+async function getGroups() {
+    var groups = await firebase.database().ref().child(user.code + '/groups').once('value')
+    .then((snapshots) => {
+        var mGroups = []
+        snapshots.forEach(function(snapshot) {
+            var id = snapshot.key;
+            var title = snapshots.val().title;
+            var users = snapshots.val().users;
+            var group = {
+                id,
+                title,
+                users,
+            }
+            mGroups.push(group)
+        })
+        return mGroups;
+    })
+    return groups;
+}
+
+async function getAllUsers() {
+    var users = await firebase.database().ref().child(user.code + '/users').once('value')
+    .then((snapshots) => {
+        var mUsers = []
+        snapshots.forEach(function(snapshot) {
+            var user = {
+                name: snapshot.key,
+                role: snapshot.val().role,
+                token: snapshot.val().token,
+            }
+            mUsers.push(user)
+        })
+        return mUsers;
+    })
+    return users;
+}
+
 async function sendNotification(token) {
     var Headers = {
         'Authorization' : '',
@@ -146,4 +183,6 @@ export default {
     updateFiles,
     readManifest,
     firebaseTokenRefresh,
+    getGroups,
+    getAllUsers,
 }
