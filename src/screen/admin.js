@@ -10,6 +10,7 @@ import Header from '../components/header'
 import Icon from '../components/icon'
 import { responsiveWidth } from 'react-native-responsive-dimensions'
 import API from '../components/api'
+import firebase from 'react-native-firebase'
 import AppData from '../components/AppData'
 
 export default class Admin extends Component {
@@ -19,16 +20,27 @@ export default class Admin extends Component {
             groups: [],
             isFetching: false,
         }
-        this.users = []
+        this.users = [];
+        this.childChangedRef = null;
         mScreen = 'Admin'
     }
 
     async componentDidMount() {
         this.users = await API.getAllUsers()
-        this.getGroups()
+        await this.getGroups()
+        await this.setupListener()
+    }
+
+    async setupListener() {
+        let self = this
+        this.childChangedRef = firebase.database().ref(user.code + '/groups')
+        this.childChangedRef.on("child_changed", (value) => {
+            self.getGroups();
+        })
     }
 
     async getGroups() {
+        this.setState({isFetching: true});
         var all = {
             id: 'All',
             title: 'ALL USERS',
@@ -37,15 +49,17 @@ export default class Admin extends Component {
         var groups = [all]
         var mGroups = await API.getGroups()
         groups = groups.concat(mGroups);
+        console.log("*** Groups ***", groups);
         this.setState({groups, isFetching: false})
     }
 
-    onGroup(id) {
+    onGroup(group) {
         console.log('ID = ', id);
+        this.props.navigation.navigate('GroupScreen', {group});
     }
 
     createGroup() {
-        this.props.navigation.navigate('CreateGroupScreen')
+        this.props.navigation.navigate('CreateGroupScreen', {users: this.users})
     }
 
     async onRefresh() {
@@ -65,7 +79,7 @@ export default class Admin extends Component {
                         refreshing={this.state.isFetching}
                         numColumns = {2}
                         renderItem={({item}) =>
-                            <Icon img={Images.group} onPress={this.onGroup.bind(this, item['id'])} title={item['title']}></Icon>
+                            <Icon img={Images.group} onPress={this.onGroup.bind(this, item)} title={item.title}></Icon>
                         }
                         keyExtractor={item => item.id}
                     />

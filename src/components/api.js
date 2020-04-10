@@ -63,8 +63,9 @@ async function getGroups() {
         var mGroups = []
         snapshots.forEach(function(snapshot) {
             var id = snapshot.key;
-            var title = snapshots.val().title;
-            var users = snapshots.val().users;
+            console.log('Snapshots = ', snapshot);
+            var title = snapshot.val()['title'];
+            var users = snapshot.val()['users'];
             var group = {
                 id,
                 title,

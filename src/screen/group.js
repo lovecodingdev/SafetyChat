@@ -19,8 +19,8 @@ import firebase from 'react-native-firebase'
 export default class Group extends Component {
     constructor(props){
         super(props)
-        this.state = {
-        }
+
+        this.group = props.navigation.getParam('group');
     }
 
     render() {
@@ -29,7 +29,7 @@ export default class Group extends Component {
                 <Header prop={this.props.navigation} />
                 <ScrollView>
                     <View style={{flex: 1, padding: 10, backgroundColor: '#484D53'}}>
-                    
+                        
                     </View>
                 </ScrollView>
             </Container>

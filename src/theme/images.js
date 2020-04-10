@@ -39,6 +39,11 @@ const images = {
     general: require("../images/general.png"),
     admin: require("../images/admin.png"),
     group: require("../images/group.png"),
+
+    checkoff : require('../images/checkoff.png'),
+    checkon : require('../images/checkon.png'),
+    radiooff : require('../images/radiooff.png'),
+    radioon : require('../images/radioon.png'),
 }
 
 export default images;
