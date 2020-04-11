@@ -19,19 +19,34 @@ import firebase from 'react-native-firebase'
 export default class Group extends Component {
     constructor(props){
         super(props)
-
+        this.state = {
+            notification: '',
+            tokens: [],
+        };
         this.group = props.navigation.getParam('group');
     }
 
+    async componentDidMount() {
+        let tokens = await API.getTokens(this.group.users);
+        console.log("Tokens**:", tokens);
+        this.setState({tokens})
+    }
+
+    async onSend() {
+        var {tokens, notification} = this.state;
+        await API.sendPushNotification(tokens);
+    }
+
     render() {
+        let group = this.group;
         return (
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
-                <ScrollView>
-                    <View style={{flex: 1, padding: 10, backgroundColor: '#484D53'}}>
-                        
-                    </View>
-                </ScrollView>
+                <View style={styles.view}>
+                    <Label style={styles.label}>{group.title} ( Users: {group.users.length} )</Label>
+                    <TextInput style={styles.textInput} autoCapitalize='none' value={this.state.notification} onChangeText={text=>this.setState({notification: text})}/>
+                    <Button block style={styles.button} onPress={this.onSend.bind(this)}><Text>Send Notification</Text></Button>
+                </View>
             </Container>
         );
     }
@@ -40,6 +55,39 @@ export default class Group extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        backgroundColor: '#484D53',
+    },
+    view: {
+        flex: 1,
+        padding: 10,
+        alignItems: 'center',
+    },
+    label: {
+        marginBottom: 10,
+        marginTop: 30,
+        color: '#fff',
+        fontSize: 25,
+        fontWeight: 'bold',
+    },
+    button: {
+        backgroundColor: '#000',
+        marginTop: 5,
+        borderWidth: 2,
+        borderColor: '#fff',
+        width: responsiveWidth(80),
+        marginLeft: responsiveWidth(10) - 10,
+    },
+    textInput: {
+        width: responsiveWidth(80),
+        marginTop: 30,
+        marginBottom: 20,
+        borderWidth: 1, 
+        borderRadius: 5, 
+        borderColor:'#fff',
+        padding: 5,
+        color: '#fff',
+        height: 130,
+        textAlignVertical: 'top'
     },
 });

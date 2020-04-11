@@ -54,7 +54,6 @@ export default class Admin extends Component {
     }
 
     onGroup(group) {
-        console.log('ID = ', id);
         this.props.navigation.navigate('GroupScreen', {group});
     }
 

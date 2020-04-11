@@ -16,14 +16,14 @@ export default class Header extends Component {
                 {
                     text: 'Ok', onPress: async () => {
                         
-                        firebase.database().ref(user.code+'/users/'+user.name).remove().then(()=>{
+                        // firebase.database().ref(user.code+'/users/'+user.name).remove().then(()=>{
                             console.log("remove user!")
                             user.name = ''
                             user.role = ''
                             user.password = ''
                             user.code = ''
                             AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
-                        })
+                        // })
                     }
                 },
                 {

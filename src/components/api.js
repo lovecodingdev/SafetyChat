@@ -6,6 +6,7 @@ import {Platform, Alert} from 'react-native'
 import CONST from '../Const'
 import firebase from "react-native-firebase"
 
+const PushNotification = require("react-native-push-notification");
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
 async function getConnection() {
@@ -95,6 +96,37 @@ async function getAllUsers() {
     return users;
 }
 
+async function sendPushNotification(tokens) {
+    const FIREBASE_API_KEY = "AAAAe-7ajLE:APA91bF3r_qmbcW9DRFRGOrJIKEckPSyQArtqdixzbATdmFw3BqGgWpTy9QwSwYWwoiZb2lCHnFWdSGa6rydmJWEMg93SGHedxuBVME1vhHS3tIaB-oeePSGux-MFZUMWwx3HKZXLA0F";
+    const message = {
+        registration_ids: tokens, 
+        notification: {
+            title: "india vs south africa test",
+            body: "IND chose to bat",
+            "vibrate": 1,
+            "sound": 1,
+            "show_in_foreground": true,
+            "priority": "high",
+            "content_available": true,
+        },
+        data: {
+            title: "india vs south africa test",
+            body: "IND chose to bat",
+            score: 50,
+            wicket: 1
+        }
+    }
+  
+    let headers = new Headers({
+      "Content-Type": "application/json",
+      "Authorization": "key=" + FIREBASE_API_KEY
+    });
+  
+    let response = await fetch("https://fcm.googleapis.com/fcm/send", { method: "POST", headers, body: JSON.stringify(message) })
+    response = await response.json();
+    console.log(response);
+}
+
 async function sendNotification(token) {
     var Headers = {
         'Authorization' : '',
@@ -123,6 +155,21 @@ async function readRemoteMD5() {
         return res.data
     })
     return response
+}
+
+async function getTokens(users) {
+    var tokens = await firebase.database().ref().child(user.code + '/users').once('value')
+    .then((snapshots) => {
+        var tokens = []
+        snapshots.forEach(function(snapshot) {
+            let data = snapshot.val()
+            if (users.includes(snapshot.key)) {
+                tokens.push(data.token)
+            }
+        })
+        return tokens;
+    })
+    return tokens;
 }
 
 async function readManifest() {
@@ -186,4 +233,6 @@ export default {
     firebaseTokenRefresh,
     getGroups,
     getAllUsers,
+    getTokens,
+    sendPushNotification,
 }
