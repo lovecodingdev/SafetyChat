@@ -187,12 +187,13 @@ async function readManifest() {
 }
 
 async function firebaseTokenRefresh() {
-    let enabled = await firebase.messaging().hasPermission()
+    let enabled = await firebase.messaging().hasPermission();
     if (!enabled) return;
-    let token = await firebase.messaging().getToken()
-    if (user.token != '' && user.token == token) return
+    let token = await firebase.messaging().getToken();
+    if (user.token == '') return
+    console.log("fcm token = ", token);
     user.token = token
-    firebase.database().ref().child(companycode+'/users/'+name).set({token: user.token, role: user.role})
+    await firebase.database().ref().child(user.code+'/users/'+user.name).set({token: user.token, role: user.role})
     await AppData.setItem(CONST.TOKEN_KEY, token);
     return;
 }
