@@ -67,9 +67,7 @@ export default class chat extends Component {
             var temp = messages
             temp[0].createdAt = new Date()
             firebase.database().ref(user.code+'/messages/'+ toName +'/'+ user.name).push(temp[0])
-            var temp1 = messages
-            temp1[0].createdAt = new Date()        
-            firebase.database().ref(user.code+'/messages/'+user.name+'/'+ toName).push(temp1[0])
+            firebase.database().ref(user.code+'/messages/'+user.name+'/'+ toName).push(temp[0])
         }
     }
 
