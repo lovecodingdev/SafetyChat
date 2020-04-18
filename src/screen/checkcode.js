@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   ImageBackground,
+  KeyboardAvoidingView
   } from 'react-native';
 
 import {Button} from 'react-native-elements'
@@ -70,22 +71,21 @@ export default class checkcode extends Component {
 
     render() {
         return (
-            <Container style={styles.container}>
-                <ImageBackground source={Images.bg} style={{padding: 30, flex: 1}}>
-                    <Text style={{textAlign: 'center', fontSize: 30, color: '#fff', marginTop: responsiveHeight(30)}}>Company Code</Text>
-                    <TextInput
-                        style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 30, marginBottom: 20, color: '#fff', borderRadius: 10 }}
-                        onChangeText={(text) => this.setState({text})}
-                        placeholder="Company Code"
-                        placeholderTextColor="#fff"
-                        value={this.state.text}
-                    />
-                    <Button title="Enter Code" onPress={this.setCode.bind(this)}></Button>
-                </ImageBackground>
+            <KeyboardAvoidingView style={styles.container} behavior="height">
+                <Text style={{textAlign: 'center', fontSize: 30, color: '#fff', marginTop: responsiveHeight(30)}}>Company Code</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 30, marginBottom: 20, color: '#fff', borderRadius: 10 }}
+                    onChangeText={(text) => this.setState({text})}
+                    placeholder="Company Code"
+                    placeholderTextColor="#fff"
+                    value={this.state.text}
+                    onSubmitEditing={this.setCode.bind(this)}
+                />
+                <Button title="Enter Code" onPress={this.setCode.bind(this)}></Button>
                 <Spinner
                     visible={this.state.loading}
                 ></Spinner>
-            </Container>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -93,7 +93,8 @@ export default class checkcode extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch'
+        backgroundColor: '#484D53',
+        padding: 20,
     },
     image: {
         flex: 1

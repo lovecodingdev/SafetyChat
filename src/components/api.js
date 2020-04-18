@@ -65,12 +65,14 @@ async function getGroups() {
         snapshots.forEach(function(snapshot) {
             var id = snapshot.key;
             console.log('Snapshots = ', snapshot);
-            var title = snapshot.val()['title'];
+            var name = snapshot.val()['title'];
             var users = snapshot.val()['users'];
             var group = {
                 id,
-                title,
+                name,
+                role: 'GROUP',
                 users,
+                isGroup: true,
             }
             mGroups.push(group)
         })
@@ -85,9 +87,11 @@ async function getAllUsers() {
         var mUsers = []
         snapshots.forEach(function(snapshot) {
             var user = {
+                id: snapshot.key,
                 name: snapshot.key,
                 role: snapshot.val().role,
                 token: snapshot.val().token,
+                isGroup: false,
             }
             mUsers.push(user)
         })

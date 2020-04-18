@@ -58,8 +58,8 @@ export default class home extends Component {
     async componentDidMount() {
   
         this.setupDatabaseListener()
-        await API.firebaseTokenRefresh()
-        await this.prepareNotification()
+        API.firebaseTokenRefresh()
+        this.prepareNotification()
           
         RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
             if(!isDir){

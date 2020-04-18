@@ -55,9 +55,10 @@ export default class CreateGroup extends Component {
             title: title,
             users: choices
         })
-        .then(() => 
-            self.setState({loading: false})
-        );
+        .then(() => {
+            self.setState({loading: false});
+            alert("Successfully Created");
+        });
     }
 
     onChangedSelectedUsers(questionIndex, checkedIndexes) {
@@ -77,17 +78,17 @@ export default class CreateGroup extends Component {
                 <ImageBackground source={Images.bg} style={{flex: 1}}>
                     {isInvited == true ?
                     <View style={styles.view}>
-                        <Label style={styles.label}>Select users</Label>
+                        <Label style={styles.label}>INVITE USERS</Label>
                         <ManyChoices many={true} data={this.users} checkedIndexes={indexes} onChanged={this.onChangedSelectedUsers.bind(this)}/>
                         <Button block style={styles.button} onPress={this.onSelect.bind(this)}><Text>SELECT</Text></Button>
                     </View>:
                     <View>
-                        <Text style={styles.title}>Create User Group</Text>
+                        <Text style={styles.title}>CREATE GROUP</Text>
                         <View style={{padding: 20}}>        
-                            <Label style={{color: '#fff'}}>Group Title</Label>
+                            <Label style={{color: '#fff'}}>GROUP TITLE</Label>
                             <TextInput style={styles.textInput} autoCapitalize='none' value={this.state.title} onChangeText={text=>this.setState({title: text})}/>
                             <Button transparent onPress={this.onDialog.bind(this)}><Text>Invite Users</Text></Button>
-                            <Button block style={styles.button} onPress={this.onCreate.bind(this)}><Text>Create Group</Text></Button>
+                            <Button block style={styles.button} onPress={this.onCreate.bind(this)}><Text>CREATE</Text></Button>
                         </View>
                         <Spinner
                             visible={this.state.loading}
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
     },
     view: {
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'rgba( 0, 0, 0, 0.6 )'
     },
     label: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         color: '#fff', 
         fontSize: 30, 
         marginBottom: 30,
-        marginTop: responsiveHeight(20),
+        marginTop: responsiveHeight(10),
     },
     textInput: {
         marginTop: 10,

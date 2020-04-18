@@ -43,7 +43,7 @@ export default class Admin extends Component {
         this.setState({isFetching: true});
         var all = {
             id: 'All',
-            title: 'ALL USERS',
+            name: 'ALL USERS',
             users: this.users
         }
         var groups = [all]
@@ -78,7 +78,7 @@ export default class Admin extends Component {
                         refreshing={this.state.isFetching}
                         numColumns = {2}
                         renderItem={({item}) =>
-                            <Icon img={Images.group} onPress={this.onGroup.bind(this, item)} title={item.title}></Icon>
+                            <Icon img={Images.group} onPress={this.onGroup.bind(this, item)} title={item.name}></Icon>
                         }
                         keyExtractor={item => item.id}
                     />

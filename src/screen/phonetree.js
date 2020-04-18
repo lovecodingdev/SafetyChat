@@ -18,35 +18,24 @@ import API from "../components/api"
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData'
 import {ifIphoneX} from 'react-native-iphone-x-helper'
+import {ListItem, Avatar} from 'react-native-elements'
 
 export default class phonetree extends Component {
     constructor(props) {
-        super(props)
-        this.companycode = ''
-        this.selfname = ''
-        this.role = ''
+        super(props);
         this.state = {
-           users: [],
+           channels: [],
         }
         
         global.mScreen = 'PhoneTree'
     }
 
     async componentDidMount() {
-        var self = this
-        this.companycode = await AppData.getItem('Companycode')
-        this.selfname = await AppData.getItem('username')
-        this.role = await AppData.getItem('role')
-        firebase.database().ref(this.companycode+'/users').once('value', function(snapshot) {
-            var users = Array()
-            snapshot.forEach(function(item) {
-                users.push(item.key)
-                //var user = item.key
-                //users.push(user.charAt(0).toUpperCase() + user.slice(1))
-            })
-            users.sort()
-            self.setState({users})
-        })
+        let users = await API.getAllUsers();
+        let groups = await API.getGroups();
+
+        var channels = users.concat(groups);
+        this.setState({channels});
     }
 
 
@@ -55,14 +44,17 @@ export default class phonetree extends Component {
     }
 
     renderRow = ({item}) => {
-        var self = this
-        if(this.selfname != item) {
+        var name = item.name;
+        if(user.name != name) {
             return (
-                <View style={styles.listItem}>
-                    <TouchableOpacity onPress={self.chat.bind(self, item)}>
-                        <Text style={styles.item}>{item}</Text>
-                    </TouchableOpacity>
-                </View>
+                <ListItem title={name.charAt(0).toUpperCase() + name.slice(1)}
+                    leftAvatar={<Avatar rounded title={name.slice(0,2).toUpperCase()} />}
+                    subtitle={item.role.toUpperCase()}
+                    onPress={this.chat.bind(this, item)}
+                    bottomDivider
+                    chevron
+                    // badge={{value: 3}}
+                />
             )
         }
     }
@@ -83,22 +75,10 @@ export default class phonetree extends Component {
                         </View>
                         <Text style={styles.title}>Safety Chat</Text>
                     </View>
-                    <View>
-                        <Text style={styles.title}>My Group</Text>
-                        <View style={styles.listItem}>
-                            <TouchableOpacity onPress={this.onGroup.bind(this)}>
-                                <Text style={styles.item}>
-                                    {this.role}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                     <View style={{marginTop: 10}}>
-                        <Text style={styles.title}>Users</Text>
-
                         <FlatList 
-                            style={{...ifIphoneX({height: responsiveHeight(100)-310}, {height: responsiveHeight(100)-290})}}
-                            data={this.state.users}
+                            style={{...ifIphoneX({height: responsiveHeight(100) - 190}, {height: responsiveHeight(100)-170})}}
+                            data={this.state.channels}
                             renderItem={this.renderRow}
                             showsVerticalScrollIndicator={true}
                             //keyExtractor={item}

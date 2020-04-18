@@ -53,7 +53,12 @@ export default class chat extends Component {
 
     componentDidMount() {
         //message list init
-        toName = this.props.navigation.getParam('name')
+        var item = this.props.navigation.getParam('name')
+        if (item instanceof Object) {
+            toName = item.id;
+        } else {
+            toName = item;
+        }
         this.onChat()
     }
 
