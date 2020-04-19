@@ -18,12 +18,13 @@ export default class chat extends Component {
         this.onChat = this.onChat.bind(this)
         this.mChatRef = null;
         this.mChatListener = null;
+        this.item = props.navigation.getParam('item');
     }
 
     onChat() {
         let self = this;
         var messages = [];
-        let dataRef = (toName == '123group') ? user.code + '/groupMessages/' + user.role : user.code + '/messages/' + user.name + '/' + toName;
+        let dataRef = (this.item.isGroup == true) ? user.code + '/groupMessages/' + this.item.id : user.code + '/messages/' + user.name + '/' + toName;
         this.mChatRef = firebase.database().ref(dataRef);
         this.mChatRef.once('value', function(snapshot) {
             snapshot.forEach(function(keysnapshot) {
@@ -53,21 +54,20 @@ export default class chat extends Component {
 
     componentDidMount() {
         //message list init
-        var item = this.props.navigation.getParam('name')
-        if (item instanceof Object) {
-            toName = item.id;
+        if (this.item instanceof Object) {
+            toName = this.item.id;
         } else {
-            toName = item;
+            toName = this.item;
         }
         this.onChat()
     }
 
     onSend(messages = []) {
         
-        if(toName == '123group') {
+        if(this.item.isGroup) {
             var temp = messages
             temp[0].createdAt = new Date()
-            firebase.database().ref(user.code+'/groupMessages/'+user.role).push(temp[0])
+            firebase.database().ref(user.code+'/groupMessages/'+this.item.id).push(temp[0])
         } else {
             var temp = messages
             temp[0].createdAt = new Date()

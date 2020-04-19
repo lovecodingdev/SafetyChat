@@ -40,7 +40,7 @@ export default class phonetree extends Component {
 
 
     chat(item) {
-        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: item}, key: 'chat'})
+        this.props.navigation.navigate({routeName:'ChatScreen', params: {item: item}, key: 'chat'})
     }
 
     renderRow = ({item}) => {
@@ -53,14 +53,10 @@ export default class phonetree extends Component {
                     onPress={this.chat.bind(this, item)}
                     bottomDivider
                     chevron
-                    // badge={{value: 3}}
+                    // badge={{value: isBadge == true ? 1 : 0}}
                 />
             )
         }
-    }
-    
-    onGroup() {
-        this.props.navigation.navigate({routeName:'ChatScreen', params: {name: '123group'}, key: 'chat'})
     }
 
     render() {
