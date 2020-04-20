@@ -57,7 +57,11 @@ export default class CreateGroup extends Component {
         })
         .then(() => {
             self.setState({loading: false});
+            console.log('Create Group Successfully');
             alert("Successfully Created");
+            setTimeout(() => {
+                self.props.navigation.goBack();
+            }, 300);
         });
     }
 

@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Platform,
+  DeviceEventEmitter,
 } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -17,6 +18,7 @@ import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData';
 import Const from '../Const';
+import PushNotificationAndroid from 'react-native-push-notification'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 const PushNotification = require("react-native-push-notification");
@@ -30,29 +32,13 @@ export default class home extends Component {
             firstaid: '',
             loading: true,
         }
-        global.mScreen = 'Home',
-        global.toName = '',
-        this.tempName = '',
-        this.isGroup = false
+        global.mScreen = 'Home';
+        global.toName = '';
+        this.item = '';
 
         this.childChangedRef = null
         this.groupChangedRef = null
-    }
-
-    alertToName = (toName) => {
-        console.log('Toname = ', toName)
-        this.tempName = toName;
-        let message = toName == '123group' ? 'Message from your Group' : 'Message from ' + toName
-        PushNotification.localNotification({
-            title: "Notification", // (optional)
-            message: message, // (required)
-            playSound: true,
-            soundName: 'default',
-            number: 1,
-        })
-        setTimeout(()=>{
-            PushNotification.cancelAllLocalNotifications()
-        }, 3000)
+        this.localNotify = this.localNotify.bind(this);
     }
 
     async componentDidMount() {
@@ -116,31 +102,61 @@ export default class home extends Component {
         
     }
 
+    localNotify = (item) => {
+        console.log('Toname = ', item.id)
+        this.item = item;
+        let message = item.isGroup ? 'Message from your Group' : 'Message from ' + toName
+        PushNotification.localNotification({
+            title: "Notification", // (optional)
+            message: message, // (required)
+            playSound: true,
+            soundName: 'default',
+            number: 1,
+        })
+        setTimeout(()=>{
+            PushNotification.cancelAllLocalNotifications()
+        }, 3000)
+    }
+
     setupDatabaseListener() {
         let self = this
         this.childChangedRef = firebase.database().ref(user.code + '/messages/' + user.name)
         this.childChangedRef.on("child_changed", (value) => {
             let name = value.key;
             if (mScreen == 'Chat' && toName == name) return;
-            self.alertToName(name);
+            let item = {
+                id: name,
+                name: name,
+                isGroup: false,
+            }
+            self.localNotify(item);
         })
 
         this.groupChangedRef = firebase.database().ref(user.code + '/groupMessages/')
         this.groupChangedRef.on("child_changed", (value) => {
-            // console.log("Group_chagned", value.key)
-            if (toName == '123group' && mScreen == 'Chat') return
-            self.alertToName('123group');
+            console.log("Group_chagned", value.val())
+            if (toName == value.key && mScreen == 'Chat') return
+            let item = {
+                id: value.key,
+                name: value.key,
+                isGroup: true,
+            }
+            self.localNotify(item);
         })
     }
 
     async prepareNotification() {
+        let self = this;
         PushNotification.configure({
             onRegister: function(token) {
                 // user.token = token
                 console.log("TOKEN:", token);
             },
             onNotification: function(notification) {
-                console.log("NOTIFICATION:", notification);
+                console.log("NOTIFICATION:", self.item);
+                if (self.item != '') {
+                    self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
+                }
             },
             senderID: "532288277681",
             permissions: {
@@ -163,15 +179,15 @@ export default class home extends Component {
         }
 
         // App in background or foreground notification taps
-        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
-            // Get information about the notification that was opened
-            const notification = notificationSnap.notification
-            console.log('Notification Opened:', notification)
-            var name = this.tempName;
-            setTimeout(() => {
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }, 1000)
-        })
+        // this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
+        //     // Get information about the notification that was opened
+        //     const notification = notificationSnap.notification
+        //     console.log('Notification Opened:', notification)
+        //     var name = this.tempName;
+        //     setTimeout(() => {
+        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
+        //     }, 1000)
+        // })
     }
 
     subPage(text) {
