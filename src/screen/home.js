@@ -105,7 +105,7 @@ export default class home extends Component {
     localNotify = (item) => {
         console.log('Toname = ', item.id)
         this.item = item;
-        let message = item.isGroup ? 'Message from your Group' : 'Message from ' + toName
+        let message = item.isGroup ? 'Message from your Group' : 'Message from ' + item.name
         PushNotification.localNotification({
             title: "Notification", // (optional)
             message: message, // (required)
@@ -179,15 +179,13 @@ export default class home extends Component {
         }
 
         // App in background or foreground notification taps
-        // this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
-        //     // Get information about the notification that was opened
-        //     const notification = notificationSnap.notification
-        //     console.log('Notification Opened:', notification)
-        //     var name = this.tempName;
-        //     setTimeout(() => {
-        //         this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-        //     }, 1000)
-        // })
+        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
+            // Get information about the notification that was opened
+            console.log("NOTIFICATION OPENED:", self.item);
+            if (self.item != '') {
+                self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
+            }
+        })
     }
 
     subPage(text) {
