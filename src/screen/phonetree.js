@@ -24,62 +24,113 @@ export default class phonetree extends Component {
     constructor(props) {
         super(props);
         this.state = {
+           ids: [],
            channels: [],
         }
-        
         global.mScreen = 'PhoneTree'
+        this.didFocusListener = null;
     }
 
     async componentDidMount() {
-        let users = await API.getAllUsers();
-        let groups = await API.getGroups();
-
-        var channels = users.concat(groups);
-        this.setState({channels});
+        let self = this;
+        this.didFocusListener =  await this.props.navigation.addListener('willFocus',
+        payload => {
+            console.log('Updated screen', payload);
+            self.didUpdateUsers();
+        });
     }
 
+    async didUpdateUsers() {
+        let users = await AppData.getItem('Users');
+        let groups = await AppData.getItem('Groups');
+        var channels = users.concat(groups);
+        var ids = [];
+        await this.asyncForEach(channels, async(channel) => {
+            if (channel.name != user.name) {
+                let date = await AppData.getItem(channel.id);
+                var readDate = await AppData.getItem(channel.id+"read");
+                if (readDate > date) {
+                    isBadge = false;
+                } else if (date == null || date == undefined) {
+                    isBadge = false;
+                } else if (readDate < date) {
+                    isBadge = true;
+                } else if (readDate == null && date != null) {
+                    isBadge = true;
+                }
+                ids.push({id: channel.id, date, isBadge});
+            }
+        });
+        ids = ids.sort((a,b) => new Date(b.date) - new Date(a.date));
+        console.log("dates = ", ids);
+        this.setState({ids, channels});
+    }
+
+    componentWillUnmount() {
+        this.didFocusListener.remove();
+    }
+
+    async asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    }
 
     chat(item) {
         this.props.navigation.navigate({routeName:'ChatScreen', params: {item: item}, key: 'chat'})
     }
 
+    getChannelFromId(id) {
+        var chanel = null;
+        let {channels} = this.state;
+        channels.forEach(function(channel) {
+            if (channel.id == id) {
+                chanel = channel;
+            }
+        })
+        return chanel;
+    }
+
     renderRow = ({item}) => {
-        var name = item.name;
-        if(user.name != name) {
+        var channel = this.getChannelFromId(item.id);
+        var name = channel.name;
+        var isBadge = item.isBadge;
+        if (isBadge == true) {
             return (
                 <ListItem title={name.charAt(0).toUpperCase() + name.slice(1)}
                     leftAvatar={<Avatar rounded title={name.slice(0,2).toUpperCase()} />}
-                    subtitle={item.role.toUpperCase()}
-                    onPress={this.chat.bind(this, item)}
+                    subtitle={channel.role.toUpperCase()}
+                    onPress={this.chat.bind(this, channel)}
                     bottomDivider
                     chevron
-                    // badge={{value: isBadge == true ? 1 : 0}}
+                    badge={{value: 1}}
+                />
+            )
+        } else {
+            return (
+                <ListItem title={name.charAt(0).toUpperCase() + name.slice(1)}
+                    leftAvatar={<Avatar rounded title={name.slice(0,2).toUpperCase()} />}
+                    subtitle={channel.role.toUpperCase()}
+                    onPress={this.chat.bind(this, channel)}
+                    bottomDivider
+                    chevron
                 />
             )
         }
     }
 
     render() {
-        console.log(this.role)
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
-                <View style={{padding: 10}}>
-                    <View style={{flexDirection: 'row', padding: 10, height: 60, alignContent: 'center'}}>
-                        <View style={{width: 50,height: 50}}>
-                            <Image source={Images.logo} style={{width: '100%', height: '100%'}}></Image>
-                        </View>
-                        <Text style={styles.title}>Safety Chat</Text>
-                    </View>
-                    <View style={{marginTop: 10}}>
-                        <FlatList 
-                            style={{...ifIphoneX({height: responsiveHeight(100) - 190}, {height: responsiveHeight(100)-170})}}
-                            data={this.state.channels}
-                            renderItem={this.renderRow}
-                            showsVerticalScrollIndicator={true}
-                            //keyExtractor={item}
-                        />
-                    </View>
+                <View>
+                    <FlatList 
+                        style={{...ifIphoneX({height: responsiveHeight(100) - 105}, {height: responsiveHeight(100)-85})}}
+                        data={this.state.ids}
+                        renderItem={this.renderRow}
+                        showsVerticalScrollIndicator={true}
+                        //keyExtractor={item}
+                    />
                 </View>
             </Container>
         )

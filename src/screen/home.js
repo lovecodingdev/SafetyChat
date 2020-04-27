@@ -44,67 +44,16 @@ export default class home extends Component {
     async componentDidMount() {
   
         this.setupDatabaseListener()
+        await this.getAllGroups()
         API.firebaseTokenRefresh()
         this.prepareNotification()
-          
-        RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
-            if(!isDir){
-                RNFetchBlob.fs.mkdir(resourceUrl).then(mkdir => {console.log("directory create!", mkdir)})
-            }
-        }) 
-        let remoteMD5 = await API.readRemoteMD5()
-        var url = resourceUrl + 'localCheck.md5'
-
-        RNFetchBlob.fs.exists(url).then((exist) => {
-            console.log('md5 file exist', exist)
-            if(exist) {
-                RNFetchBlob.fs.readFile(url, 'utf8').then((localMD5) => { 
-                    if(localMD5 == remoteMD5) {
-                        console.log("Correct Sync!", localMD5)
-                    } else {
-                        RNFetchBlob.fs.unlink(resourceUrl).then(() => {
-                            RNFetchBlob.fs.mkdir(resourceUrl).then(() =>{
-                                RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
-                                    API.updateFiles().then(() => {console.log('Update Success!')})
-                                })
-                            })
-                        })
-                    }
-                })
-            } else {
-                RNFetchBlob.fs.unlink(resourceUrl).then(() => {
-                    RNFetchBlob.fs.mkdir(resourceUrl).then(() => {
-                        RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
-                            API.updateFiles().then(() => {console.log('Update Success!')})
-                        })
-                    })
-                })
-            }
-        })
-         
-        var safetyurl = resourceUrl + 'safetyplans.png'
-        RNFetchBlob.fs.exists(safetyurl).then(exist => {
-            var res = exist ? {'uri': "file://"+safetyurl} : Images.safetyplans
-            this.setState({safetyplans: res})
-        })
-
-        var mapsurl = resourceUrl + 'maps.png'
-        RNFetchBlob.fs.exists(mapsurl).then(exist => {
-            var res = exist ? {'uri': "file://"+mapsurl} : Images.maps
-            this.setState({maps: res})
-        }) 
-
-        var firsturl = resourceUrl + 'firstaid.png'
-        RNFetchBlob.fs.exists(firsturl).then(exist => {
-            var res = exist ? {'uri': "file://"+firsturl} : Images.firstaid
-            this.setState({firstaid: res, loading: false})
-        })
-        
+        await this.fetchDocument()
     }
 
     localNotify = (item) => {
-        console.log('Toname = ', item.id)
+        console.log('Toname = ', item.id + "badge")
         this.item = item;
+        AppData.setItem(item.id+"badge", true)
         let message = item.isGroup ? 'Message from your Group' : 'Message from ' + item.name
         PushNotification.localNotification({
             title: "Notification", // (optional)
@@ -116,6 +65,70 @@ export default class home extends Component {
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
         }, 3000)
+    }
+
+    async getAllGroups() {
+        firebase.database().ref().child(user.code + '/users').once('value')
+        .then((snapshots) => {
+            var mUsers = []
+            snapshots.forEach(function(snapshot) {
+                var mUser = {
+                    id: snapshot.key,
+                    name: snapshot.key,
+                    role: snapshot.val().role,
+                    token: snapshot.val().token,
+                    isGroup: false,
+                }
+                mUsers.push(mUser)
+            })
+            AppData.setItem('Users', mUsers);
+        })
+        firebase.database().ref().child(user.code + '/groups').once('value')
+        .then((snapshots) => {
+            var mGroups = []
+            snapshots.forEach(function(snapshot) {
+                var id = snapshot.key;
+                var name = snapshot.val()['title'];
+                var users = snapshot.val()['users'];
+                if (users.includes(user.name)) {
+                    var group = {
+                        id,
+                        name,
+                        role: 'GROUP',
+                        users,
+                        isGroup: true,
+                    }
+                    mGroups.push(group)
+                }
+            })
+            AppData.setItem('Groups', mGroups);
+        })
+        firebase.database().ref().child(user.code + '/messages/' + user.name).once('value')
+        .then((snapshots) => {
+            snapshots.forEach(function(snapshot) {
+                var date = new Date(2000,1,1);
+                var key = snapshot.key;
+                snapshot.forEach(function(daSnap) {
+                    if (new Date(daSnap.val().createdAt) > date) {
+                        date = new Date(daSnap.val().createdAt);
+                    }
+                }) 
+                AppData.setItem(key, date);
+            });
+        })
+        firebase.database().ref().child(user.code + '/groupMessages/').once('value')
+        .then((snapshots) => {
+            snapshots.forEach(function(snapshot) {
+                var date = new Date(2000,1,1);
+                var key = snapshot.key;
+                snapshot.forEach(function(daSnap) {
+                    if (new Date(daSnap.val().createdAt) > date) {
+                        date = new Date(daSnap.val().createdAt);
+                    }
+                }) 
+                AppData.setItem(key, date);
+            });
+        })
     }
 
     setupDatabaseListener() {
@@ -206,6 +219,61 @@ export default class home extends Component {
 
     group() {
         this.props.navigation.navigate('GroupScreen')
+    }
+
+    async fetchDocument() {
+        RNFetchBlob.fs.isDir(resourceUrl).then((isDir) => {
+            if(!isDir){
+                RNFetchBlob.fs.mkdir(resourceUrl).then(mkdir => {console.log("directory create!", mkdir)})
+            }
+        }) 
+        let remoteMD5 = await API.readRemoteMD5()
+        var url = resourceUrl + 'localCheck.md5'
+
+        RNFetchBlob.fs.exists(url).then((exist) => {
+            console.log('md5 file exist', exist)
+            if(exist) {
+                RNFetchBlob.fs.readFile(url, 'utf8').then((localMD5) => { 
+                    if(localMD5 == remoteMD5) {
+                        console.log("Correct Sync!", localMD5)
+                    } else {
+                        RNFetchBlob.fs.unlink(resourceUrl).then(() => {
+                            RNFetchBlob.fs.mkdir(resourceUrl).then(() =>{
+                                RNFetchBlob.fs.writeFile(url, remoteMD5,'utf8').then(() => {
+                                    API.updateFiles().then(() => {console.log('Update Success!')})
+                                })
+                            })
+                        })
+                    }
+                })
+            } else {
+                RNFetchBlob.fs.unlink(resourceUrl).then(() => {
+                    RNFetchBlob.fs.mkdir(resourceUrl).then(() => {
+                        RNFetchBlob.fs.createFile(url, remoteMD5, 'utf8').then(() => {
+                            API.updateFiles().then(() => {console.log('Update Success!')})
+                        })
+                    })
+                })
+            }
+        })
+         
+        var safetyurl = resourceUrl + 'safetyplans.png'
+        RNFetchBlob.fs.exists(safetyurl).then(exist => {
+            var res = exist ? {'uri': "file://"+safetyurl} : Images.safetyplans
+            this.setState({safetyplans: res})
+        })
+
+        var mapsurl = resourceUrl + 'maps.png'
+        RNFetchBlob.fs.exists(mapsurl).then(exist => {
+            var res = exist ? {'uri': "file://"+mapsurl} : Images.maps
+            this.setState({maps: res})
+        }) 
+
+        var firsturl = resourceUrl + 'firstaid.png'
+        RNFetchBlob.fs.exists(firsturl).then(exist => {
+            var res = exist ? {'uri': "file://"+firsturl} : Images.firstaid
+            this.setState({firstaid: res, loading: false})
+        })
     }
 
     render() {

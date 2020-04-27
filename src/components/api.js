@@ -86,14 +86,14 @@ async function getAllUsers() {
     .then((snapshots) => {
         var mUsers = []
         snapshots.forEach(function(snapshot) {
-            var user = {
+            var mUser = {
                 id: snapshot.key,
                 name: snapshot.key,
                 role: snapshot.val().role,
                 token: snapshot.val().token,
                 isGroup: false,
             }
-            mUsers.push(user)
+            mUsers.push(mUser)
         })
         return mUsers;
     })
