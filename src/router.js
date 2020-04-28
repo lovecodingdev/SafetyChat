@@ -13,6 +13,7 @@ import chat from "./screen/chat"
 import admin from "./screen/admin"
 import group from "./screen/group"
 import creategroup from "./screen/creategroup"
+import selectgroup from "./screen/selectgroup"
 
 export const PrimaryNav = createStackNavigator({
     SplashScreen: { screen: splash },
@@ -26,6 +27,7 @@ export const PrimaryNav = createStackNavigator({
     AdminScreen: {screen: admin},
     GroupScreen: {screen: group},
     CreateGroupScreen: {screen: creategroup},
+    SelectGroupScreen: {screen: selectgroup},
 }, {
     headerMode: 'none',
 })

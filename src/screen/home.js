@@ -185,10 +185,15 @@ export default class home extends Component {
         if (notificationOpen) {
             // App was opened by a notification
             const notification = notificationOpen.notification
-            notification._data.group == '1' ? name = '123group' : name = notification._data.fromname
+            toname = notification._data.fromname
+            self.item = {
+                id: toName,
+                name: toName,
+                isGroup: notification._data.group == '1'
+            }
             setTimeout(() => {
-                this.props.navigation.navigate({routeName:'ChatScreen', params: {name: name}, key: 'chat'})
-            }, 1000)
+                this.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
+            }, 100)
         }
 
         // App in background or foreground notification taps
@@ -218,7 +223,7 @@ export default class home extends Component {
     }
 
     group() {
-        this.props.navigation.navigate('GroupScreen')
+        this.props.navigation.navigate('SelectGroupScreen')
     }
 
     async fetchDocument() {
@@ -280,7 +285,7 @@ export default class home extends Component {
         var image = Images.group;
         var title = Title.group;
         var action = this.group.bind(this);
-        if (!user.role.toLowerCase().includes('admin')) {
+        if (user.role.toLowerCase().includes('admin')) {
             image = Images.admin;
             title = Title.admin;
             action = this.admin.bind(this);

@@ -13,7 +13,7 @@ import API from '../components/api'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData'
 
-export default class Admin extends Component {
+export default class SelectGroup extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -22,13 +22,14 @@ export default class Admin extends Component {
         }
         this.users = [];
         this.childChangedRef = null;
-        mScreen = 'Admin'
+        mScreen = 'SelectGroup'
     }
 
     async componentDidMount() {
-        this.users = await API.getAllUsers()
-        await this.getGroups()
-        await this.setupListener()
+        this.users = await AppData.getItem('Users')
+        let groups = await AppData.getItem('Groups');
+        this.setState({groups})
+        // await this.setupListener()
     }
 
     async setupListener() {
@@ -55,11 +56,12 @@ export default class Admin extends Component {
 
     onGroup(group) {
         // this.props.navigation.navigate('GroupScreen', {group});
+        this.props.navigation.navigate({routeName:'ChatScreen', params: {item: group}, key: 'chat'})
     }
 
-    createGroup() {
-        this.props.navigation.navigate('CreateGroupScreen', {users: this.users})
-    }
+    // createGroup() {
+    //     this.props.navigation.navigate('CreateGroupScreen', {users: this.users})
+    // }
 
     async onRefresh() {
         this.setState({ isFetching: true }, function() { this.getGroups() });
@@ -83,7 +85,7 @@ export default class Admin extends Component {
                         keyExtractor={item => item.id}
                     />
                 </ImageBackground>
-                <Button block style={styles.button} onPress={this.createGroup.bind(this)}><Text>Organize Group</Text></Button>
+                {/* <Button block style={styles.button} onPress={this.createGroup.bind(this)}><Text>Organize Group</Text></Button> */}
             </Container>
         );
     }
