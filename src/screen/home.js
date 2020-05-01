@@ -185,7 +185,7 @@ export default class home extends Component {
         if (notificationOpen) {
             // App was opened by a notification
             const notification = notificationOpen.notification
-            toname = notification._data.fromname
+            toName = notification._data.fromname
             self.item = {
                 id: toName,
                 name: toName,

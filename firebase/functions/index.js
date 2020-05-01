@@ -71,75 +71,76 @@ exports.sendMessage = functions.database.ref('{companycode}/messages/{toname}/{f
 
     });
 
-exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{role}/{key}')
+exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{gid}/{key}')
     .onCreate((csnapshot, context) => {
         let value = csnapshot.val();
-        console.log('---------message---------------',value);
-        var company = context.params.companycode
-        var fromrole = context.params.role
-        var fromname = value.user.name
+        console.log('---------groupmessage---------------',value);
+        var company = context.params.companycode;
+        var gid = context.params.gid;
         var totoken = []
-        admin.database().ref(company+'/users').once('value', function(snapshot) {
-            snapshot.forEach(function(child) {
-                if(fromname != child.key) {
-                    var role = child.val().role
-                    if(role == fromrole) {
+        var title = ""
+        admin.database().ref(company+'/groups/' + gid).once('value', function(snapshot) {
+            title = snapshot.val().title;
+            var users = snapshot.val().users;
+            admin.database().ref(company+'/users').once('value', function(msnapshot) {
+                msnapshot.forEach(function(child) {
+                    if (users.includes(child.key)) {
                         var temp = child.val().token;
                         console.log('token', temp)
                         totoken.push(temp)
                     }
-                }
-            })
-            var messages = {
-                data: {
-                    data: JSON.stringify(value),
-                    fromname: fromrole,
-                    group: '1',
-                },
-                tokens: totoken
-            };
-           
-            admin.messaging().sendMulticast(messages)
-            .then((res) => {
-                console.log('Successfully sent message:', res);
-                return;
-            })
-            .catch((err) => {
-                console.log('Error sending message:', err);
-            });
-
-
-            //notifications
-            var notification = {
-                notification: {
-                    title: 'Notification',
-                    body: 'Message from group',
-                },
-                data: {
-                    fromname: fromrole,
-                    group: '1',
-                },
-                android: {
-                    notification: {
-                        sound: 'default'
+                })
+                var messages = {
+                    data: {
+                        data: JSON.stringify(value),
+                        fromname: gid,
+                        group: '1',
                     },
-                },
-                apns: {
-                    payload: {
-                        aps: {
+                    tokens: totoken
+                };
+               
+                admin.messaging().sendMulticast(messages)
+                .then((res) => {
+                    console.log('Successfully sent message:', res);
+                    return;
+                })
+                .catch((err) => {
+                    console.log('Error sending message:', err);
+                });
+    
+    
+                //notifications
+                var notification = {
+                    notification: {
+                        title: 'Notification',
+                        body: 'Message from group',
+                    },
+                    data: {
+                        fromname: gid,
+                        group: '1',
+                    },
+                    android: {
+                        notification: {
                             sound: 'default'
                         },
                     },
-                },
-                tokens: totoken
-            };
-            admin.messaging().sendMulticast(notification)
-            .then((res) => {
-                console.log('Successfully sent message:', res);
-                return;
+                    apns: {
+                        payload: {
+                            aps: {
+                                sound: 'default'
+                            },
+                        },
+                    },
+                    tokens: totoken
+                };
+                admin.messaging().sendMulticast(notification)
+                .then((res) => {
+                    console.log('Successfully sent notification:', res);
+                    return;
+                })
+                .catch((err) => {
+                    console.log('Error sending notification:', err);
+                });
             })
-            .catch((err) => {
-                console.log('Error sending message:', err);
-            });
         })
     });
