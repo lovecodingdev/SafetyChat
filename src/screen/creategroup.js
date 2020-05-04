@@ -24,12 +24,24 @@ export default class CreateGroup extends Component {
             loading: false,
             title: '',
             indexes: [],
+            isNew: true,
+            group: null,
         }
         this.users = props.navigation.getParam('users').map(user => user.name);
         mScreen = 'CreateGroup';
     }
 
     async componentDidMount() {
+        let isNew = this.props.navigation.getParam('isNew');
+        var indexes = [];
+        if (!isNew) {
+            let group = this.props.navigation.getParam('group');
+            group.users.map(obj => {
+                indexes.push(this.users.findIndex(a => a == obj));
+            })
+            console.log('Group = ', group);
+            this.setState({isNew, group, title: group.name, indexes});
+        }
     }
 
     onDialog() {
@@ -37,32 +49,44 @@ export default class CreateGroup extends Component {
     }
 
     onCreate() {
-        var {indexes, title} = this.state;
+        var {indexes, title, group, isNew} = this.state;
         if (title == '') {
             alert('Please type your group title');
             return
         }
         if (indexes.length == 0) {
-            alert('Please invite at lease one user.');
+            alert('Please select at lease one user.');
             return;
         }
         var choices = []
         choices = indexes.map(index => this.users[index]);
         this.setState({loading: true})
         let self = this;
-        const newRef = firebase.database().ref().child(user.code + '/groups').push();
-        newRef.set({
-            title: title,
-            users: choices
-        })
-        .then(() => {
-            self.setState({loading: false});
-            console.log('Create Group Successfully');
-            alert("Successfully Created");
-            setTimeout(() => {
-                self.props.navigation.goBack();
-            }, 300);
-        });
+        if (isNew) {
+            const newRef = firebase.database().ref().child(user.code + '/groups').push();
+            newRef.set({
+                title: title,
+                users: choices
+            })
+            .then(() => {
+                self.setState({loading: false});
+                alert("Successfully Created");
+                setTimeout(() => {
+                    self.props.navigation.goBack();
+                }, 300);
+            });
+        } else {
+            firebase.database().ref().child(user.code + '/groups/' + group.id).update({
+                title: title,
+                users: choices
+            }).then(()=>{
+                self.setState({loading: false});
+                alert("Successfully Edited");
+                setTimeout(() => {
+                    self.props.navigation.goBack();
+                }, 300);
+            })
+        }
     }
 
     onChangedSelectedUsers(questionIndex, checkedIndexes) {
@@ -74,25 +98,42 @@ export default class CreateGroup extends Component {
         this.setState({isInvited: false})
     }
 
+    onDelete() {
+        let self = this;
+        this.setState({loading: true})
+        firebase.database().ref().child(user.code + '/groups/' + this.state.group.id).remove()
+        .then((error) => {
+            if (error == null) {
+                self.setState({loading: false});
+                alert("Successfully Edited");
+                setTimeout(() => {
+                    self.props.navigation.goBack();
+                }, 300);
+            }
+        })
+    }
+
     render() {
-        let {indexes, isInvited} = this.state;
+        let {indexes, isInvited, isNew} = this.state;
+        let title = isNew ? "CREATE GROUP" : "EDIT GROUP";
         return (
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />       
                 <ImageBackground source={Images.bg} style={{flex: 1}}>
                     {isInvited == true ?
                     <View style={styles.view}>
-                        <Label style={styles.label}>INVITE USERS</Label>
+                        <Label style={styles.label}>SELECT USERS</Label>
                         <ManyChoices many={true} data={this.users} checkedIndexes={indexes} onChanged={this.onChangedSelectedUsers.bind(this)}/>
                         <Button block style={styles.button} onPress={this.onSelect.bind(this)}><Text>SELECT</Text></Button>
                     </View>:
                     <View>
-                        <Text style={styles.title}>CREATE GROUP</Text>
+                        <Text style={styles.title}>{title}</Text>
                         <View style={{padding: 20}}>        
                             <Label style={{color: '#fff'}}>GROUP TITLE</Label>
                             <TextInput style={styles.textInput} autoCapitalize='none' value={this.state.title} onChangeText={text=>this.setState({title: text})}/>
-                            <Button transparent onPress={this.onDialog.bind(this)}><Text>Invite Users</Text></Button>
-                            <Button block style={styles.button} onPress={this.onCreate.bind(this)}><Text>CREATE</Text></Button>
+                            <Button transparent onPress={this.onDialog.bind(this)}><Text>Select Users</Text></Button>
+                            <Button block style={styles.button} onPress={this.onCreate.bind(this)}><Text>{title}</Text></Button>
+                            <Button block style={isNew? styles.none: styles.button} onPress={this.onDelete.bind(this)}><Text>DELETE</Text></Button>
                         </View>
                         <Spinner
                             visible={this.state.loading}
@@ -122,10 +163,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
     },
+    none: {
+        display: 'none'
+    },
     title: {
         textAlign: 'center', 
         color: '#fff', 
-        fontSize: 30, 
+        fontSize: 25, 
         marginBottom: 30,
         marginTop: responsiveHeight(10),
     },

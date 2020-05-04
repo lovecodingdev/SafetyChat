@@ -21,22 +21,19 @@ export default class Admin extends Component {
             isFetching: false,
         }
         this.users = [];
-        this.childChangedRef = null;
+        this.didFocusListener = null;
         mScreen = 'Admin'
     }
 
     async componentDidMount() {
         this.users = await API.getAllUsers()
-        await this.getGroups()
-        await this.setupListener()
-    }
-
-    async setupListener() {
-        let self = this
-        this.childChangedRef = firebase.database().ref(user.code + '/groups')
-        this.childChangedRef.on("child_changed", (value) => {
+        await this.getGroups();
+        let self = this;
+        this.didFocusListener =  await this.props.navigation.addListener('willFocus',
+        payload => {
+            console.log('Updated screen', payload);
             self.getGroups();
-        })
+        });
     }
 
     async getGroups() {
@@ -49,16 +46,15 @@ export default class Admin extends Component {
         var groups = [all]
         var mGroups = await API.getGroups()
         groups = groups.concat(mGroups);
-        console.log("*** Groups ***", groups);
         this.setState({groups, isFetching: false})
     }
 
     onGroup(group) {
-        // this.props.navigation.navigate('GroupScreen', {group});
+        this.props.navigation.navigate('CreateGroupScreen', {group, isNew: false, users: this.users});
     }
 
     createGroup() {
-        this.props.navigation.navigate('CreateGroupScreen', {users: this.users})
+        this.props.navigation.navigate('CreateGroupScreen', {users: this.users, isNew: true, group: {}});
     }
 
     async onRefresh() {

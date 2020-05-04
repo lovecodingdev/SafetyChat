@@ -51,9 +51,7 @@ export default class home extends Component {
     }
 
     localNotify = (item) => {
-        console.log('Toname = ', item.id + "badge")
         this.item = item;
-        AppData.setItem(item.id+"badge", true)
         let message = item.isGroup ? 'Message from your Group' : 'Message from ' + item.name
         PushNotification.localNotification({
             title: "Notification", // (optional)
