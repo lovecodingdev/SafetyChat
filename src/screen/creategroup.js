@@ -106,11 +106,9 @@ export default class CreateGroup extends Component {
             [
                 {
                     text: 'Delete', onPress: async () => {
-                        this.setState({loading: true})
                         firebase.database().ref().child(user.code + '/groups/' + this.state.group.id).remove()
                         .then((error) => {
                             if (error == null) {
-                                self.setState({loading: false});
                                 alert("Successfully Edited");
                                 setTimeout(() => {
                                     self.props.navigation.goBack();
