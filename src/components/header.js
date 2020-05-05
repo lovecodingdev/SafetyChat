@@ -5,6 +5,7 @@ import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensi
 import {Images} from '../theme'
 import {ifIphoneX} from 'react-native-iphone-x-helper'
 import firebase from 'react-native-firebase'
+import Const from '../Const'
 import AppData from '../components/AppData'
 
 export default class Header extends Component {
@@ -22,7 +23,11 @@ export default class Header extends Component {
                             user.role = ''
                             user.password = ''
                             user.code = ''
-                            AsyncStorage.clear().then(() => this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0))
+                            AppData.setItem(Const.CODE_KEY, '');
+                            AppData.setItem(Const.USER_KEY, '');
+                            AppData.setItem(Const.ROLE_KEY, '');
+                            AppData.setItem(Const.PASSWORD_KEY, '');
+                            NavigationActions.navigate({ routeName: 'CheckcodeScreen' });
                         // })
                     }
                 },

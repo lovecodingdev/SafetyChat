@@ -27,41 +27,43 @@ export default class SelectGroup extends Component {
 
     async componentDidMount() {
         this.users = await AppData.getItem('Users')
-        let groups = await AppData.getItem('Groups');
-        this.setState({groups})
-        // await this.setupListener()
+        this.getGroups();
+        let self = this;
+        this.didFocusListener =  await this.props.navigation.addListener('willFocus',
+        payload => {
+            console.log('Updated screen', payload);
+            self.getGroups();
+        });
     }
 
-    async setupListener() {
-        let self = this
-        this.childChangedRef = firebase.database().ref(user.code + '/groups')
-        this.childChangedRef.on("child_changed", (value) => {
-            self.getGroups();
+    getGroups() {
+        let self = this;
+        firebase.database().ref().child(user.code + '/groups').once('value')
+        .then((snapshots) => {
+            var mGroups = []
+            snapshots.forEach(function(snapshot) {
+                var id = snapshot.key;
+                var name = snapshot.val()['title'];
+                var users = snapshot.val()['users'];
+                if (users.includes(user.name)) {
+                    var group = {
+                        id,
+                        name,
+                        role: 'GROUP',
+                        users,
+                        isGroup: true,
+                    }
+                    mGroups.push(group)
+                }
+            })
+            AppData.setItem('Groups', mGroups);
+            self.setState({groups: mGroups})
         })
     }
 
-    async getGroups() {
-        this.setState({isFetching: true});
-        var all = {
-            id: 'All',
-            name: 'ALL USERS',
-            users: this.users
-        }
-        var groups = [all]
-        var mGroups = await API.getGroups()
-        groups = groups.concat(mGroups);
-        console.log("*** Groups ***", groups);
-        this.setState({groups, isFetching: false})
-    }
-
     onGroup(group) {
-        // this.props.navigation.navigate('GroupScreen', {group});
         this.props.navigation.navigate({routeName:'ChatScreen', params: {item: group}, key: 'chat'})
     }
-
-    // createGroup() {
-    //     this.props.navigation.navigate('CreateGroupScreen', {users: this.users})
-    // }
 
     async onRefresh() {
         this.setState({ isFetching: true }, function() { this.getGroups() });
