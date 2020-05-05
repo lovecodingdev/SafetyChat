@@ -57,7 +57,7 @@ export default class SelectGroup extends Component {
                 }
             })
             AppData.setItem('Groups', mGroups);
-            self.setState({groups: mGroups})
+            self.setState({groups: mGroups, isFetching: false})
         })
     }
 

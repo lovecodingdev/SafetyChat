@@ -60,6 +60,7 @@ export default class home extends Component {
             soundName: 'default',
             number: 1,
         })
+        AppData.setItem(item.id, new Date());
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
         }, 3000)

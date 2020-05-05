@@ -100,17 +100,36 @@ export default class CreateGroup extends Component {
 
     onDelete() {
         let self = this;
-        this.setState({loading: true})
-        firebase.database().ref().child(user.code + '/groups/' + this.state.group.id).remove()
-        .then((error) => {
-            if (error == null) {
-                self.setState({loading: false});
-                alert("Successfully Edited");
-                setTimeout(() => {
-                    self.props.navigation.goBack();
-                }, 300);
-            }
-        })
+        Alert.alert(
+            'DELETE',
+            'Are you sure to delete Group?',
+            [
+                {
+                    text: 'Delete', onPress: async () => {
+                        this.setState({loading: true})
+                        firebase.database().ref().child(user.code + '/groups/' + this.state.group.id).remove()
+                        .then((error) => {
+                            if (error == null) {
+                                self.setState({loading: false});
+                                alert("Successfully Edited");
+                                setTimeout(() => {
+                                    self.props.navigation.goBack();
+                                }, 300);
+                            }
+                        })
+                        firebase.database().ref().child(user.code + '/groupMessages/' + this.state.group.id).remove()
+                        .then((error) => {
+                        })
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('cancel'),
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: false},
+        )
     }
 
     render() {
