@@ -102,7 +102,7 @@ export default class CreateGroup extends Component {
         let self = this;
         Alert.alert(
             'DELETE',
-            'Are you sure to delete Group?',
+            'Are you sure you want to delete this group?',
             [
                 {
                     text: 'Delete', onPress: async () => {

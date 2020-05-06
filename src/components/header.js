@@ -27,7 +27,7 @@ export default class Header extends Component {
                             AppData.setItem(Const.USER_KEY, '');
                             AppData.setItem(Const.ROLE_KEY, '');
                             AppData.setItem(Const.PASSWORD_KEY, '');
-                            NavigationActions.navigate({ routeName: 'CheckcodeScreen' });
+                            this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0);
                         // })
                     }
                 },
