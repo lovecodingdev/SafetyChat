@@ -6,7 +6,6 @@ import {Platform, Alert} from 'react-native'
 import CONST from '../Const'
 import firebase from "react-native-firebase"
 
-const PushNotification = require("react-native-push-notification");
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
 async function getConnection() {
@@ -57,6 +56,13 @@ async function login(name, password) {
         return false
     }
 }
+
+async function uploadImage(uri, filename) {
+    await firebase.storage().ref("profile/" + filename + ".png").putFile(uri);
+    let url = await firebase.storage().ref("profile/" + filename + ".png").getDownloadURL();
+    console.log("Image Download URL = ", url);
+    return url;
+} 
 
 async function getGroups() {
     var groups = await firebase.database().ref().child(user.code + '/groups').once('value')

@@ -146,7 +146,6 @@ export default class home extends Component {
 
         this.groupChangedRef = firebase.database().ref(user.code + '/groupMessages/')
         this.groupChangedRef.on("child_changed", (value) => {
-            console.log("Group_chagned", value.val())
             if (toName == value.key && mScreen == 'Chat') return
             let item = {
                 id: value.key,
@@ -161,11 +160,8 @@ export default class home extends Component {
         let self = this;
         PushNotification.configure({
             onRegister: function(token) {
-                // user.token = token
-                console.log("TOKEN:", token);
             },
             onNotification: function(notification) {
-                console.log("NOTIFICATION:", self.item);
                 if (self.item != '') {
                     self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
                 }
@@ -284,7 +280,7 @@ export default class home extends Component {
         var image = Images.group;
         var title = Title.group;
         var action = this.group.bind(this);
-        if (user.role.toLowerCase().includes('admin')) {
+        if (!user.role.toLowerCase().includes('admin')) {
             image = Images.admin;
             title = Title.admin;
             action = this.admin.bind(this);

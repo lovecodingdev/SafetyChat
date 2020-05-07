@@ -25,7 +25,7 @@ const title = {
     utilityemergency: "Utility Emergency",
     weapononcampus: "Weapon on Campus",
     admin: "Admin\nPanel",
-    group: "My\nGroup",
+    group: "My\nPanel",
 };
 
 export default title;

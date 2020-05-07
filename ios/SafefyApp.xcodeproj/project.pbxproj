@@ -36,7 +36,6 @@
 		8F09DFBF0D924F77A7A7F04E /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6764ECA9141E8B38435A7 /* Zocial.ttf */; };
 		906342B5953D4631BFEB54A2 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B1F3B510E2443ACAAA778CA /* FontAwesome5_Regular.ttf */; };
 		A2B8BA443DC04356B588474F /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9BE99E1F64B4DB98E25F0C7 /* EvilIcons.ttf */; };
-		C0D779804ED1A729AEFD9DD8 /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 945053D76BF6934D2AD615BE /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a */; };
 		C17642FBF05C41899E48830C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6613257EB9140FE8573D4A8 /* Octicons.ttf */; };
 		CFF6EC7E832E4A05A6B65B69 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D540284F27844AE1BE95713A /* rubicon-icon-font.ttf */; };
 		EA68EF49D7FB412E878FFCE7 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34C69012D2614054A8A692DA /* Roboto.ttf */; };
@@ -79,7 +78,6 @@
 		00E356EE1AD99517003FC87E /* SafefyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafefyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SafefyAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SafefyAppTests.m; sourceTree = "<group>"; };
-		0B5FAA97278A17A577ECAE34 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension/Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		0C6CC11F6EF74F01898FBA9B /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		0EBAD3173A4E4FB7BBC6907F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SafefyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafefyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +119,6 @@
 		89DFC62BE67253FF389B5F7F /* Pods-SafefyApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS/Pods-SafefyApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F9E1A9BEBE24AF686948358 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		945053D76BF6934D2AD615BE /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		958B62D71A104FE99C34ACF8 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		95D4DE7FF7044BE1B73C384E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		9D9D3642186947108FF403DB /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -129,7 +126,6 @@
 		AB280ACB9F704ADEB1811712 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		C2DF9710B407433D9218BA24 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		C6B967D55DCB4ABF9E0D5769 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		CD65DA9049A90C6CD5C17AD2 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension/Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		CE36BFAE9DF34DE19E918040 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		D1C7919F0B5F4AFDACB1A670 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		D540284F27844AE1BE95713A /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
@@ -180,7 +176,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0D779804ED1A729AEFD9DD8 /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +224,6 @@
 				1C1EC0D15B4EEF8115744D82 /* libPods-SafefyApp-tvOS.a */,
 				68C4C56DF1354A738B3FC622 /* libPods-SafefyApp-tvOSTests.a */,
 				F085AD782A61772C9635A8F3 /* libPods-SafefyAppTests.a */,
-				945053D76BF6934D2AD615BE /* libPods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -321,8 +315,6 @@
 				E83A5BD50D704397B1F4067C /* Pods-SafefyApp-tvOSTests.release.xcconfig */,
 				6E030FE796D96FF2B3068448 /* Pods-SafefyAppTests.debug.xcconfig */,
 				4630B64833073420B7A046F0 /* Pods-SafefyAppTests.release.xcconfig */,
-				0B5FAA97278A17A577ECAE34 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				CD65DA9049A90C6CD5C17AD2 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -360,6 +352,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				8B2BC8782386A1B000B751A3 /* Embed App Extensions */,
+				2331FB1422621D7C3D03E372 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -413,7 +406,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B2BC87B2386A1B000B751A3 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				188E261F6F06405423329487 /* [CP] Check Pods Manifest.lock */,
 				8B2BC86C2386A1B000B751A3 /* Sources */,
 				8B2BC86D2386A1B000B751A3 /* Frameworks */,
 				8B2BC86E2386A1B000B751A3 /* Resources */,
@@ -591,26 +583,52 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		188E261F6F06405423329487 /* [CP] Check Pods Manifest.lock */ = {
+		2331FB1422621D7C3D03E372 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-SafefyApp/Pods-SafefyApp-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SafefyApp/Pods-SafefyApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
@@ -856,7 +874,7 @@
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = MWSF64DTSL;
 				INFOPLIST_FILE = SafefyApp/Info.plist;
@@ -882,7 +900,7 @@
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = MWSF64DTSL;
 				INFOPLIST_FILE = SafefyApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1110,7 +1128,6 @@
 		};
 		8B2BC8792386A1B000B751A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B5FAA97278A17A577ECAE34 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1142,7 +1159,6 @@
 		};
 		8B2BC87A2386A1B000B751A3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD65DA9049A90C6CD5C17AD2 /* Pods-SafefyApp-tvOS-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
