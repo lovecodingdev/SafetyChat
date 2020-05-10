@@ -93,7 +93,8 @@ export default class chat extends Component {
                     onSend={messages => this.onSend(messages)}
                     user={{
                         _id: user.name,
-                        name: user.name
+                        name: user.name,
+                        avatar: user.image,
                     }}
                 />
             </Container>

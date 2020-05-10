@@ -31,7 +31,6 @@ export default class Admin extends Component {
         let self = this;
         this.didFocusListener =  await this.props.navigation.addListener('willFocus',
         payload => {
-            console.log('Updated screen', payload);
             self.getGroups();
         });
     }

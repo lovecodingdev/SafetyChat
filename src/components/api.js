@@ -58,8 +58,8 @@ async function login(name, password) {
 }
 
 async function uploadImage(uri, filename) {
-    await firebase.storage().ref("profile/" + filename + ".png").putFile(uri);
-    let url = await firebase.storage().ref("profile/" + filename + ".png").getDownloadURL();
+    await firebase.storage().ref(user.code + "/" + filename + ".png").putFile(uri);
+    let url = await firebase.storage().ref(user.code + "/" + filename + ".png").getDownloadURL();
     console.log("Image Download URL = ", url);
     return url;
 } 
@@ -70,14 +70,15 @@ async function getGroups() {
         var mGroups = []
         snapshots.forEach(function(snapshot) {
             var id = snapshot.key;
-            console.log('Snapshots = ', snapshot);
             var name = snapshot.val()['title'];
             var users = snapshot.val()['users'];
+            var url = snapshot.val()['url'];
             var group = {
                 id,
                 name,
                 role: 'GROUP',
                 users,
+                url,
                 isGroup: true,
             }
             mGroups.push(group)
@@ -203,7 +204,7 @@ async function firebaseTokenRefresh() {
     if (user.token == '') return
     console.log("fcm token = ", token);
     user.token = token
-    await firebase.database().ref().child(user.code+'/users/'+user.name).set({token: user.token, role: user.role})
+    await firebase.database().ref().child(user.code+'/users/'+user.name).update({token: user.token})
     await AppData.setItem(CONST.TOKEN_KEY, token);
     return;
 }
@@ -246,4 +247,5 @@ export default {
     getAllUsers,
     getTokens,
     sendPushNotification,
+    uploadImage,
 }

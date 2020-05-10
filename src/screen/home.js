@@ -280,7 +280,7 @@ export default class home extends Component {
         var image = Images.group;
         var title = Title.group;
         var action = this.group.bind(this);
-        if (!user.role.toLowerCase().includes('admin')) {
+        if (user.role.toLowerCase().includes('admin')) {
             image = Images.admin;
             title = Title.admin;
             action = this.admin.bind(this);

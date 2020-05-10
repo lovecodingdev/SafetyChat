@@ -34,6 +34,7 @@ export default class splash extends Component {
         let name = await AppData.getItem(CONST.USER_KEY)
         let code = await AppData.getItem(CONST.CODE_KEY)
         let role = await AppData.getItem(CONST.ROLE_KEY)
+        let image = await AppData.getItem(CONST.IMAGE_KEY)
         let password = await AppData.getItem(CONST.PASSWORD_KEY)
         var token = await AppData.getItem(CONST.TOKEN_KEY)
         if (token == '' || token == null) {
@@ -47,6 +48,7 @@ export default class splash extends Component {
             code: code,
             token: token,
             password: password,
+            image,
             url: "https://"+code+".myspapp.com/",
         }
 

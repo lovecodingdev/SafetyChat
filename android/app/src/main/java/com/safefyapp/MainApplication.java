@@ -15,6 +15,7 @@ import com.reactnativecommunity.netinfo.NetInfoPackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -38,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new RNFirebaseMessagingPackage());
       packages.add(new RNFirebaseDatabasePackage());
       packages.add(new RNFirebaseNotificationsPackage());
+      packages.add(new RNFirebaseStoragePackage());
       return packages;
     }
 
