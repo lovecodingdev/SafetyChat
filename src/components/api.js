@@ -60,7 +60,6 @@ async function login(name, password) {
 async function uploadImage(uri, filename) {
     await firebase.storage().ref(user.code + "/" + filename + ".png").putFile(uri);
     let url = await firebase.storage().ref(user.code + "/" + filename + ".png").getDownloadURL();
-    console.log("Image Download URL = ", url);
     return url;
 } 
 

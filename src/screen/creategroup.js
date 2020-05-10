@@ -53,7 +53,7 @@ export default class CreateGroup extends Component {
             group.users.map(obj => {
                 indexes.push(this.users.findIndex(a => a == obj));
             })
-            let image = group.url == null ? Images.group : {'uri': group.url};
+            let image = group.url == null ? Images.group : {'uri': group.image};
             console.log("Group URL =", image);
             this.setState({isNew, group, title: group.name, indexes, image});
         } else {
@@ -86,7 +86,7 @@ export default class CreateGroup extends Component {
             newRef.set({
                 title: title,
                 users: choices,
-                url: url,
+                image: url,
             })
             .then(() => {
                 self.setState({loading: false});
@@ -102,7 +102,7 @@ export default class CreateGroup extends Component {
                 firebase.database().ref().child(user.code + '/groups/' + group.id).update({
                     title: title,
                     users: choices,
-                    url: url,
+                    image: url,
                 }).then(()=>{
                     self.setState({loading: false});
                     alert("Successfully Edited");
@@ -134,7 +134,6 @@ export default class CreateGroup extends Component {
     }
 
     updateProfile() {
-        let self = this;
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
               console.log('User cancelled image picker');

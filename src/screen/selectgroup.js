@@ -74,11 +74,11 @@ export default class SelectGroup extends Component {
             firebase.database().ref().child(user.code + '/users/' + user.name).update({
                 image: url,
             }).then(()=>{
-                self.setState({loading: false});
                 AppData.setItem('userimage', url);
                 user.image = url;
                 alert("Successfully Edited");
                 setTimeout(() => {
+                    self.setState({loading: false});
                     self.props.navigation.goBack();
                 }, 300);
             })
@@ -86,6 +86,7 @@ export default class SelectGroup extends Component {
             this.setState({loading: false});
             alert("Successfully Edited");
             setTimeout(() => {
+                self.setState({loading: false});
                 this.props.navigation.goBack();
             }, 300);
         }

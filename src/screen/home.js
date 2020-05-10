@@ -76,6 +76,7 @@ export default class home extends Component {
                     name: snapshot.key,
                     role: snapshot.val().role,
                     token: snapshot.val().token,
+                    image: snapshot.val().image,
                     isGroup: false,
                 }
                 mUsers.push(mUser)
@@ -89,6 +90,7 @@ export default class home extends Component {
                 var id = snapshot.key;
                 var name = snapshot.val()['title'];
                 var users = snapshot.val()['users'];
+                var image = snapshot.val()['image'];
                 if (users.includes(user.name)) {
                     var group = {
                         id,
@@ -96,6 +98,7 @@ export default class home extends Component {
                         role: 'GROUP',
                         users,
                         isGroup: true,
+                        image,
                     }
                     mGroups.push(group)
                 }
