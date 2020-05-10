@@ -37,7 +37,6 @@ export default class SelectGroup extends Component {
 
     componentDidMount() {
         let image = user.image == null? Images.logo: {'uri': user.image};
-        console.log("user iamge=", image);
         this.setState({image});
     }
 
@@ -71,23 +70,21 @@ export default class SelectGroup extends Component {
         this.setState({loading: true});
         if (path != '') {
             var url = await API.uploadImage(path, date.toString());
-            firebase.database().ref().child(user.code + '/users/' + user.name).update({
+            self.setState({loading: false});
+            await firebase.database().ref().child(user.code + '/users/' + user.name).update({
                 image: url,
-            }).then(()=>{
-                AppData.setItem('userimage', url);
-                user.image = url;
-                alert("Successfully Edited");
-                setTimeout(() => {
-                    self.setState({loading: false});
-                    self.props.navigation.goBack();
-                }, 300);
-            })
-        } else {
-            this.setState({loading: false});
+            });
+            await AppData.setItem('userimage', url);
+            user.image = url;
             alert("Successfully Edited");
             setTimeout(() => {
-                self.setState({loading: false});
-                this.props.navigation.goBack();
+                self.props.navigation.goBack();
+            }, 300);
+        } else {
+            self.setState({loading: false});
+            alert("Successfully Edited");
+            setTimeout(() => {
+                self.props.navigation.goBack();
             }, 300);
         }
     }
@@ -139,16 +136,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         resizeMode: 'cover'
     },
-    label: {
-        color: '#fff',
-        marginTop: 20,
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    none: {
-        display: 'none'
-    },
     touchImage: {
         alignSelf: 'center',
     },
@@ -158,15 +145,6 @@ const styles = StyleSheet.create({
         fontSize: 25, 
         marginBottom: 20,
         marginTop: 20,
-    },
-    textInput: {
-        marginTop: 10,
-        marginBottom: 5,
-        borderWidth: 1, 
-        borderRadius: 5, 
-        borderColor:'#fff', 
-        color: '#fff',
-        height: 40
     },
     button: {
         backgroundColor: '#000',

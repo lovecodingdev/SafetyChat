@@ -6,7 +6,6 @@ import {
   View,
   ScrollView,
   Platform,
-  DeviceEventEmitter,
 } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -17,8 +16,6 @@ import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData';
-import Const from '../Const';
-import PushNotificationAndroid from 'react-native-push-notification'
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 const PushNotification = require("react-native-push-notification");
@@ -280,14 +277,7 @@ export default class home extends Component {
     }
 
     render() {
-        var image = Images.group;
-        var title = Title.group;
-        var action = this.group.bind(this);
-        if (user.role.toLowerCase().includes('admin')) {
-            image = Images.admin;
-            title = Title.admin;
-            action = this.admin.bind(this);
-        }
+        var isAdmin = user.role.toLowerCase().includes('admin') ? true : false;
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
@@ -299,7 +289,8 @@ export default class home extends Component {
                                 source={this.state.safetyplans}
                             />
                         </TouchableOpacity>
-                        <BigIcon img={image} title={title} onPress={action}></BigIcon>
+                        { isAdmin == true ? <BigIcon img={Images.admin} title={Title.admin} onPress={this.admin.bind(this)}></BigIcon>:<View></View>}
+                        <BigIcon img={Images.group} title={Title.group} onPress={this.group.bind(this)}></BigIcon>
                         <BigIcon img={Images.generalInfo} title={Title.firstaid} onPress={this.subPage.bind(this, 'general.pdf')}></BigIcon>
                         <BigIcon img={this.state.maps} title={Title.maps} onPress={this.subPage.bind(this, 'map.pdf')}></BigIcon>
                         <BigIcon img={Images.safetychat} title={Title.phonetree} onPress={this.phonetree.bind(this)}></BigIcon>
