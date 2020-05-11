@@ -6,23 +6,17 @@ import {
     TouchableOpacity,
     Platform,
     KeyboardAvoidingView,
+    Alert,
 } from 'react-native'
 import {Button, Text} from 'native-base'
 import {Images, Colors} from '../theme'
 import Header from '../components/header'
 import Spinner from 'react-native-loading-spinner-overlay'
 import firebase from 'react-native-firebase'
-import ImagePicker from 'react-native-image-picker'
+// import ImagePicker from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-crop-picker'
 import API from '../components/api'
 import AppData from '../components/AppData'
-const options = {
-    title: 'Select Profile Image',
-    customButtons: [],
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
-  };
 
 export default class SelectGroup extends Component {
     constructor(props){
@@ -42,25 +36,39 @@ export default class SelectGroup extends Component {
 
     updateProfile() {
         let self = this;
-        ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else {
-              const source = { uri: response.uri };
-              var path = '';
-              if (Platform.OS == 'ios')
-                path = response.uri.toString();
-              else {
-                path = response.path.toString();
-              }
-              this.setState({
-                image: source,
-                path: path
-              });
-            }
-        });
+        var path = '';
+        Alert.alert(
+            'Profile',
+            'Select from ...',
+            [
+                {
+                    text: 'CAMERA', onPress: () => {
+                        ImagePicker.openCamera({
+                            width: 300,
+                            height: 300,
+                            cropping: true
+                        }).then(image => {
+                            path = image.path;
+                            user.image = path;
+                            self.setState({image: {'uri': image.path}, path});
+                        });
+                    }
+                },
+                {
+                    text: 'LIBRARY', onPress: () => {
+                        ImagePicker.openPicker({
+                            width: 300,
+                            height: 300,
+                            cropping: true
+                        }).then(image => {
+                            path = image.path;
+                            user.image = path;
+                            self.setState({image: {'uri': image.path}, path});
+                        });
+                    },
+                },
+            ],
+        )
     }
 
     async onEdit() {
@@ -105,7 +113,7 @@ export default class SelectGroup extends Component {
                         />
                     </TouchableOpacity>
                     <View style={{padding: 20}}>        
-                        <Button block style={styles.button} onPress={this.onEdit.bind(this)}><Text>EDIT</Text></Button>
+                        <Button block style={styles.button} onPress={this.onEdit.bind(this)}><Text>SUBMIT</Text></Button>
                     </View>
                     <Spinner
                         visible={this.state.loading}

@@ -9,24 +9,16 @@ import {
     TouchableOpacity,
     Platform,
     KeyboardAvoidingView,
+    Alert,
 } from 'react-native'
-import { Container, Card, CardItem, Body, Button, Text, Label} from 'native-base'
+import {Button, Text, Label} from 'native-base'
 import {Images, Colors} from '../theme'
 import Header from '../components/header'
-import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions'
 import ManyChoices from '../components/ManyChoices'
 import Spinner from 'react-native-loading-spinner-overlay'
 import firebase from 'react-native-firebase'
-import ImagePicker from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-crop-picker'
 import API from '../components/api'
-const options = {
-    title: 'Select Profile Image',
-    customButtons: [],
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
-  };
 
 export default class CreateGroup extends Component {
     constructor(props){
@@ -134,25 +126,57 @@ export default class CreateGroup extends Component {
     }
 
     updateProfile() {
-        ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else {
-              const source = { uri: response.uri };
-              var path = '';
-              if (Platform.OS == 'ios')
-                path = response.uri.toString();
-              else {
-                path = response.path.toString();
-              }
-              this.setState({
-                image: source,
-                path: path
-              });
-            }
-          });
+        let self = this;
+        var path = '';
+        Alert.alert(
+            'Profile',
+            'Select from ...',
+            [
+                {
+                    text: 'CAMERA', onPress: () => {
+                        ImagePicker.openCamera({
+                            width: 300,
+                            height: 300,
+                            cropping: true
+                        }).then(image => {
+                            path = image.path;
+                            self.setState({image: {'uri': image.path}, path});
+                        });
+                    }
+                },
+                {
+                    text: 'LIBRARY', onPress: () => {
+                        ImagePicker.openPicker({
+                            width: 300,
+                            height: 300,
+                            cropping: true
+                        }).then(image => {
+                            path = image.path;
+                            self.setState({image: {'uri': image.path}, path});
+                        });
+                    },
+                },
+            ],
+        )
+        // ImagePicker.showImagePicker(options, (response) => {
+        //     if (response.didCancel) {
+        //       console.log('User cancelled image picker');
+        //     } else if (response.error) {
+        //       console.log('ImagePicker Error: ', response.error);
+        //     } else {
+        //       const source = { uri: response.uri };
+        //       var path = '';
+        //       if (Platform.OS == 'ios')
+        //         path = response.uri.toString();
+        //       else {
+        //         path = response.path.toString();
+        //       }
+        //       this.setState({
+        //         image: source,
+        //         path: path
+        //       });
+        //     }
+        //   });
     }
 
     onDelete() {

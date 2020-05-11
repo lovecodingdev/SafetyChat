@@ -107,6 +107,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.9.0)
+  - QBImagePickerController (3.4.0)
   - React (0.60.3):
     - React-Core (= 0.60.3)
     - React-DevSupport (= 0.60.3)
@@ -194,10 +195,16 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
+  - RNImageCropPicker (0.25.3):
+    - QBImagePickerController
+    - React-Core
+    - React-RCTImage
+    - RSKImageCropper
   - RNPDF (0.9.1):
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - RSKImageCropper (2.2.3)
   - yoga (0.60.3.React)
 
 DEPENDENCIES:
@@ -231,6 +238,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNPDF (from `../node_modules/react-native-view-pdf`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -259,6 +267,8 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - QBImagePickerController
+    - RSKImageCropper
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -313,6 +323,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNPDF:
     :path: "../node_modules/react-native-view-pdf"
   RNVectorIcons:
@@ -346,6 +358,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: ac23e9cc8d2d4cfe9b536b5cc0c32d19b9937bcf
   React-Core: 84de3cf80e31f0267c5ce0b5b482d59ce30a8a57
   React-cxxreact: a802a1c6b14f3de66ba032460b424c17ececd1e2
@@ -369,8 +382,10 @@ SPEC CHECKSUMS:
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNCPushNotificationIOS: a38f0b8c4f6f5226cd1d8eeb21ab5670f4a09892
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
+  RNImageCropPicker: bfb3ea9c8622f290532e2fe63f369e0d5a52f597
   RNPDF: 20b2c376deb90d1547fee41bd10ad44930baf76d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
 PODFILE CHECKSUM: 28e32a7f3e5fa3ab4b9820a9d0b5ccfc623aa7b4
