@@ -71,12 +71,15 @@ export default class CreateGroup extends Component {
         let self = this;
         let date = new Date();
         if (isNew) {
-            let url = await API.uploadImage(path, date.toString());
+            let image = null;
+            if (path != '') {
+                image = await API.uploadImage(path, date.toString());
+            }
             const newRef = firebase.database().ref().child(user.code + '/groups').push();
             newRef.set({
                 title: title,
                 users: choices,
-                image: url,
+                image: image,
             })
             .then(() => {
                 self.setState({loading: false});
@@ -89,23 +92,23 @@ export default class CreateGroup extends Component {
             var url = '';
             if (path != '') {
                 url = await API.uploadImage(path, date.toString());
+                self.setState({loading: false});
                 firebase.database().ref().child(user.code + '/groups/' + group.id).update({
                     title: title,
                     users: choices,
                     image: url,
                 }).then(()=>{
-                    self.setState({loading: false});
                     alert("Successfully Edited");
                     setTimeout(() => {
                         self.props.navigation.goBack();
                     }, 300);
                 })
             } else {
+                self.setState({loading: false});
                 firebase.database().ref().child(user.code + '/groups/' + group.id).update({
                     title: title,
                     users: choices
                 }).then(()=>{
-                    self.setState({loading: false});
                     alert("Successfully Edited");
                     setTimeout(() => {
                         self.props.navigation.goBack();

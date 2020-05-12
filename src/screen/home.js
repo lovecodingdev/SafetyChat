@@ -35,16 +35,25 @@ export default class home extends Component {
 
         this.childChangedRef = null
         this.groupChangedRef = null
+        this.didFocusListener = null
         this.localNotify = this.localNotify.bind(this);
     }
 
     async componentDidMount() {
   
-        this.setupDatabaseListener()
-        await this.getAllGroups()
-        API.firebaseTokenRefresh()
-        this.prepareNotification()
-        await this.fetchDocument()
+        this.setupDatabaseListener();
+        await this.getAllGroups();
+        this.getMessages();
+        API.firebaseTokenRefresh();
+        this.prepareNotification();
+        await this.fetchDocument();
+
+        let self = this;
+        this.didFocusListener =  await this.props.navigation.addListener('willFocus',
+        payload => {
+            console.log('Updated Home', payload);
+            self.getAllGroups();
+        });
     }
 
     localNotify = (item) => {
@@ -63,45 +72,7 @@ export default class home extends Component {
         }, 3000)
     }
 
-    async getAllGroups() {
-        firebase.database().ref().child(user.code + '/users').once('value')
-        .then((snapshots) => {
-            var mUsers = []
-            snapshots.forEach(function(snapshot) {
-                var mUser = {
-                    id: snapshot.key,
-                    name: snapshot.key,
-                    role: snapshot.val().role,
-                    token: snapshot.val().token,
-                    image: snapshot.val().image,
-                    isGroup: false,
-                }
-                mUsers.push(mUser)
-            })
-            AppData.setItem('Users', mUsers);
-        })
-        firebase.database().ref().child(user.code + '/groups').once('value')
-        .then((snapshots) => {
-            var mGroups = []
-            snapshots.forEach(function(snapshot) {
-                var id = snapshot.key;
-                var name = snapshot.val()['title'];
-                var users = snapshot.val()['users'];
-                var image = snapshot.val()['image'];
-                if (users.includes(user.name)) {
-                    var group = {
-                        id,
-                        name,
-                        role: 'GROUP',
-                        users,
-                        isGroup: true,
-                        image,
-                    }
-                    mGroups.push(group)
-                }
-            })
-            AppData.setItem('Groups', mGroups);
-        })
+    async getMessages() {
         firebase.database().ref().child(user.code + '/messages/' + user.name).once('value')
         .then((snapshots) => {
             snapshots.forEach(function(snapshot) {
@@ -127,6 +98,47 @@ export default class home extends Component {
                 }) 
                 AppData.setItem(key, date);
             });
+        })
+    }
+
+    async getAllGroups() {
+        firebase.database().ref().child(user.code + '/users').once('value')
+        .then((snapshots) => {
+            var mUsers = []
+            snapshots.forEach(function(snapshot) {
+                var mUser = {
+                    id: snapshot.key,
+                    name: snapshot.key,
+                    role: snapshot.val().role,
+                    token: snapshot.val().token,
+                    image: snapshot.val().image,
+                    isGroup: false,
+                }
+                mUsers.push(mUser)
+            })
+            AppData.setItem('Users', mUsers);
+        })
+        firebase.database().ref().child(user.code + '/groups').once('value')
+        .then((snapshots) => {
+            var mGroups = [];
+            snapshots.forEach(function(snapshot) {
+                var id = snapshot.key;
+                var name = snapshot.val()['title'];
+                var users = snapshot.val()['users'];
+                var image = snapshot.val()['image'];
+                if (users.includes(user.name)) {
+                    var group = {
+                        id,
+                        name,
+                        role: 'GROUP',
+                        users,
+                        isGroup: true,
+                        image,
+                    }
+                    mGroups.push(group)
+                }
+            })
+            AppData.setItem('Groups', mGroups);
         })
     }
 
