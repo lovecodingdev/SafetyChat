@@ -41,6 +41,7 @@ export default class login extends Component {
             if(res == true) {
                 let image = await (await firebase.database().ref().child(user.code+'/users/'+name+'/image').once('value')).val();
                 global.user.image = image;
+                await AppData.setItem('userimage', image);
                 console.log("*** Image =", image);
                 await firebase.database().ref().child(user.code+'/messages/'+name+'/1234zxcv').set({empty: ''})
                 this.props.navigation.replace('HomeScreen')
