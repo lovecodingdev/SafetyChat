@@ -71,13 +71,13 @@ async function getGroups() {
             var id = snapshot.key;
             var name = snapshot.val()['title'];
             var users = snapshot.val()['users'];
-            var url = snapshot.val()['url'];
+            var image = snapshot.val()['image'];
             var group = {
                 id,
                 name,
                 role: 'GROUP',
                 users,
-                url,
+                image,
                 isGroup: true,
             }
             mGroups.push(group)

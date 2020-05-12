@@ -43,7 +43,7 @@ export default class CreateGroup extends Component {
             group.users.map(obj => {
                 indexes.push(this.users.findIndex(a => a == obj));
             })
-            let image = group.url == null ? Images.group : {'uri': group.image};
+            let image = group.image == null ? Images.group : {'uri': group.image};
             console.log("Group URL =", image);
             this.setState({isNew, group, title: group.name, indexes, image});
         } else {
