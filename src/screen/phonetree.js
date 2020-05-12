@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor: '#484D53',
+        backgroundColor: '#fff',
     },
     borderStyle: {
         height: 40,
@@ -168,7 +168,10 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
     textInput: {
-        fontSize: 15,
+        fontSize: 18,
+        textAlignVertical: 'center',
+        height: 40,
+        marginLeft: 12,
     },
     item: {
         color: '#fff',
