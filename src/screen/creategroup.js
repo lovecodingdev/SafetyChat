@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
     StyleSheet,
-    ImageBackground,
     View,
     TextInput,
     Alert,
@@ -9,7 +8,6 @@ import {
     TouchableOpacity,
     Platform,
     KeyboardAvoidingView,
-    Alert,
 } from 'react-native'
 import {Button, Text, Label} from 'native-base'
 import {Images, Colors} from '../theme'
@@ -157,6 +155,7 @@ export default class CreateGroup extends Component {
                     },
                 },
             ],
+            {cancelable: true},
         )
         // ImagePicker.showImagePicker(options, (response) => {
         //     if (response.didCancel) {

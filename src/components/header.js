@@ -17,18 +17,18 @@ export default class Header extends Component {
                 {
                     text: 'Ok', onPress: async () => {
                         
-                        // firebase.database().ref(user.code+'/users/'+user.name).remove().then(()=>{
-                            console.log("remove user!")
-                            user.name = ''
-                            user.role = ''
-                            user.password = ''
-                            user.code = ''
-                            AppData.setItem(Const.CODE_KEY, '');
-                            AppData.setItem(Const.USER_KEY, '');
-                            AppData.setItem(Const.ROLE_KEY, '');
-                            AppData.setItem(Const.PASSWORD_KEY, '');
-                            this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0);
-                        // })
+                        firebase.database().ref(user.code+'/users/'+user.name).update({token: ''});
+                        console.log("User Logout!")
+                        user.name = ''
+                        user.role = ''
+                        user.password = ''
+                        user.code = ''
+                        AppData.setItem(Const.CODE_KEY, '');
+                        AppData.setItem(Const.USER_KEY, '');
+                        AppData.setItem(Const.ROLE_KEY, '');
+                        AppData.setItem(Const.PASSWORD_KEY, '');
+                        AppData.setItem(Const.IMAGE_KEY, null);
+                        this.props.prop.reset([NavigationActions.navigate({ routeName: 'CheckcodeScreen' })], 0);
                     }
                 },
                 {

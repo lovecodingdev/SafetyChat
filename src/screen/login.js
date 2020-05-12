@@ -33,15 +33,16 @@ export default class login extends Component {
         let self = this;
         let {name, password} = this.state;
         if(name != '' && password != '') {
-            let companycode = user.code
-            
             this.setState({loading: true})
             let res = await API.login(name, password)
             this.setState({loading: false})
             //firebase user register with token
             console.log(res);
             if(res == true) {
-                await firebase.database().ref().child(companycode+'/messages/'+name+'/1234zxcv').set({empty: ''})
+                let image = await (await firebase.database().ref().child(user.code+'/users/'+name+'/image').once('value')).val();
+                global.user.image = image;
+                console.log("*** Image =", image);
+                await firebase.database().ref().child(user.code+'/messages/'+name+'/1234zxcv').set({empty: ''})
                 this.props.navigation.replace('HomeScreen')
             } else {
                 setTimeout(()=>{

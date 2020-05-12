@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  TouchableOpacity,
-  Image,
-  Text,
   View,
-  ScrollView,
-  Platform,
   FlatList,
-  Alert,
+  TextInput,
   } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -26,9 +21,12 @@ export default class phonetree extends Component {
         this.state = {
            ids: [],
            channels: [],
+           key: ''
         }
         global.mScreen = 'PhoneTree'
         this.didFocusListener = null;
+        this.onFilter = this.onFilter.bind(this);
+        this.allIds = [];
     }
 
     async componentDidMount() {
@@ -58,12 +56,12 @@ export default class phonetree extends Component {
                 } else if (readDate == null && date != null) {
                     isBadge = true;
                 }
-                ids.push({id: channel.id, date, isBadge, image: channel.image});
+                ids.push({id: channel.id, name: channel.name, date, isBadge, image: channel.image});
             }
         });
         ids = ids.sort((a,b) => new Date(b.date) - new Date(a.date));
-        console.log("dates = ", ids);
-        this.setState({ids, channels});
+        this.allIds = ids;
+        this.setState({ids, channels, key: ''});
     }
 
     componentWillUnmount() {
@@ -120,17 +118,28 @@ export default class phonetree extends Component {
         }
     }
 
+    onFilter(text) {
+        if (text == '') {
+            this.setState({key: '', ids: this.allIds});
+            return;
+        }
+        let ids = this.allIds.filter(item => String(item.name).toUpperCase().includes(text.toUpperCase()));
+        this.setState({key: text, ids});
+    }
+
     render() {
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
                 <View>
+                    <View style={styles.borderStyle}>
+                        <TextInput  placeholder="Search..." style={styles.textInput} value={this.state.key} onChangeText={text=>this.onFilter(text)} />
+                    </View>
                     <FlatList 
-                        style={{...ifIphoneX({height: responsiveHeight(100) - 105}, {height: responsiveHeight(100)-85})}}
+                        style={{...ifIphoneX({height: responsiveHeight(100) - 155}, {height: responsiveHeight(100)-135})}}
                         data={this.state.ids}
                         renderItem={this.renderRow}
                         showsVerticalScrollIndicator={true}
-                        //keyExtractor={item}
                     />
                 </View>
             </Container>
@@ -144,9 +153,22 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: '#484D53',
     },
+    borderStyle: {
+        height: 40,
+        width: responsiveWidth(100) - 20,
+        marginLeft: 10,
+        borderWidth: 1,
+        borderRadius: 20,
+        marginTop: 5,
+        marginBottom: 5,
+        backgroundColor: '#fff'
+    },
     title: {
         color: '#fff',
         fontSize: 30,
+    },
+    textInput: {
+        fontSize: 15,
     },
     item: {
         color: '#fff',

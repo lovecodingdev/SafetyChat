@@ -68,6 +68,7 @@ export default class SelectGroup extends Component {
                     },
                 },
             ],
+            {cancelable: true},
         )
     }
 
