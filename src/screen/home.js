@@ -289,7 +289,7 @@ export default class home extends Component {
     }
 
     render() {
-        var isAdmin = user.role.toLowerCase().includes('admin') ? true : false;
+        var isAdmin = (user.role.toLowerCase().includes('administator') || user.role.toLowerCase().includes('manager'))  ? true : false;
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
