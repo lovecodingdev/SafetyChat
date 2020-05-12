@@ -75,6 +75,7 @@ export default class CreateGroup extends Component {
             if (path != '') {
                 image = await API.uploadImage(path, date.toString());
             }
+            self.setState({loading: false});
             const newRef = firebase.database().ref().child(user.code + '/groups').push();
             newRef.set({
                 title: title,
@@ -82,7 +83,6 @@ export default class CreateGroup extends Component {
                 image: image,
             })
             .then(() => {
-                self.setState({loading: false});
                 alert("Successfully Created");
                 setTimeout(() => {
                     self.props.navigation.goBack();
