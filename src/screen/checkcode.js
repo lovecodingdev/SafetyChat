@@ -29,7 +29,7 @@ export default class checkcode extends Component {
 
     async setCode() {
         if(this.state.text != '') {
-            this.setState({loading: true})
+            // this.setState({loading: true})
             var code = this.state.text.toLowerCase()
             var url = "https://"+code+".myspapp.com/"+"wp-json/aam/v2/"
             console.log(url)
@@ -51,15 +51,18 @@ export default class checkcode extends Component {
                 } else {
                     console.log('This is not a valid code')
                     alert("That company code didn't work. Let's try again.")
+                    return;
                 }
                 
             } catch (error) {
                 console.log("error", error)
                 this.setState({loading: false})
                 alert("That company code didn't work. Let's try again.")
+                return;
             }
         } else {
             alert("Please insert your company code");
+            return;
         }
     }
 

@@ -10,6 +10,7 @@ export default {
     ROLE_KEY: 'role',
     TOKEN_KEY: 'token',
     PASSWORD_KEY: 'password',
+    PERMISSION_KEY: 'noti_permission',
     // Server Variables
     // URL: 
 };

@@ -26,10 +26,7 @@ export default class splash extends Component {
     async componentDidMount() {
       
         this.setState({loading: true})
-        // Firebase Notification.
-        let enabled = await firebase.messaging().hasPermission()
-        if(!enabled) await firebase.messaging().requestPermission()
-
+        
         // Check user data.
         let name = await AppData.getItem(CONST.USER_KEY)
         let code = await AppData.getItem(CONST.CODE_KEY)
@@ -52,7 +49,7 @@ export default class splash extends Component {
             url: "https://"+code+".myspapp.com/",
         }
 
-        let con = await API.getConnection();
+        let con = true; // await API.getConnection();
 
         this.setState({loading: false})
 
