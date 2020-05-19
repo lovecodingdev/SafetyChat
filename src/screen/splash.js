@@ -12,6 +12,7 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 import API from '../components/api';
 import Spinner from 'react-native-loading-spinner-overlay'
 import firebase from 'react-native-firebase'
+import api from '../components/api';
 
 export default class splash extends Component {
 
@@ -49,14 +50,18 @@ export default class splash extends Component {
             url: "https://"+code+".myspapp.com/",
         }
 
+        if (user.name != null && user.password != null) {
+            await api.login(user.name, user.password);
+        }
         let con = true; // await API.getConnection();
 
         this.setState({loading: false})
 
         var screen = 'CheckcodeScreen'
         if(con == true) {
-            if(user.name == '' || user.name == null) {
+            if((user.name == '' || user.name == null) || (user.password == '' || user.password == null)) {
                 screen = 'LoginScreen'
+                await api.login(user.name, user.password);
             } else {
                 screen = 'HomeScreen'
             }

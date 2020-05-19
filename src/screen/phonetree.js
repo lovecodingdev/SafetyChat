@@ -93,12 +93,16 @@ export default class phonetree extends Component {
         var channel = this.getChannelFromId(item.id);
         var name = channel.name;
         var isBadge = item.isBadge;
+        var role = channel.role;
+        if (role == null) {
+            role = 'Undefined';
+        }
         var url = item.image == null ? <Avatar rounded title={name.slice(0,2).toUpperCase()} /> : {source: { uri: item.image }};
         if (isBadge == true) {
             return (
                 <ListItem title={name.charAt(0).toUpperCase() + name.slice(1)}
                     leftAvatar={url}
-                    subtitle={channel.role.toUpperCase()}
+                    subtitle={role.toUpperCase()}
                     onPress={this.chat.bind(this, channel)}
                     bottomDivider
                     chevron
@@ -109,7 +113,7 @@ export default class phonetree extends Component {
             return (
                 <ListItem title={name.charAt(0).toUpperCase() + name.slice(1)}
                     leftAvatar={url}
-                    subtitle={channel.role.toUpperCase()}
+                    subtitle={role.toUpperCase()}
                     onPress={this.chat.bind(this, channel)}
                     bottomDivider
                     chevron

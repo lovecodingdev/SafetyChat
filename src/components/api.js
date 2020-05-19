@@ -46,8 +46,9 @@ async function login(name, password) {
             user.password = password
             await AppData.setItem(CONST.USER_KEY, name)
             await AppData.setItem(CONST.PASSWORD_KEY, password)
-            // await AppData.setItem(CONST.TOKEN_KEY, user.token)
             await AppData.setItem(CONST.ROLE_KEY, user.role)
+
+            await firebase.database().ref().child(user.code+'/users/'+user.name).update({role: user.role})
             return true
         } else {
             return false
