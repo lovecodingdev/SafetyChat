@@ -27,6 +27,7 @@ export default class splash extends Component {
     async componentDidMount() {
       
         this.setState({loading: true})
+        await this.checkPermission()
         
         // Check user data.
         let name = await AppData.getItem(CONST.USER_KEY)
@@ -77,6 +78,48 @@ export default class splash extends Component {
         }, 300)
     }
     
+    async checkPermission() {
+        let geoPerm = await AppData.getItem("geoPerm");
+        if (geoPerm == true) {
+            global.geoPerm = true;
+            return true;
+        } else if (geoPerm == false) {
+            global.geoPerm = false;
+            return true;
+        } else {
+            console.log("****");
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                      title: "GeoLocation permission.",
+                      message:
+                        "MySP needs access to your geoLocation " +
+                        "so you can be protected safely.",
+                      buttonNeutral: "Ask Me Later",
+                      buttonNegative: "Cancel",
+                      buttonPositive: "OK"
+                    }
+                )
+
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  console.log("You can use the camera");
+                  await AppData.setItem("geoPerm", true);
+                  global.geoPerm = true;
+                } else {
+                  await AppData.setItem("geoPerm", false);
+                  console.log("Camera permission denied");
+                  global.geoPerm = false;
+                }
+                return true;
+              } catch (err) {
+                console.warn(err);
+                await AppData.setItem("geoPerm", false);
+                global.geoPerm = false;
+                return true;
+              }
+        }
+    }
 
     render() {
         return (
