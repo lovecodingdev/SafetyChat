@@ -16,6 +16,7 @@
     "native-base": "^2.12.1",
     "react": "16.8.6",
     "react-native": "0.60.3",
+    "react-native-android-badge": "^0.4.3",
     "react-native-elements": "^1.2.7",
     "react-native-firebase": "^5.5.6",
     "react-native-geolocation-service": "^4.0.2",

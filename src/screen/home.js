@@ -40,7 +40,6 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
-  
         this.setupDatabaseListener();
         await this.getAllGroups();
         this.getMessages();

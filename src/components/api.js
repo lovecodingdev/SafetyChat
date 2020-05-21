@@ -2,9 +2,11 @@ import NetInfo from "@react-native-community/netinfo"
 import AppData from "./AppData"
 import Base64 from 'Base64'
 import RNFetchBlob from 'rn-fetch-blob'
-import {Platform, Alert} from 'react-native'
+import {Platform} from 'react-native'
 import CONST from '../Const'
 import firebase from "react-native-firebase"
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+var BadgeAndroid = require('react-native-android-badge');
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -209,6 +211,15 @@ async function firebaseTokenRefresh() {
     return;
 }
 
+function setBadge(number) {
+
+    if (Platform.OS === 'ios') {
+        PushNotificationIOS.setApplicationIconBadgeNumber(number)
+    } else {
+        BadgeAndroid.setBadge(number)
+    }
+}
+
 async function updateFiles() {
     var username = user.name
     var password = user.password
@@ -248,4 +259,5 @@ export default {
     getTokens,
     sendPushNotification,
     uploadImage,
+    setBadge,
 }

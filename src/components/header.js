@@ -7,6 +7,7 @@ import {ifIphoneX} from 'react-native-iphone-x-helper'
 import firebase from 'react-native-firebase'
 import Const from '../Const'
 import AppData from '../components/AppData'
+import api from './api';
 
 export default class Header extends Component {
     logout() {
@@ -19,6 +20,7 @@ export default class Header extends Component {
                         
                         firebase.database().ref(user.code+'/users/'+user.name).update({token: ''});
                         console.log("User Logout!")
+                        api.setBadge(0);
                         user.name = ''
                         user.role = ''
                         user.password = ''

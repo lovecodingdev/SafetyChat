@@ -27,6 +27,7 @@ export default class splash extends Component {
     async componentDidMount() {
       
         this.setState({loading: true})
+        API.setBadge(0)
         await this.checkPermission()
         
         // Check user data.

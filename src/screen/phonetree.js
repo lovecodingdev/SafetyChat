@@ -43,6 +43,7 @@ export default class phonetree extends Component {
         let groups = await AppData.getItem('Groups');
         var channels = users.concat(groups);
         var ids = [];
+        var iconBadge = false;
         await this.asyncForEach(channels, async(channel) => {
             if (channel.name != user.name) {
                 let date = await AppData.getItem(channel.id);
@@ -53,10 +54,17 @@ export default class phonetree extends Component {
                     isBadge = false;
                 } else if (readDate < date) {
                     isBadge = true;
+                    iconBadge = true;
                 } else if (readDate == null && date != null) {
                     isBadge = true;
+                    iconBadge = true;
                 }
                 ids.push({id: channel.id, name: channel.name, date, isBadge, image: channel.image});
+            }
+            if (iconBadge == true) {
+                API.setBadge(1)
+            } else {
+                API.setBadge(0)
             }
         });
         ids = ids.sort((a,b) => new Date(b.date) - new Date(a.date));

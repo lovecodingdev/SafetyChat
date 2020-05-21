@@ -39,6 +39,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To take photo from camera</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>MySP would like to get your location for Safety</string>
+	<key>NSLocationUsageDescription</key>
+	<string>MySP would like to get your location for Safety</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -69,6 +73,8 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
