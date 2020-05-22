@@ -2,16 +2,12 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   ImageBackground,
-  FlatList,
 } from 'react-native'
 import { Container, Button, Label, Text} from 'native-base'
-import {Images, Colors} from '../theme'
+import {Images, Title} from '../theme'
 import Header from '../components/header'
-import Icon from '../components/icon'
+import BigIcon from '../components/bigicon'
 import { responsiveWidth } from 'react-native-responsive-dimensions'
-import API from '../components/api'
-import firebase from 'react-native-firebase'
-import AppData from '../components/AppData'
 
 export default class Admin extends Component {
     constructor(props){
@@ -25,39 +21,12 @@ export default class Admin extends Component {
         mScreen = 'Admin'
     }
 
-    async componentDidMount() {
-        this.users = await API.getAllUsers()
-        await this.getGroups();
-        let self = this;
-        this.didFocusListener =  await this.props.navigation.addListener('willFocus',
-        payload => {
-            self.getGroups();
-        });
+    onGroup() {
+        this.props.navigation.navigate('SubadminScreen');
     }
 
-    async getGroups() {
-        this.setState({isFetching: true});
-        var all = {
-            id: 'All',
-            name: 'ALL USERS',
-            users: this.users
-        }
-        var groups = [all]
-        var mGroups = await API.getGroups()
-        groups = groups.concat(mGroups);
-        this.setState({groups, isFetching: false})
-    }
+    onAlert() {
 
-    onGroup(group) {
-        this.props.navigation.navigate('CreateGroupScreen', {group, isNew: false, users: this.users});
-    }
-
-    createGroup() {
-        this.props.navigation.navigate('CreateGroupScreen', {users: this.users, isNew: true, group: {}});
-    }
-
-    async onRefresh() {
-        this.setState({ isFetching: true }, function() { this.getGroups() });
     }
 
     render() {
@@ -65,20 +34,9 @@ export default class Admin extends Component {
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
                 <ImageBackground source={Images.bg} style={{flex: 1, padding: 15}}>
-                    <FlatList
-                        data = {this.state.groups}
-                        horizontal = {false}
-                        showsVerticalScrollIndicator={false}
-                        onRefresh={() => this.onRefresh()}
-                        refreshing={this.state.isFetching}
-                        numColumns = {2}
-                        renderItem={({item}) =>
-                            <Icon img={Images.group} onPress={this.onGroup.bind(this, item)} title={item.name}></Icon>
-                        }
-                        keyExtractor={item => item.id}
-                    />
+                    <BigIcon img={Images.group} title={Title.menuGroup} onPress={this.onGroup.bind(this)}></BigIcon>
+                    <BigIcon img={Images.alert} title={Title.menuAlert} onPress={this.onAlert.bind(this)}></BigIcon>
                 </ImageBackground>
-                <Button block style={styles.button} onPress={this.createGroup.bind(this)}><Text>Organize Group</Text></Button>
             </Container>
         );
     }

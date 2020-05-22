@@ -16,6 +16,7 @@ import API from "../components/api"
 import BigIcon from '../components/bigicon'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData';
+import Geolocation from 'react-native-geolocation-service';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+"/safety/" : "/storage/emulated/0/safetyDir/"
 const PushNotification = require("react-native-push-notification");
@@ -40,6 +41,7 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
+        this.getMylocation()
         this.setupDatabaseListener();
         await this.getAllGroups();
         this.getMessages();
@@ -53,6 +55,21 @@ export default class home extends Component {
             console.log('Updated Home', payload);
             self.getAllGroups();
         });
+    }
+
+    getMylocation() {
+        if (geoPerm == true) {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                  console.log(position);
+                },
+                (error) => {
+                  // See error code charts below.
+                  console.log(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+        }
     }
 
     localNotify = (item) => {

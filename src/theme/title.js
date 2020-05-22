@@ -26,6 +26,8 @@ const title = {
     weapononcampus: "Weapon on Campus",
     admin: "Admin\nPanel",
     group: "My\nPanel",
+    menuGroup: "Manage\nGroup",
+    menuAlert: "Send\nAlert"
 };
 
 export default title;

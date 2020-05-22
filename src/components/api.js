@@ -6,7 +6,7 @@ import {Platform} from 'react-native'
 import CONST from '../Const'
 import firebase from "react-native-firebase"
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
-var BadgeAndroid = require('react-native-android-badge');
+import BadgeAndroid from "react-native-android-badge";
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 

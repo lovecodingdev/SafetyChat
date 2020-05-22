@@ -61,12 +61,12 @@ export default class phonetree extends Component {
                 }
                 ids.push({id: channel.id, name: channel.name, date, isBadge, image: channel.image});
             }
-            if (iconBadge == true) {
-                API.setBadge(1)
-            } else {
-                API.setBadge(0)
-            }
         });
+        if (iconBadge == true) {
+            API.setBadge(1)
+        } else {
+            API.setBadge(0)
+        }
         ids = ids.sort((a,b) => new Date(b.date) - new Date(a.date));
         this.allIds = ids;
         this.setState({ids, channels, key: ''});

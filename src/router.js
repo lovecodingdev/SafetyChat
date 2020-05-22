@@ -14,6 +14,7 @@ import admin from "./screen/admin"
 import group from "./screen/group"
 import creategroup from "./screen/creategroup"
 import selectgroup from "./screen/selectgroup"
+import subadmin from "./screen/subadmin"
 
 export const PrimaryNav = createStackNavigator({
     SplashScreen: { screen: splash },
@@ -25,6 +26,7 @@ export const PrimaryNav = createStackNavigator({
     PhoneTreeScreen: {screen: phonetree},
     ChatScreen: {screen: chat},
     AdminScreen: {screen: admin},
+    SubadminScreen: {screen: subadmin},
     GroupScreen: {screen: group},
     CreateGroupScreen: {screen: creategroup},
     SelectGroupScreen: {screen: selectgroup},
