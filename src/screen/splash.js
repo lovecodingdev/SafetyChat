@@ -80,11 +80,11 @@ export default class splash extends Component {
     }
     
     async checkPermission() {
-        let geoPerm = await AppData.getItem("geoPerm");
-        if (geoPerm == true) {
+        let geoPerms = await AppData.getItem("geoPerm");
+        if (geoPerms == true) {
             global.geoPerm = true;
             return true;
-        } else if (geoPerm == false) {
+        } else if (geoPerms == false) {
             global.geoPerm = false;
             return true;
         } else {
@@ -92,6 +92,7 @@ export default class splash extends Component {
             try {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
                     {
                       title: "GeoLocation permission.",
                       message:

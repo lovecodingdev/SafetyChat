@@ -83,6 +83,7 @@ export default class home extends Component {
             number: 1,
         })
         AppData.setItem(item.id, new Date());
+        console.log("OK!!!");
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
         }, 3000)
@@ -190,7 +191,7 @@ export default class home extends Component {
             onRegister: function(token) {
             },
             onNotification: function(notification) {
-                if (self.item != '') {
+                if (self.item != '' && Platform.OS === 'android') {
                     self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
                 }
             },
@@ -201,7 +202,7 @@ export default class home extends Component {
                 sound: true
             },
             popInitialNotification: true,
-            requestPermissions: true
+            requestPermissions: Platform.OS === 'ios'
         });
 
         const notificationOpen = await firebase.notifications().getInitialNotification()
@@ -246,7 +247,7 @@ export default class home extends Component {
     }
 
     group() {
-        this.props.navigation.navigate('SelectGroupScreen')
+        this.props.navigation.navigate('MypanelScreen')
     }
 
     async fetchDocument() {

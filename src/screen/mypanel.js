@@ -9,7 +9,7 @@ import Header from '../components/header'
 import BigIcon from '../components/bigicon'
 import { responsiveWidth } from 'react-native-responsive-dimensions'
 
-export default class Admin extends Component {
+export default class Mypanel extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -18,11 +18,11 @@ export default class Admin extends Component {
         }
         this.users = [];
         this.didFocusListener = null;
-        mScreen = 'Admin'
+        mScreen = 'Mypanel'
     }
 
     onGroup() {
-        this.props.navigation.navigate('SubadminScreen');
+        this.props.navigation.navigate('SelectGroupScreen');
     }
 
     onAlert() {
@@ -34,7 +34,7 @@ export default class Admin extends Component {
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
                 <ImageBackground source={Images.bg} style={{flex: 1, padding: 15}}>
-                    <BigIcon img={Images.group} title={Title.menuGroup} onPress={this.onGroup.bind(this)}></BigIcon>
+                    <BigIcon img={Images.profile} title={Title.profile} onPress={this.onGroup.bind(this)}></BigIcon>
                     <BigIcon img={Images.alert} title={Title.menuAlert} onPress={this.onAlert.bind(this)}></BigIcon>
                 </ImageBackground>
             </Container>

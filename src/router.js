@@ -15,6 +15,8 @@ import group from "./screen/group"
 import creategroup from "./screen/creategroup"
 import selectgroup from "./screen/selectgroup"
 import subadmin from "./screen/subadmin"
+import emergency from "./screen/emergency"
+import mypanel from './screen/mypanel';
 
 export const PrimaryNav = createStackNavigator({
     SplashScreen: { screen: splash },
@@ -28,6 +30,8 @@ export const PrimaryNav = createStackNavigator({
     AdminScreen: {screen: admin},
     SubadminScreen: {screen: subadmin},
     GroupScreen: {screen: group},
+    MypanelScreen: {screen: mypanel},
+    EmergencyScreen: {screen: emergency},
     CreateGroupScreen: {screen: creategroup},
     SelectGroupScreen: {screen: selectgroup},
 }, {

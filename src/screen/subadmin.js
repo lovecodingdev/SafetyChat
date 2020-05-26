@@ -37,12 +37,7 @@ export default class Admin extends Component {
 
     async getGroups() {
         this.setState({isFetching: true});
-        var all = {
-            id: 'All',
-            name: 'ALL USERS',
-            users: this.users
-        }
-        var groups = [all]
+        var groups = []
         var mGroups = await API.getGroups()
         groups = groups.concat(mGroups);
         this.setState({groups, isFetching: false})

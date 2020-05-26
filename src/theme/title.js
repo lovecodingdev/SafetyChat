@@ -26,6 +26,7 @@ const title = {
     weapononcampus: "Weapon on Campus",
     admin: "Admin\nPanel",
     group: "My\nPanel",
+    profile: "Profile\nImage",
     menuGroup: "Manage\nGroup",
     menuAlert: "Send\nAlert"
 };
