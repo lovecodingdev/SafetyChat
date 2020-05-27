@@ -23,7 +23,6 @@ async function setCode(code) {
 }
 
 async function login(name, password) {
-    console.log("*****login*********")
     var url = user.url + "wp-json/aam/v2/authenticate"
     console.log('Current URL = ', url)
     try {
@@ -40,7 +39,7 @@ async function login(name, password) {
         });
         let responseJson = await response.json() 
         
-        console.log("-------------------roles-----------------------", responseJson)
+        // console.log("-------------------roles-----------------------", responseJson)
         if(response.status == 200) {
             user.name = name
             // user.token = responseJson.user.data.user_pass

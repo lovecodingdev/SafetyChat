@@ -40,6 +40,7 @@ const images = {
     admin: require("../images/admin.png"),
     group: require("../images/group.png"),
     alert: require("../images/alert.png"),
+    alertbutton: require("../images/alertbutton.png"),
     profile: require("../images/profile.png"),
 
     checkoff : require('../images/checkoff.png'),

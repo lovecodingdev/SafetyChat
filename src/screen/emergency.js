@@ -24,7 +24,6 @@ export default class Emergency extends Component {
         this.state = {
             loading: false,
             indexes: [],
-            isInvited: false,
             message: ''
         }
         this.users = [];
@@ -39,49 +38,35 @@ export default class Emergency extends Component {
         console.log("This users = ", this.users);
     }
 
-    onDialog() {
-        this.setState({isInvited: true});
-    }
-
-
-    onChangedSelectedUsers(questionIndex, checkedIndexes) {
-        this.setState({indexes: checkedIndexes})
-    }
-
-    onSelect() {
-        this.setState({isInvited: false})
-    }
-
     onSendAlert() {
 
     }
 
     render() {
-        let {indexes, isInvited, message} = this.state;
+        let {message} = this.state;
         return (
             <KeyboardAvoidingView
                 behavior={Platform.OS == "ios" ? "padding" : "padding"}
                 style={{flex: 1,backgroundColor: '#484D53'}}>
                 <Header prop={this.props.navigation} />       
-                {isInvited == true ?
-                <View style={styles.view}>
-                    <Label style={styles.label}>SELECT USERS</Label>
-                    <ManyChoices many={false} data={this.users} checkedIndexes={indexes} onChanged={this.onChangedSelectedUsers.bind(this)}/>
-                    <Button block style={styles.button} onPress={this.onSelect.bind(this)}><Text>SELECT</Text></Button>
-                </View>:
                 <View>
                     <Text style={styles.title}>EMERGENCY!!!</Text>
                     <View style={{padding: 20}}>        
                         <Label style={{color: '#fff'}}>MESSAGE</Label>
-                        <TextInput style={styles.textInput} autoCapitalize='none' multiline={true} value={this.state.message} onChangeText={text=>this.setState({message: text})}/>
-                        <Button transparent onPress={this.onDialog.bind(this)}><Text>SELECT GROUP</Text></Button>
-                        <Button block style={styles.button} onPress={this.onSendAlert.bind(this)}><Text>SEND</Text></Button>
+                        <TextInput style={styles.textInput} autoCapitalize='none' multiline={true} value={message} onChangeText={text=>this.setState({message: text})}/>
+                        <TouchableOpacity style={styles.touchImage} onPress={this.onSendAlert.bind(this)}>
+                            <Image
+                                style={styles.profile}
+                                source={Images.alertbutton}
+                            />
+                        </TouchableOpacity>
+                        {/* <Button block style={styles.button} onPress={this.onSendAlert.bind(this)}><Text>SEND</Text></Button> */}
                     </View>
                     <Spinner
                         visible={this.state.loading}
                         textContent={''}
                     />
-                </View>}
+                </View>
             </KeyboardAvoidingView>
         );
     }
@@ -112,22 +97,33 @@ const styles = StyleSheet.create({
         color: '#fff', 
         fontSize: 25, 
         marginBottom: 10,
-        marginTop: 10,
+        marginTop: 30,
     },
     textInput: {
         marginTop: 10,
-        marginBottom: 5,
+        marginBottom: 30,
         borderWidth: 1, 
         borderRadius: 5,
         textAlignVertical: 'top', 
         borderColor:'#fff', 
         color: '#fff',
-        height: 100
+        height: 60
     },
     button: {
         backgroundColor: '#000',
         marginTop: 5,
         borderWidth: 2,
         borderColor: '#fff'
+    },
+    touchImage: {
+        alignSelf: 'center',
+    },
+    profile: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        borderColor: Colors.white,
+        borderWidth: 2,
+        resizeMode: 'cover'
     },
 });
