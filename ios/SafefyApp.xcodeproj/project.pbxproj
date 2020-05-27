@@ -22,6 +22,7 @@
 		62EC3D98AE4E1694FF51C2C5 /* libPods-SafefyAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F085AD782A61772C9635A8F3 /* libPods-SafefyAppTests.a */; };
 		7C17758E49C24D568B1B0921 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CCB62DE72B24E78B28A15F6 /* Roboto_medium.ttf */; };
 		8B68BBA74181FBFBB2833F94 /* libPods-SafefyApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C1EC0D15B4EEF8115744D82 /* libPods-SafefyApp-tvOS.a */; };
+		8BB495B324776E3D003415B4 /* alert.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8BB495B224776E3D003415B4 /* alert.mp3 */; };
 		CFF6EC7E832E4A05A6B65B69 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D540284F27844AE1BE95713A /* rubicon-icon-font.ttf */; };
 		EA68EF49D7FB412E878FFCE7 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34C69012D2614054A8A692DA /* Roboto.ttf */; };
 /* End PBXBuildFile section */
@@ -102,6 +103,7 @@
 		85C30301FECE5D118900B0BF /* Pods-SafefyApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOSTests/Pods-SafefyApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		89DFC62BE67253FF389B5F7F /* Pods-SafefyApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS/Pods-SafefyApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BB495B224776E3D003415B4 /* alert.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alert.mp3; path = ../android/app/src/main/res/raw/alert.mp3; sourceTree = "<group>"; };
 		8F9E1A9BEBE24AF686948358 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		958B62D71A104FE99C34ACF8 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		95D4DE7FF7044BE1B73C384E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				4C1BD4C822EF01FA0082A513 /* SafefyApp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				8BB495B224776E3D003415B4 /* alert.mp3 */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -485,6 +488,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7C17758E49C24D568B1B0921 /* Roboto_medium.ttf in Resources */,
 				EA68EF49D7FB412E878FFCE7 /* Roboto.ttf in Resources */,
+				8BB495B324776E3D003415B4 /* alert.mp3 in Resources */,
 				CFF6EC7E832E4A05A6B65B69 /* rubicon-icon-font.ttf in Resources */,
 				4C09F3CC22F31C0900048508 /* GoogleService-Info.plist in Resources */,
 			);
