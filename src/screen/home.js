@@ -41,7 +41,7 @@ export default class home extends Component {
     }
 
     async componentDidMount() {
-        this.getMylocation()
+        await this.getMylocation()
         this.setupDatabaseListener();
         await this.getAllGroups();
         this.getMessages();
@@ -57,19 +57,9 @@ export default class home extends Component {
         });
     }
 
-    getMylocation() {
-        if (geoPerm == true) {
-            Geolocation.getCurrentPosition(
-                (position) => {
-                  console.log(position);
-                },
-                (error) => {
-                  // See error code charts below.
-                  console.log(error.code, error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-        }
+    async getMylocation() {
+        let position =  await API.getLocation();
+        console.log("Position = ", position);
     }
 
     localNotify = (item) => {

@@ -7,6 +7,7 @@ import CONST from '../Const'
 import firebase from "react-native-firebase"
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import BadgeAndroid from "react-native-android-badge";
+import Geolocation from 'react-native-geolocation-service';
 
 const resourceUrl = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir+ "/safety/" : "/storage/emulated/0/safetyDir/"
 
@@ -139,22 +140,6 @@ async function sendPushNotification(tokens) {
     console.log(response);
 }
 
-async function sendNotification(token) {
-    var Headers = {
-        'Authorization' : '',
-        'Content-Type' : 'application/json'
-    }
-    var Body =
-    {
-        "to": token,
-        "data": {
-            "message": "Notification",
-            "title": "Title",
-            "data-type": "direct_message"
-        }
-    }
-}
-
 async function readRemoteMD5() {
     var username = user.name
     var password = user.password
@@ -245,6 +230,40 @@ async function updateFiles() {
 
 }
 
+var getPosition = function (options) {
+    return new Promise(function (resolve, reject) {
+        Geolocation.getCurrentPosition(resolve, reject, options);
+    });
+}
+
+async function getLocation() {
+    if (geoPerm == true) {
+        let pos = await getPosition()
+        .then((position) => {
+            console.log(position);
+            return position
+        })
+        .catch((err) => {
+            return null;
+        })
+        return pos;
+        // let pos = await Geolocation.getCurrentPosition(
+        //     (position) => {
+        //         console.log(position);
+        //         return position;
+        //     },
+        //     (error) => {
+        //     // See error code charts below.
+        //         console.log(error.code, error.message);
+        //         return null;
+        //     },
+        //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        // );
+    } else {
+        return null;
+    }
+}
+
 export default {
     getConnection,
     setCode,
@@ -259,4 +278,5 @@ export default {
     sendPushNotification,
     uploadImage,
     setBadge,
+    getLocation,
 }

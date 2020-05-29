@@ -3,7 +3,9 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
-  } from 'react-native';
+  PermissionsAndroid,
+  Platform
+} from 'react-native';
 import { Images } from '../theme';
 import { Container } from 'native-base';
 import AppData from '../components/AppData';
@@ -81,45 +83,64 @@ export default class splash extends Component {
     
     async checkPermission() {
         let geoPerms = await AppData.getItem("geoPerm");
+        console.log("Location permssion", geoPerms);
         if (geoPerms == true) {
             global.geoPerm = true;
             return true;
         } else if (geoPerms == false) {
             global.geoPerm = false;
             return true;
-        } else {
-            console.log("****");
-            try {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                    PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-                    {
-                      title: "GeoLocation permission.",
-                      message:
-                        "MySP needs access to your geoLocation " +
-                        "so you can be protected safely.",
-                      buttonNeutral: "Ask Me Later",
-                      buttonNegative: "Cancel",
-                      buttonPositive: "OK"
-                    }
-                )
+        } else if (geoPerms == null) {
+            if (Platform.OS === 'ios') {
+                const status = await Geolocation.requestAuthorization('whenInUse');
 
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                  console.log("You can use the camera");
-                  await AppData.setItem("geoPerm", true);
-                  global.geoPerm = true;
-                } else {
-                  await AppData.setItem("geoPerm", false);
-                  console.log("Camera permission denied");
-                  global.geoPerm = false;
+                if (status === 'granted') {
+                    await AppData.setItem("geoPerm", true);
+                    global.geoPerm = true;
                 }
-                return true;
-              } catch (err) {
-                console.warn(err);
-                await AppData.setItem("geoPerm", false);
-                global.geoPerm = false;
-                return true;
-              }
+
+                if (status === 'denied') {
+                    await AppData.setItem("geoPerm", false);
+                    global.geoPerm = false;
+                }
+
+                if (status === 'disabled') {
+                    await AppData.setItem("geoPerm", false);
+                    global.geoPerm = false;
+                }
+            } else {
+                try {
+                    const granted = await PermissionsAndroid.request(
+                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                        {
+                          title: "GeoLocation permission.",
+                          message:
+                            "MySP needs access to your geoLocation " +
+                            "so you can be protected safely.",
+                          buttonNeutral: "Ask Me Later",
+                          buttonNegative: "Cancel",
+                          buttonPositive: "OK"
+                        }
+                    )
+    
+                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                      console.log("You can use the camera");
+                      await AppData.setItem("geoPerm", true);
+                      global.geoPerm = true;
+                    } else {
+                      await AppData.setItem("geoPerm", false);
+                      console.log("Camera permission denied");
+                      global.geoPerm = false;
+                    }
+                    return true;
+                  } catch (err) {
+                    console.warn(err);
+                    await AppData.setItem("geoPerm", false);
+                    global.geoPerm = false;
+                    return true;
+                }
+            }
+            
         }
     }
 

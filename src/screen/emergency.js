@@ -12,10 +12,8 @@ import {
 import {Button, Text, Label} from 'native-base'
 import {Images, Colors} from '../theme'
 import Header from '../components/header'
-import ManyChoices from '../components/ManyChoices'
 import Spinner from 'react-native-loading-spinner-overlay'
 import firebase from 'react-native-firebase'
-import ImagePicker from 'react-native-image-crop-picker'
 import API from '../components/api'
 
 export default class Emergency extends Component {

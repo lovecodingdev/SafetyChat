@@ -72,7 +72,7 @@ export default class login extends Component {
                         <TextInput style={{marginTop: 10, borderWidth: 1, borderRadius: 5, borderColor:'#fff', color: '#fff',fontsize: 6, height: 35 }} autoCapitalize='none' value={this.state.name} onChangeText={text=>this.setState({name: text})}/>
                         
                         <Label style={{color: '#fff', marginTop: 10}}>Password</Label>
-                        <TextInput style={{marginTop: 10, marginBottom:30, borderWidth: 1, borderRadius: 5, borderColor:'#fff', color: '#fff', height: 35 }} secureTextEntry={true} value={this.state.password} onChangeText={text=>this.setState({password: text})}/>
+                        <TextInput style={{marginTop: 10, marginBottom:30, borderWidth: 1, borderRadius: 5, borderColor:'#fff', color: '#fff', height: 35 }} autoCapitalize='none' secureTextEntry={true} value={this.state.password} onChangeText={text=>this.setState({password: text})}/>
                         <Button block primary onPress={this.onLogin.bind(this)}><Text>LogIn</Text></Button>
                         <Button block transparent onPress={this.changeCode.bind(this)} style={{marginTop: 5}}><Text>Company Code?</Text></Button>
                     </View>
