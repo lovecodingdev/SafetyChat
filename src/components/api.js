@@ -237,31 +237,20 @@ var getPosition = function (options) {
 }
 
 async function getLocation() {
-    if (geoPerm == true) {
+    // if (global.geoPerm == true) {
         let pos = await getPosition()
         .then((position) => {
             console.log(position);
             return position
         })
         .catch((err) => {
+            console.log(err);
             return null;
         })
         return pos;
-        // let pos = await Geolocation.getCurrentPosition(
-        //     (position) => {
-        //         console.log(position);
-        //         return position;
-        //     },
-        //     (error) => {
-        //     // See error code charts below.
-        //         console.log(error.code, error.message);
-        //         return null;
-        //     },
-        //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        // );
-    } else {
-        return null;
-    }
+    // } else {
+    //     return null;
+    // }
 }
 
 export default {

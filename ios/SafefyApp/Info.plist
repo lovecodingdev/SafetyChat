@@ -39,12 +39,14 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To take photo from camera</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>MySP would like to get your location for Safety</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>MySP would like to get your location for Safety</string>
 	<key>NSLocationUsageDescription</key>
 	<string>MySP would like to get your location for Safety</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>MySP would like to get your location for Safety</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MySP would like to access your photo gallery for uploading images to the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>

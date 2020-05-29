@@ -11,10 +11,10 @@ import { Container } from 'native-base';
 import AppData from '../components/AppData';
 import CONST from '../Const';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
-import API from '../components/api';
 import Spinner from 'react-native-loading-spinner-overlay'
 import firebase from 'react-native-firebase'
 import api from '../components/api';
+import Geolocation from 'react-native-geolocation-service';
 
 export default class splash extends Component {
 
@@ -29,7 +29,7 @@ export default class splash extends Component {
     async componentDidMount() {
       
         this.setState({loading: true})
-        API.setBadge(0)
+        api.setBadge(0)
         await this.checkPermission()
         
         // Check user data.
@@ -93,21 +93,15 @@ export default class splash extends Component {
         } else if (geoPerms == null) {
             if (Platform.OS === 'ios') {
                 const status = await Geolocation.requestAuthorization('whenInUse');
-
+                console.log("Status", status);
                 if (status === 'granted') {
                     await AppData.setItem("geoPerm", true);
                     global.geoPerm = true;
-                }
-
-                if (status === 'denied') {
+                } else {
                     await AppData.setItem("geoPerm", false);
                     global.geoPerm = false;
                 }
-
-                if (status === 'disabled') {
-                    await AppData.setItem("geoPerm", false);
-                    global.geoPerm = false;
-                }
+                return true;
             } else {
                 try {
                     const granted = await PermissionsAndroid.request(
