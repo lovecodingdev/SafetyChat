@@ -86,8 +86,9 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
                 msnapshot.forEach(function(child) {
                     if (users.includes(child.key)) {
                         var temp = child.val().token;
-                        console.log('token', temp)
-                        totoken.push(temp)
+                        if (temp.length > 10) {
+                            totoken.push(temp)
+                        }
                     }
                 })
                 var messages = {
@@ -142,5 +143,79 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
                     console.log('Error sending notification:', err);
                 });
             })
+        })
+    });
+
+    exports.sendEmergency = functions.database.ref('{companycode}/alerts/{key}')
+    .onCreate((csnapshot, context) => {
+        let value = csnapshot.val();
+        console.log('---------alert---------------',value);
+        var company = context.params.companycode;
+        var totoken = []
+        var me = value.user;
+        var type = value.type;
+        var message = value.message;
+        admin.database().ref(company+'/users').once('value', function(snapshot) {
+            snapshot.forEach(function(child) {
+                if (me != child.key) {
+                    var temp = child.val().token;
+                    if (temp.length > 10) {
+                        totoken.push(temp)
+                    }
+                }
+            })
+            console.log("****TOKENS****", totoken);
+            var messages = {
+                data: {
+                    data: JSON.stringify(value),
+                    fromname: me,
+                    alert: "true",
+                },
+                tokens: totoken
+            };
+               
+            admin.messaging().sendMulticast(messages)
+            .then((res) => {
+                console.log('Successfully sent message:', res);
+                return;
+            })
+            .catch((err) => {
+                console.log('Error sending message:', err);
+            });
+
+
+            //notifications
+            var notification = {
+                notification: {
+                    title: 'Emergency',
+                    body: type+":"+message,
+                },
+                data: {
+                    fromname: me,
+                    alert: "true",
+                },
+                android: {
+                    notification: {
+                        sound: 'alert.mp3',
+                        channel_id: me,
+                    },
+                },
+                apns: {
+                    payload: {
+                        aps: {
+                            sound: 'alert.mp3'
+                        },
+                    },
+                },
+                tokens: totoken
+            };
+            admin.messaging().sendMulticast(notification)
+            .then((res) => {
+                console.log('Successfully sent notification:', res);
+                return;
+            })
+            .catch((err) => {
+                console.log('Error sending notification:', err);
+            });
         })
     });
