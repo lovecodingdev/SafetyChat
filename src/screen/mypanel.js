@@ -26,7 +26,7 @@ export default class Mypanel extends Component {
     }
 
     onAlert() {
-        this.props.navigation.navigate('EmergencyScreen');
+        this.props.navigation.navigate('EmergencyScreen', {isAdmin: false});
     }
 
     render() {
