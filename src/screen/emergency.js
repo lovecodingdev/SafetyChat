@@ -132,7 +132,7 @@ export default class Emergency extends Component {
                                 source={Images.alertbutton}
                             />
                         </TouchableOpacity>
-                        <Button block style={styles.button} onPress={this.onBack.bind(this)}><Text>BACK</Text></Button>
+                        <Button block bordered={false} style={styles.button} onPress={this.onBack.bind(this)}><Text>BACK</Text></Button>
                     </View>}
             </KeyboardAvoidingView>
         );
@@ -182,10 +182,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     button: {
-        backgroundColor: '#000',
         marginTop: 10,
-        borderWidth: 2,
-        borderColor: '#fff'
     },
     touchImage: {
         alignSelf: 'center',
