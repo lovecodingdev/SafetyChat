@@ -63,7 +63,7 @@ export default class Emergency extends Component {
         console.log("This users = ", this.users);
     }
 
-    onSendAlert() {
+    async onSendAlert() {
         let {options, selected, message, position} = this.state;
         let lat = null;
         let lon = null;
@@ -80,7 +80,11 @@ export default class Emergency extends Component {
             message: message,
             type: options[selected].title
         }
-        firebase.database().ref(user.code+'/alerts/').push(alert)
+        await firebase.database().ref(user.code+'/alerts/').push(alert)
+        Alert.alert("Successfully Sent");
+        setTimeout(() => {
+            this.props.navigation.goBack();
+        }, 300);
     }
 
     onItem(index) {
@@ -132,7 +136,7 @@ export default class Emergency extends Component {
                                 source={Images.alertbutton}
                             />
                         </TouchableOpacity>
-                        <Button block bordered={false} style={styles.button} onPress={this.onBack.bind(this)}><Text>BACK</Text></Button>
+                        <Button block transparent bordered={false} style={styles.button} onPress={this.onBack.bind(this)}><Text style={{fontSize: 18, color: Colors.white}}>BACK TO MENU</Text></Button>
                     </View>}
             </KeyboardAvoidingView>
         );
