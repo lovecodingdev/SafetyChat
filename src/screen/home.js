@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -36,8 +37,10 @@ export default class home extends Component {
 
         this.childChangedRef = null
         this.groupChangedRef = null
+        this.alertChangedRef = null
         this.didFocusListener = null
         this.localNotify = this.localNotify.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
 
     async componentDidMount() {
@@ -73,6 +76,22 @@ export default class home extends Component {
             number: 1,
         })
         AppData.setItem(item.id, new Date());
+        console.log("OK!!!");
+        setTimeout(()=>{
+            PushNotification.cancelAllLocalNotifications()
+        }, 3000)
+    }
+
+    showAlert = (item) => {
+        this.item = item;
+        let message = item.message;
+        PushNotification.localNotification({
+            title: "Emergency", // (optional)
+            message: message, // (required)
+            playSound: true,
+            soundName: 'alert.mp3',
+            number: 1,
+        })
         console.log("OK!!!");
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
@@ -146,6 +165,7 @@ export default class home extends Component {
                 }
             })
             AppData.setItem('Groups', mGroups);
+
         })
     }
 
@@ -170,6 +190,19 @@ export default class home extends Component {
                 id: value.key,
                 name: value.key,
                 isGroup: true,
+            }
+            self.localNotify(item);
+        })
+
+        this.alertChangedRef = firebase.database().ref(user.code + '/alerts/');
+        this.alertChangedRef.on("child_changed", (value) => {
+            let item = {
+                id: value.user,
+                name: value.user,
+                message: value.message,
+                isAdmin: value.isAdmin,
+                lat: value.lat,
+                lon: value.lon,
             }
             self.localNotify(item);
         })
@@ -200,6 +233,13 @@ export default class home extends Component {
             // App was opened by a notification
             const notification = notificationOpen.notification
             toName = notification._data.fromname
+            let isAlert = notification._data.alert;
+            console.log("Get noti", notification);
+            if (isAlert == "true") {
+                message = "notification."
+                Alert.alert(message);
+                return
+            }
             self.item = {
                 id: toName,
                 name: toName,
