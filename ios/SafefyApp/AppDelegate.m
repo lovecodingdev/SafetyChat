@@ -15,6 +15,7 @@
 #import "RNFirebaseMessaging.h"
 #import <RNCPushNotificationIOS.h>
 #import <UserNotifications/UserNotifications.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @import Firebase;
 
@@ -35,6 +36,7 @@
   self.window.rootViewController = rootViewController;
   
   [FIRApp configure];
+  [GMSServices provideAPIKey:@"AIzaSyAtWr2dzp5VJdfuHQ4AVRE_fsx12uF5Kt8"];
   [self.window makeKeyAndVisible];
   
 //  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];

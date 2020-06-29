@@ -146,7 +146,7 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
         })
     });
 
-    exports.sendEmergency = functions.database.ref('{companycode}/alerts/{key}')
+    exports.sendEmergency = functions.database.ref('{companycode}/alerts/{admintype}/{key}')
     .onCreate((csnapshot, context) => {
         let value = csnapshot.val();
         console.log('---------alert---------------',value);
