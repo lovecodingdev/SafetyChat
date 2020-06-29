@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Platform,
   Alert,
+  AppState,
 } from 'react-native';
 import { Images, Title } from '../theme';
 import { Container } from 'native-base';
@@ -30,6 +31,7 @@ export default class home extends Component {
             maps: '',
             firstaid: '',
             loading: true,
+            appState: AppState.currentState,
         }
         global.mScreen = 'Home';
         global.toName = '';
@@ -58,6 +60,28 @@ export default class home extends Component {
             console.log('Updated Home', payload);
             self.getAllGroups();
         });
+
+        AppState.addEventListener(
+            'change',
+            this._handleAppStateChange
+        );
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (
+          this.state.appState.match(/inactive|background/) &&
+          nextAppState === 'active'
+        ) {
+          console.log('App has come to the foreground!');
+        }
+        this.setState({ appState: nextAppState });
+      };
+
+    componentWillUnmount() {
+        AppState.removeEventListener(
+          'change',
+          this._handleAppStateChange
+        );
     }
 
     async getMylocation() {
@@ -67,6 +91,7 @@ export default class home extends Component {
 
     localNotify = (item) => {
         this.item = item;
+        
         let message = item.isGroup ? 'Message from your Group' : 'Message from ' + item.name
         PushNotification.localNotification({
             title: "Notification", // (optional)
@@ -85,6 +110,10 @@ export default class home extends Component {
         this.item = item;
         let title = "EMERGENCY FROM " + item.name;
         let message = item.type + ":" + item.message;
+        console.log(this.state.appState);
+        if (this.state.appState != "active") {
+            return;
+        }
         console.log("Items is: ", item);
         PushNotification.localNotification({
             title: title, // (optional)
@@ -232,13 +261,14 @@ export default class home extends Component {
             onNotification: function(notification) {
                 console.log("Noti item", self.item);
                 if (self.item != '' && Platform.OS === 'android') {
-                    if (self.item.isAdmin == true || self.item.lat == undefined) {
-                        let title = "EMERGENCY FROM " + self.item.name;
-                        let message = self.item.type + ":" + self.item.message;
-                        Alert.alert(title, message);
-                        return;
-                    }
+                    
                     if (self.item.alert == true) {
+                        if (self.item.isAdmin == true || self.item.lat == undefined) {
+                            let title = "EMERGENCY FROM " + self.item.name;
+                            let message = self.item.type + ":" + self.item.message;
+                            Alert.alert(title, message);
+                            return;
+                        }
                         self.props.navigation.navigate({routeName:'MapScreen', params: {item: self.item}, key: 'map'})
                         return;
                     }
@@ -283,13 +313,13 @@ export default class home extends Component {
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
             // Get information about the notification that was opened
             console.log("NOTIFICATION OPENED:", self.item);
-            if (self.item.isAdmin == true || self.item.lat == undefined) {
-                let title = "EMERGENCY FROM " + self.item.name;
-                let message = self.item.type + ":" + self.item.message;
-                Alert.alert(title, message);
-                return;
-            }
             if (self.item.alert == true) {
+                if (self.item.isAdmin == true || self.item.lat == undefined) {
+                    let title = "EMERGENCY FROM " + self.item.name;
+                    let message = self.item.type + ":" + self.item.message;
+                    Alert.alert(title, message);
+                    return;
+                }
                 self.props.navigation.navigate({routeName:'MapScreen', params: {item: self.item}, key: 'map'})
                 return;
             }

@@ -103,7 +103,7 @@ export default class Emergency extends Component {
         let {message, isAlert, headText, posDesc} = this.state;
         return (
             <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "padding"}
+                behavior={Platform.OS == "ios" ? "padding" : "position"}
                 style={{flex: 1,backgroundColor: '#484D53'}}>
                 <Header prop={this.props.navigation} />
                 {!isAlert?

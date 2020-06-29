@@ -34,8 +34,8 @@ export default class map extends Component {
       let item = this.props.navigation.getParam('item');
       console.log("Map item,", item);
       let location = {
-        latitude: item.lat,
-        longitude: item.lon,
+        latitude: parseFloat(item.lat),
+        longitude: parseFloat(item.lon),
       }
       let title = item.name;
       let message = item.message;
