@@ -24,6 +24,8 @@ export default class map extends Component {
                 latitude: 37.78825,
                 longitude: -122.4324,
             },
+            title: "",
+            message: "",
         }
     }
 
@@ -35,7 +37,9 @@ export default class map extends Component {
         latitude: item.lat,
         longitude: item.lon,
       }
-      this.setState({location});
+      let title = item.name;
+      let message = item.message;
+      this.setState({location, title, message});
       if (item == undefined || item == null) {
           Alert.alert("Error", "No geolocation data.");
           return;
@@ -43,7 +47,7 @@ export default class map extends Component {
     }
 
     render() {
-        let {location} = this.state;
+        let {location, title, message} = this.state;
         return (
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
@@ -59,8 +63,8 @@ export default class map extends Component {
                 >
                     <Marker
                         coordinate={location}
-                        title={"Marker"}
-                        description={"Emergency"}
+                        title={title}
+                        description={message}
                     />
                 </MapView>
             </Container>
