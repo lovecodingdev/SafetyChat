@@ -198,9 +198,17 @@ export default class home extends Component {
         this.alertChangedRef.on("child_changed", (value) => {
             let val = value.val();
             // let itemId = val.seats[val.seats.length - 1]
+            
             let key = Object.keys(val)[0];
+            let keys = Object.keys(val);
+            for (temp in keys) {
+                if (val[key].timestamp < val[keys[temp]].timestamp) {
+                    key = keys[temp];
+                }
+            }
             let item1 = val[key];
             console.log("Alert value", item1);
+            // console.log("json value", temp);
             if (item1.user == user.name) return;
             let item = {
                 id: item1.user,

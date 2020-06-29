@@ -11,7 +11,7 @@ import Header from '../components/header'
 import firebase from 'react-native-firebase'
 import api from '../components/api';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 export default class map extends Component {
 
@@ -21,8 +21,8 @@ export default class map extends Component {
         this.state = {
             loading: false,
             location: {
-                latitude: 0,
-                longitude: 0,
+                latitude: 37.78825,
+                longitude: -122.4324,
             },
         }
     }
@@ -34,7 +34,7 @@ export default class map extends Component {
       let location = {
         latitude: item.lat,
         longitude: item.lon,
-    }
+      }
       this.setState({location});
       if (item == undefined || item == null) {
           Alert.alert("Error", "No geolocation data.");
@@ -48,6 +48,7 @@ export default class map extends Component {
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
                 <MapView
+                    provider={PROVIDER_GOOGLE}
                     initialRegion={{
                         latitude: location.latitude,
                         longitude: location.longitude,
