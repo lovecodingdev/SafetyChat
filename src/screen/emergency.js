@@ -78,7 +78,8 @@ export default class Emergency extends Component {
             lat: lat,
             lon: lon,
             message: message,
-            type: options[selected].title
+            type: options[selected].title,
+            timestamp: new Date(),
         }
         let type = this.isAdmin ? 'admin/' : 'user/';
         await firebase.database().ref(user.code+'/alerts/'+type).push(alert)

@@ -84,9 +84,11 @@ export default class home extends Component {
 
     showAlert = (item) => {
         this.item = item;
-        let message = item.message;
+        let title = "EMERGENCY FROM " + item.name;
+        let message = item.type + ":" + item.message;
+        console.log("Items is: ", item);
         PushNotification.localNotification({
-            title: "Emergency", // (optional)
+            title: title, // (optional)
             message: message, // (required)
             playSound: true,
             soundName: 'alert.mp3',
@@ -95,7 +97,7 @@ export default class home extends Component {
         console.log("OK!!!");
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
-        }, 3000)
+        }, 5000)
     }
 
     async getMessages() {
@@ -196,15 +198,21 @@ export default class home extends Component {
 
         this.alertChangedRef = firebase.database().ref(user.code + '/alerts/');
         this.alertChangedRef.on("child_changed", (value) => {
+            let val = value.val();
+            // let itemId = val.seats[val.seats.length - 1]
+            let key = Object.keys(val)[0];
+            let item1 = val[key];
+            console.log("Alert value", item1);
+            // if (item1.user == user.name) return;
             let item = {
-                id: value.user,
-                name: value.user,
-                message: value.message,
-                isAdmin: value.isAdmin,
-                lat: value.lat,
-                lon: value.lon,
+                id: item1.user,
+                name: item1.user,
+                message: item1.message,
+                isAdmin: item1.isAdmin,
+                type: item1.type,
+                isAlert: true,
             }
-            self.localNotify(item);
+            self.showAlert(item);
         })
     }
 
@@ -234,11 +242,9 @@ export default class home extends Component {
             const notification = notificationOpen.notification
             toName = notification._data.fromname
             let isAlert = notification._data.alert;
-            console.log("Get noti", notification);
+            console.log("Get noti", notification._data);
             if (isAlert == "true") {
-                message = "notification."
-                Alert.alert(message);
-                return
+                // console.log;
             }
             self.item = {
                 id: toName,
@@ -269,7 +275,8 @@ export default class home extends Component {
     }
 
     phonetree() {
-        this.props.navigation.navigate('PhoneTreeScreen')
+        // this.props.navigation.navigate('PhoneTreeScreen')
+        this.props.navigation.navigate('MapScreen')
     }
 
     admin() {
