@@ -53,6 +53,7 @@ export default class map extends Component {
                 <Header prop={this.props.navigation} />
                 <MapView
                     provider={PROVIDER_GOOGLE}
+                    mapType={'satellite'}
                     initialRegion={{
                         latitude: location.latitude,
                         longitude: location.longitude,
