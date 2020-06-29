@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   ImageBackground,
+  Text,
+  Alert,
 } from 'react-native';
 import { Images } from '../theme';
 import { Container } from 'native-base';
@@ -18,33 +20,44 @@ export default class map extends Component {
 
         this.state = {
             loading: false,
-            location: null,
+            location: {
+                latitude: 0,
+                longitude: 0,
+            },
         }
     }
 
     componentDidMount() {
+      
+      let item = this.props.navigation.getParam('item');
+      console.log("Map item,", item);
       let location = {
-          latitude: 37.78825,
-          longitude: -122.4324
-      }
+        latitude: item.lat,
+        longitude: item.lon,
+    }
       this.setState({location});
+      if (item == undefined || item == null) {
+          Alert.alert("Error", "No geolocation data.");
+          return;
+      }
     }
 
     render() {
+        let {location} = this.state;
         return (
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
                 <MapView
                     initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
+                        latitude: location.latitude,
+                        longitude: location.longitude,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
                     style={styles.map}
                 >
                     <Marker
-                        coordinate={this.state.location}
+                        coordinate={location}
                         title={"Marker"}
                         description={"Emergency"}
                     />

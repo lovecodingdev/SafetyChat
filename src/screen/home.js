@@ -76,7 +76,6 @@ export default class home extends Component {
             number: 1,
         })
         AppData.setItem(item.id, new Date());
-        console.log("OK!!!");
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
         }, 3000)
@@ -94,7 +93,6 @@ export default class home extends Component {
             soundName: 'alert.mp3',
             number: 1,
         })
-        console.log("OK!!!");
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
         }, 5000)
@@ -203,14 +201,16 @@ export default class home extends Component {
             let key = Object.keys(val)[0];
             let item1 = val[key];
             console.log("Alert value", item1);
-            // if (item1.user == user.name) return;
+            if (item1.user == user.name) return;
             let item = {
                 id: item1.user,
                 name: item1.user,
                 message: item1.message,
                 isAdmin: item1.isAdmin,
                 type: item1.type,
-                isAlert: true,
+                alert: true,
+                lat: item1.lat,
+                lon: item1.lon,
             }
             self.showAlert(item);
         })
@@ -222,7 +222,18 @@ export default class home extends Component {
             onRegister: function(token) {
             },
             onNotification: function(notification) {
+                console.log("Noti item", self.item);
                 if (self.item != '' && Platform.OS === 'android') {
+                    if (self.item.isAdmin == true || self.item.lat == undefined) {
+                        let title = "EMERGENCY FROM " + self.item.name;
+                        let message = self.item.type + ":" + self.item.message;
+                        Alert.alert(title, message);
+                        return;
+                    }
+                    if (self.item.alert == true) {
+                        self.props.navigation.navigate({routeName:'MapScreen', params: {item: self.item}, key: 'map'})
+                        return;
+                    }
                     self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
                 }
             },
@@ -245,6 +256,10 @@ export default class home extends Component {
             console.log("Get noti", notification._data);
             if (isAlert == "true") {
                 // console.log;
+                setTimeout(() => {
+                    self.props.navigation.navigate({routeName:'MapScreen', params: {item: notification._data}, key: 'map'})
+                }, 100)    
+                return true;
             }
             self.item = {
                 id: toName,
@@ -260,6 +275,11 @@ export default class home extends Component {
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
             // Get information about the notification that was opened
             console.log("NOTIFICATION OPENED:", self.item);
+            if (self.item == undefined || self.item == null) return; 
+            if (self.item.alert == true) {
+                self.props.navigation.navigate({routeName:'MapScreen', params: {item: self.item}, key: 'map'})
+                return;
+            }
             if (self.item != '') {
                 self.props.navigation.navigate({routeName:'ChatScreen', params: {item: self.item}, key: 'chat'})
             }
@@ -275,8 +295,8 @@ export default class home extends Component {
     }
 
     phonetree() {
-        // this.props.navigation.navigate('PhoneTreeScreen')
-        this.props.navigation.navigate('MapScreen')
+        this.props.navigation.navigate('PhoneTreeScreen')
+        // this.props.navigation.navigate('MapScreen')
     }
 
     admin() {
