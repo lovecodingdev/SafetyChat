@@ -275,7 +275,12 @@ export default class home extends Component {
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationSnap) => {
             // Get information about the notification that was opened
             console.log("NOTIFICATION OPENED:", self.item);
-            if (self.item == undefined || self.item == null) return; 
+            if (self.item.isAdmin == true || self.item.lat == undefined) {
+                let title = "EMERGENCY FROM " + self.item.name;
+                let message = self.item.type + ":" + self.item.message;
+                Alert.alert(title, message);
+                return;
+            }
             if (self.item.alert == true) {
                 self.props.navigation.navigate({routeName:'MapScreen', params: {item: self.item}, key: 'map'})
                 return;
