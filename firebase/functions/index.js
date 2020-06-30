@@ -193,6 +193,10 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
                 data: {
                     fromname: me,
                     alert: "true",
+                    lat: String(value.lat),
+                    lon: String(value.lon),
+                    isAdmin: value.isAdmin ? "true": "false",
+                    type: value.type,
                 },
                 android: {
                     notification: {
