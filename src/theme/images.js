@@ -47,6 +47,9 @@ const images = {
     checkon : require('../images/checkon.png'),
     radiooff : require('../images/radiooff.png'),
     radioon : require('../images/radioon.png'),
+
+    standard : require('../images/standard.png'),
+    satellite : require('../images/satellite.png'),
 }
 
 export default images;

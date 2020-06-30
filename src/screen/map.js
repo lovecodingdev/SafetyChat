@@ -4,8 +4,10 @@ import {
   ImageBackground,
   Text,
   Alert,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
-import { Images } from '../theme';
+import { Images, Colors } from '../theme';
 import { Container } from 'native-base';
 import Header from '../components/header'
 import firebase from 'react-native-firebase'
@@ -20,10 +22,12 @@ export default class map extends Component {
 
         this.state = {
             loading: false,
+            mapType: 'standard',
             location: {
                 latitude: 37.78825,
                 longitude: -122.4324,
             },
+            image: Images.satellite,
             title: "",
             message: "",
         }
@@ -46,14 +50,20 @@ export default class map extends Component {
       }
     }
 
+    changeMapStyle() {
+        let mapType = this.state.mapType === 'satellite' ? 'standard' : 'satellite';
+        let image = this.state.image == Images.standard ? Images.satellite : Images.standard;
+        this.setState({ mapType, image});
+    }
+
     render() {
-        let {location, title, message} = this.state;
+        let {location, title, message, mapType, image} = this.state;
         return (
             <Container style={styles.container}>
                 <Header prop={this.props.navigation} />
                 <MapView
                     provider={PROVIDER_GOOGLE}
-                    mapType={'satellite'}
+                    mapType={mapType}
                     initialRegion={{
                         latitude: location.latitude,
                         longitude: location.longitude,
@@ -68,6 +78,12 @@ export default class map extends Component {
                         description={message}
                     />
                 </MapView>
+                <TouchableOpacity style={styles.touchImage} onPress={this.changeMapStyle.bind(this)}>
+                    <Image
+                        style={styles.profile}
+                        source={image}
+                    />
+                </TouchableOpacity>
             </Container>
         )
     }
@@ -80,5 +96,17 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+    },
+    touchImage: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+    },
+    profile: {
+        width: 60,
+        height: 60,
+        borderColor: '#2ECC71',
+        borderWidth: 1,
+        resizeMode: 'cover'
     },
 });
