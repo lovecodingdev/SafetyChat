@@ -124,7 +124,7 @@ export default class home extends Component {
         })
         setTimeout(()=>{
             PushNotification.cancelAllLocalNotifications()
-        }, 5000)
+        }, 10000)
     }
 
     async getMessages() {
@@ -239,6 +239,8 @@ export default class home extends Component {
             console.log("Alert value", item1);
             // console.log("json value", temp);
             if (item1.user == user.name) return;
+            if (user.role == 'administrator' && item1.role == 'administrator') return;
+            if (user.role != 'administrator' && item1.role != 'administrator') return;
             let item = {
                 id: item1.user,
                 name: item1.user,
