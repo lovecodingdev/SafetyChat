@@ -159,6 +159,12 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
             snapshot.forEach(function(child) {
                 if (me != child.key) {
                     var temp = child.val().token;
+                    var role = chile.val().role;
+                    if (value.isAdmin && role == "administrator") {
+                        temp = "";
+                    } else if (!value.isAdmin && role != "administrator") {
+                        temp = "";
+                    }
                     if (temp.length > 10) {
                         totoken.push(temp)
                     }

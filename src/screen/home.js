@@ -265,7 +265,7 @@ export default class home extends Component {
                 if (self.item != '' && Platform.OS === 'android') {
                     
                     if (self.item.alert == true) {
-                        if (self.item.isAdmin == true || self.item.lat == undefined) {
+                        if (self.item.lat == undefined) {
                             let title = "EMERGENCY FROM " + self.item.name;
                             let message = self.item.type + ":" + self.item.message;
                             Alert.alert(title, message);
@@ -316,7 +316,7 @@ export default class home extends Component {
             // Get information about the notification that was opened
             console.log("NOTIFICATION OPENED:", self.item);
             if (self.item.alert == true) {
-                if (self.item.isAdmin == true || self.item.lat == undefined) {
+                if (self.item.lat == undefined) {
                     let title = "EMERGENCY FROM " + self.item.name;
                     let message = self.item.type + ":" + self.item.message;
                     Alert.alert(title, message);
