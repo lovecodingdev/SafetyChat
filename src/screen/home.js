@@ -240,7 +240,6 @@ export default class home extends Component {
             if (item1.user == user.name) return;
             if ((user.role == 'administrator' || user.role == 'manager') && (item1.role == 'administrator' || item1.role == 'manager')) return;
             if (!(user.role == 'administrator' || user.role == 'manager') && !(item1.role == 'administrator' || item1.role == 'manager')) return;
-            // if (user.role != 'administrator' && item1.role != 'administrator') return;
             let item = {
                 id: item1.user,
                 name: item1.user,
