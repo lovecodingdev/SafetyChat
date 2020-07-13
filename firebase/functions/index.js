@@ -160,9 +160,9 @@ exports.sendGroupMessage = functions.database.ref('{companycode}/groupMessages/{
                 if (me != child.key) {
                     var temp = child.val().token;
                     var role = chile.val().role;
-                    if (value.isAdmin && role == "administrator") {
+                    if (value.isAdmin && (role == "administrator" || role == "manager")) {
                         temp = "";
-                    } else if (!value.isAdmin && role != "administrator") {
+                    } else if (!value.isAdmin && !(role == "administrator" || role == "manager")) {
                         temp = "";
                     }
                     if (temp.length > 10) {

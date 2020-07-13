@@ -44,9 +44,14 @@ export default class map extends Component {
       let title = item.name;
       let message = item.message;
       this.setState({location, title, message});
+
       if (item == undefined || item == null) {
           Alert.alert("Error", "No geolocation data.");
           return;
+      } else {
+        setTimeout(() => {
+            Alert.alert(title, message);
+        }, 1000) 
       }
     }
 

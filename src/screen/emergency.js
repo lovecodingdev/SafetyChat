@@ -71,8 +71,9 @@ export default class Emergency extends Component {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
         }
+        var isAdmin = (user.role.toLowerCase().includes('administator') || user.role.toLowerCase().includes('manager'))  ? true : false;
         let alert = {
-            isAdmin: this.isAdmin,
+            isAdmin: isAdmin,
             user: user.name,
             role: user.role,
             lat: lat,
@@ -103,7 +104,7 @@ export default class Emergency extends Component {
         let {message, isAlert, headText, posDesc} = this.state;
         return (
             <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "position"}
+                behavior={Platform.OS == "ios" ? "padding" : "padding"}
                 style={{flex: 1,backgroundColor: '#484D53'}}>
                 <Header prop={this.props.navigation} />
                 {!isAlert?
@@ -127,7 +128,7 @@ export default class Emergency extends Component {
                             textContent={''}
                         />
                     </View>:
-                    <View style={{padding: 20, marginTop: 30}}>
+                    <View style={{padding: 20, marginTop: 10}}>
                         <Label style={{color: '#f00', textAlign: 'center', fontWeight: '600', marginBottom: 20}}>{headText}</Label>
                         <Label style={{color: '#fff', fontSize: 13}}>MESSAGE</Label>
                         <TextInput style={styles.textInput} autoCapitalize='none' multiline={true} value={message} onChangeText={text=>this.setState({message: text})}/>

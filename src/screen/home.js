@@ -122,9 +122,9 @@ export default class home extends Component {
             soundName: 'alert.mp3',
             number: 1,
         })
-        setTimeout(()=>{
-            PushNotification.cancelAllLocalNotifications()
-        }, 10000)
+        // setTimeout(()=>{
+        //     PushNotification.cancelAllLocalNotifications()
+        // }, 10000)
     }
 
     async getMessages() {
@@ -237,10 +237,10 @@ export default class home extends Component {
             }
             let item1 = val[key];
             console.log("Alert value", item1);
-            // console.log("json value", temp);
             if (item1.user == user.name) return;
-            if (user.role == 'administrator' && item1.role == 'administrator') return;
-            if (user.role != 'administrator' && item1.role != 'administrator') return;
+            if ((user.role == 'administrator' || user.role == 'manager') && (item1.role == 'administrator' || item1.role == 'manager')) return;
+            if (!(user.role == 'administrator' || user.role == 'manager') && !(item1.role == 'administrator' || item1.role == 'manager')) return;
+            // if (user.role != 'administrator' && item1.role != 'administrator') return;
             let item = {
                 id: item1.user,
                 name: item1.user,

@@ -35,7 +35,7 @@ export default class Admin extends Component {
                 <Header prop={this.props.navigation} />
                 <ImageBackground source={Images.bg} style={{flex: 1, padding: 15}}>
                     <BigIcon img={Images.group} title={Title.menuGroup} onPress={this.onGroup.bind(this)}></BigIcon>
-                    <BigIcon img={Images.alert} title={Title.menuAlert} onPress={this.onAlert.bind(this)}></BigIcon>
+                    {/* <BigIcon img={Images.alert} title={Title.menuAlert} onPress={this.onAlert.bind(this)}></BigIcon> */}
                 </ImageBackground>
             </Container>
         );
