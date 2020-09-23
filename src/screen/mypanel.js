@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   ImageBackground,
-  Alert
+  Alert,
+  View
 } from 'react-native'
 import { Container, Button, Label, Text} from 'native-base'
 import { NavigationActions } from 'react-navigation'
