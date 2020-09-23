@@ -4,7 +4,7 @@ import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensi
 import {Images} from '../theme'
 
 export default (props) => (
-    <TouchableOpacity onPress={props.onPress} style={styles.constainer}>
+    <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress} style={styles.constainer}>
         <Image source={props.img} style={styles.img}></Image>
         <View style={styles.view}>
             <Text style={styles.title}>{props.title}</Text>

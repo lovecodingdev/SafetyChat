@@ -27,8 +27,6 @@ export default class home extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            safetyplans: '',
-            maps: '',
             firstaid: '',
             loading: true,
             appState: AppState.currentState,
@@ -340,15 +338,14 @@ export default class home extends Component {
 
     phonetree() {
         this.props.navigation.navigate('PhoneTreeScreen')
-        // this.props.navigation.navigate('MapScreen')
     }
 
-    admin() {
-        this.props.navigation.navigate('AdminScreen')
+    onSubAlert() {
+        this.props.navigation.navigate('SubalertScreen');
     }
 
-    group() {
-        this.props.navigation.navigate('MypanelScreen')
+    onAlert() {
+        this.props.navigation.navigate('EmergencyScreen');
     }
 
     async fetchDocument() {
@@ -386,18 +383,6 @@ export default class home extends Component {
                 })
             }
         })
-         
-        var safetyurl = resourceUrl + 'safetyplans.png'
-        RNFetchBlob.fs.exists(safetyurl).then(exist => {
-            var res = exist ? {'uri': "file://"+safetyurl} : Images.safetyplans
-            this.setState({safetyplans: res})
-        })
-
-        var mapsurl = resourceUrl + 'maps.png'
-        RNFetchBlob.fs.exists(mapsurl).then(exist => {
-            var res = exist ? {'uri': "file://"+mapsurl} : Images.maps
-            this.setState({maps: res})
-        }) 
 
         var firsturl = resourceUrl + 'firstaid.png'
         RNFetchBlob.fs.exists(firsturl).then(exist => {
@@ -407,22 +392,13 @@ export default class home extends Component {
     }
 
     render() {
-        var isAdmin = (user.role.toLowerCase().includes('administator') || user.role.toLowerCase().includes('manager'))  ? true : false;
         return (
             <Container style={this.state.loading ? styles.loading: styles.container}>
                 <Header prop={this.props.navigation} />
                 <ScrollView>
-                    <View style={{flex: 1, padding: 10, backgroundColor: '#484D53'}}>
-                        <TouchableOpacity style={styles.imageView} onPress={this.subPage.bind(this, 'safetyplan.pdf')}>
-                            <Image
-                                style={styles.safety}
-                                source={this.state.safetyplans}
-                            />
-                        </TouchableOpacity>
-                        { isAdmin == true ? <BigIcon img={Images.admin} title={Title.admin} onPress={this.admin.bind(this)}></BigIcon>:<View></View>}
-                        <BigIcon img={Images.group} title={Title.group} onPress={this.group.bind(this)}></BigIcon>
+                    <View style={{flex: 1, padding: 10, backgroundColor: '#484D53'}}>                   
+                        <BigIcon img={Images.emergencycutoffs} onLongPress={this.onAlert.bind(this)} title={Title.emergency} onPress={this.onSubAlert.bind(this)}></BigIcon>
                         <BigIcon img={Images.generalInfo} title={Title.firstaid} onPress={this.subPage.bind(this, 'general.pdf')}></BigIcon>
-                        <BigIcon img={this.state.maps} title={Title.maps} onPress={this.subPage.bind(this, 'map.pdf')}></BigIcon>
                         <BigIcon img={Images.safetychat} title={Title.phonetree} onPress={this.phonetree.bind(this)}></BigIcon>
                     </View>
                 </ScrollView>
@@ -439,25 +415,6 @@ const styles = StyleSheet.create({
     },
     loading: {
         display: "none"
-    },
-    imageView: {
-        width: responsiveWidth(80),
-        marginLeft: responsiveWidth(10) - 5,
-        height: 180,
-        marginTop: 20,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#fff',
-        backgroundColor: '#000',
-        marginBottom: 5,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    safety: {
-        width: responsiveWidth(80) - 60,
-        height: 100,
-        tintColor: '#fff',
-        resizeMode: "stretch"
     },
     row:{
         marginLeft: responsiveWidth(10)-25,

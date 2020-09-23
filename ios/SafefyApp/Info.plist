@@ -40,13 +40,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To take photo from camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>MySP would like to get your location for Safety</string>
+	<string>MySP would like to get your location to find you on Map in Emergency</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>MySP would like to get your location for Safety</string>
-	<key>NSLocationUsageDescription</key>
-	<string>MySP would like to get your location for Safety</string>
+	<string>MySP would like to get your location to find you on Map in Emergency</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>MySP would like to get your location for Safety</string>
+	<string>MySP would like to get your location to find you on Map in Emergency</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MySP would like to access your photo gallery for uploading images to the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -75,7 +73,6 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>audio</string>
 		<string>location</string>
 		<string>remote-notification</string>
 	</array>
