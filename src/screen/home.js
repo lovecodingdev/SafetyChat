@@ -16,6 +16,7 @@ import Header from '../components/header'
 import RNFetchBlob from 'rn-fetch-blob'
 import API from "../components/api"
 import BigIcon from '../components/bigicon'
+import BottomIcon from '../components/bottomicon'
 import firebase from 'react-native-firebase'
 import AppData from '../components/AppData';
 import Geolocation from 'react-native-geolocation-service';
@@ -397,7 +398,7 @@ export default class home extends Component {
                 <Header prop={this.props.navigation} />
                 <ScrollView>
                     <View style={{flex: 1, padding: 10, backgroundColor: '#484D53'}}>                   
-                        <BigIcon img={Images.emergencycutoffs} onLongPress={this.onAlert.bind(this)} title={Title.emergency} onPress={this.onSubAlert.bind(this)}></BigIcon>
+                        <BottomIcon img={Images.emergencycutoffs} onLongPress={this.onAlert.bind(this)} title={Title.emergency} onPress={this.onSubAlert.bind(this)}></BottomIcon>
                         <BigIcon img={Images.generalInfo} title={Title.firstaid} onPress={this.subPage.bind(this, 'general.pdf')}></BigIcon>
                         <BigIcon img={Images.safetychat} title={Title.phonetree} onPress={this.phonetree.bind(this)}></BigIcon>
                     </View>

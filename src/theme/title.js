@@ -10,7 +10,7 @@ const title = {
     bomb: "Bomb",
     deathsuicide: "Death Suicide",
     emergencycutoffs: "Emergency Cutoffs",
-    emergency: "Emer\nGency",
+    emergency: "Emergency",
     evacuation: "Evacuation",
     fire: "Fire",
     fullsafetyplan: "Full Safety Plan",

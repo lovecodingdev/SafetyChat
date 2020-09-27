@@ -23,6 +23,7 @@
 		7C17758E49C24D568B1B0921 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CCB62DE72B24E78B28A15F6 /* Roboto_medium.ttf */; };
 		8B68BBA74181FBFBB2833F94 /* libPods-SafefyApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C1EC0D15B4EEF8115744D82 /* libPods-SafefyApp-tvOS.a */; };
 		8BB495B324776E3D003415B4 /* alert.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8BB495B224776E3D003415B4 /* alert.mp3 */; };
+		8BD129B8251BD23200192F3B /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD129B7251BD23200192F3B /* HomeKit.framework */; };
 		CFF6EC7E832E4A05A6B65B69 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D540284F27844AE1BE95713A /* rubicon-icon-font.ttf */; };
 		EA68EF49D7FB412E878FFCE7 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34C69012D2614054A8A692DA /* Roboto.ttf */; };
 /* End PBXBuildFile section */
@@ -104,6 +105,7 @@
 		89DFC62BE67253FF389B5F7F /* Pods-SafefyApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SafefyApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SafefyApp-tvOS/Pods-SafefyApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8B2BC8702386A1B000B751A3 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB495B224776E3D003415B4 /* alert.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alert.mp3; path = ../android/app/src/main/res/raw/alert.mp3; sourceTree = "<group>"; };
+		8BD129B7251BD23200192F3B /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
 		8F9E1A9BEBE24AF686948358 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		958B62D71A104FE99C34ACF8 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		95D4DE7FF7044BE1B73C384E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BD129B8251BD23200192F3B /* HomeKit.framework in Frameworks */,
 				03A121791CF55C9CA13BDAEB /* libPods-SafefyApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,6 +208,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BD129B7251BD23200192F3B /* HomeKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				31BF04AFD17923E929B6CE1B /* libPods-SafefyApp.a */,
@@ -418,11 +422,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = QXWR9YP7CD;
+						DevelopmentTeam = MWSF64DTSL;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = QXWR9YP7CD;
+						DevelopmentTeam = MWSF64DTSL;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -804,7 +808,7 @@
 			baseConfigurationReference = 6E030FE796D96FF2B3068448 /* Pods-SafefyAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = QXWR9YP7CD;
+				DEVELOPMENT_TEAM = MWSF64DTSL;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -829,7 +833,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = QXWR9YP7CD;
+				DEVELOPMENT_TEAM = MWSF64DTSL;
 				INFOPLIST_FILE = SafefyAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -852,18 +856,18 @@
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = QXWR9YP7CD;
+				DEVELOPMENT_TEAM = MWSF64DTSL;
 				INFOPLIST_FILE = SafefyApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.myspapp.app.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myspapp.app;
 				PRODUCT_NAME = SafefyApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -878,17 +882,17 @@
 				CODE_SIGN_ENTITLEMENTS = SafefyApp/SafefyApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_TEAM = QXWR9YP7CD;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = MWSF64DTSL;
 				INFOPLIST_FILE = SafefyApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.myspapp.app.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myspapp.app;
 				PRODUCT_NAME = SafefyApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
